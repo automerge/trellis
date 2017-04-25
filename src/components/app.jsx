@@ -6,26 +6,51 @@ export default class App extends React.Component {
   constructor() {
     super()
 
-    let state = {
-      icebox: [],
-      active: [],
-      done:   []
-    }
+    this.state.lists = [
+      {
+        id: 1,
+        title: "icebox"
+      },
+      {
+        id: 2,
+        title: "active"
+      },
+      {
+        id: 3,
+        title: "done"
+      }
+    ]
 
-    state.icebox.push({ title: "Rewrite everything in Crystal" })
-    state.icebox.push({ title: "Solve AGI" })
-    state.active.push({ title: "Add more 'pop' to the landing page" })
-    state.done.push(  { title: "Rewrite everything in Go" })
-
-    this.state = state
+    this.state.cards = [
+      {
+        id: 1,
+        list_id: 1,
+        title: "Rewrite everything in Crystal"
+      },
+      {
+        id: 2,
+        list_id: 1,
+        title: "Solve AGI"
+      },
+      {
+        id: 3,
+        list_id: 2,
+        title: "Add more 'pop' to the landing page"
+      },
+      {
+        id: 4
+        list_id: 3,
+        title: "Rewrite everything in Go"
+      }
+    ]
   }
 
   render() {
     return (
       <div>
         <h1>Trellis</h1>
-        <List cards={ this.state.icebox } />
-        <List cards={ this.state.active } />
+        <List key="icebox" cards={ this.state.icebox } />
+        <List key="active" cards={ this.state.active } />
         <List cards={ this.state.done   } />
       </div>
     )
