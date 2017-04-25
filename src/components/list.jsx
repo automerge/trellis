@@ -4,7 +4,7 @@ import ListCard from './list_card'
 export default class List extends React.Component {
   render() {
     let listCards = this.props.cards.map((card) => {
-      return <ListCard title={ card.title }/>
+      return <ListCard key={ card.title } title={ card.title }/>
     })
 
     return (

@@ -22,10 +22,6 @@ export default class App extends React.Component {
         <List cards={ this.icebox } />
         <List cards={ this.active } />
         <List cards={ this.done   } />
-
-        <div style={{ clear: "both" }} />
-
-        <Card />
       </div>
     )
   }
