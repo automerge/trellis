@@ -17,10 +17,15 @@
     import React from 'react';
     import ReactDOM from 'react-dom';
     import {AppContainer} from 'react-hot-loader';
+    import store from './store'
 
     const render = () => {
       const App = require('./components/app').default;
-      ReactDOM.render(<AppContainer><App /></AppContainer>, document.getElementById('App'));
+      ReactDOM.render(
+        <AppContainer>
+          <App store={ store }/>
+        </AppContainer>
+      , document.getElementById('App'));
     }
 
     render();

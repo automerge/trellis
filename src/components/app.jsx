@@ -3,48 +3,11 @@ import List from './list'
 import Card from './card'
 
 export default class App extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+
     this.moveCard = this.moveCard.bind(this)
-
-    this.state = {}
-    this.state.lists = [
-      {
-        id: 1,
-        title: "icebox"
-      },
-      {
-        id: 2,
-        title: "active"
-      },
-      {
-        id: 3,
-        title: "done"
-      }
-    ]
-
-    this.state.cards = [
-      {
-        id: 1,
-        listId: 1,
-        title: "Rewrite everything in Crystal"
-      },
-      {
-        id: 2,
-        listId: 1,
-        title: "Solve AGI"
-      },
-      {
-        id: 3,
-        listId: 2,
-        title: "Add more 'pop' to the landing page"
-      },
-      {
-        id: 4,
-        listId: 3,
-        title: "Rewrite everything in Go"
-      }
-    ]
+    this.state    = this.props.store.getState()
   }
 
   cardsForList(listId) {
@@ -61,7 +24,7 @@ export default class App extends React.Component {
 
     cards[cardIndex].listId = listId
 
-    this.setState({ cards: cards })
+    this.State({ cards: cards })
 
   }
 
