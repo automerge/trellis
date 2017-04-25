@@ -67,7 +67,13 @@ export default class App extends React.Component {
 
   render() {
     let lists = this.state.lists.map((list) => {
-      return <List listId={ list.id } key={ list.id } moveCard={ this.moveCard } cards={ this.cardsForList(list.id) } />
+      return <List
+        title={ list.title }
+        listId={ list.id }
+        key={ list.id }
+        moveCard={ this.moveCard }
+        cards={ this.cardsForList(list.id) }
+      />
     })
 
     return (

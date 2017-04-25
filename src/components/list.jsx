@@ -23,7 +23,7 @@ export default class List extends React.Component {
 
     return (
       <div className="List" onDrop={ this.onDrop } onDragOver={ this.preventDefault } >
-        <div className="List__title"> Icebox </div>
+        <div className="List__title">{ this.props.title }</div>
         { listCards }
         <div className="AddCard">
           <a href="#">Add a card...</a>
