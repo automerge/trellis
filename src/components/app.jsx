@@ -47,6 +47,26 @@ export default class App extends React.Component {
             <a href="#">Add a card...</a>
           </div>
         </div>
+
+        <div style={{ clear: "both" }} />
+
+        <div className="Card">
+          <div className="Card__title">
+            Add more "pop" to the landing page
+          </div>
+
+          <div className="Card__description">
+            <b>Description</b> <a href="#">Edit</a>
+            <p>The marketing team would like to add at least 10x more pop to the landing page.</p>
+          </div>
+
+          <div className="Members">
+            <b>Members</b>
+            <div className="Members__member">
+              <img src={gravatarURL} />
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
