@@ -23,6 +23,9 @@ export default class App extends React.Component {
           <div className="Card">
             <div className="Card__title"> Solve AGI </div>
           </div>
+          <div className="AddCard">
+            <a href="#">Add a card...</a>
+          </div>
         </div>
 
         <div className="List">
@@ -30,12 +33,18 @@ export default class App extends React.Component {
           <div className="Card">
             <div className="Card__title"> Add more "pop" to the landing page </div>
           </div>
+          <div className="AddCard">
+            <a href="#">Add a card...</a>
+          </div>
         </div>
 
         <div className="List">
           <div className="List__title"> Done </div>
           <div className="Card">
             <div className="Card__title"> Rewrite everything in Go </div>
+          </div>
+          <div className="AddCard">
+            <a href="#">Add a card...</a>
           </div>
         </div>
       </div>
