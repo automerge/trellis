@@ -2,6 +2,8 @@ import React from 'react'
 
 export default class App extends React.Component {
   render() {
+    let gravatarURL = "https://s.gravatar.com/avatar/df8958072ba78fba83c0b35dad49cdea?s=80"
+
     return (
       <div>
         <h1>Trellis</h1>
@@ -9,6 +11,11 @@ export default class App extends React.Component {
           <div className="List__title"> Icebox </div>
           <div className="Card">
             <div className="Card__title"> Rewrite everything in Crystal </div>
+            <div className="Members">
+              <div className="Members__member">
+                <img src={gravatarURL} />
+              </div>
+            </div>
           </div>
           <div className="Card">
             <div className="Card__title"> Synergize </div>
