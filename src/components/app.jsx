@@ -1,4 +1,5 @@
 import React from 'react'
+import ListCard from './list_card'
 
 export default class App extends React.Component {
   render() {
@@ -9,20 +10,9 @@ export default class App extends React.Component {
         <h1>Trellis</h1>
         <div className="List">
           <div className="List__title"> Icebox </div>
-          <div className="ListCard">
-            <div className="ListCard__title"> Rewrite everything in Crystal </div>
-            <div className="Members">
-              <div className="Members__member">
-                <img src={gravatarURL} />
-              </div>
-            </div>
-          </div>
-          <div className="ListCard">
-            <div className="ListCard__title"> Synergize </div>
-          </div>
-          <div className="ListCard">
-            <div className="ListCard__title"> Solve AGI </div>
-          </div>
+          <ListCard title="Rewrite everything in Crystal" />
+          <listCard title="Synergize" />
+          <ListCard title="Solve AGI" />
           <div className="AddCard">
             <a href="#">Add a card...</a>
           </div>
@@ -30,9 +20,7 @@ export default class App extends React.Component {
 
         <div className="List">
           <div className="List__title"> Active </div>
-          <div className="ListCard">
-            <div className="ListCard__title"> Add more "pop" to the landing page </div>
-          </div>
+          <ListCard title="Add more 'pop' to the landing page" />
           <div className="AddCard">
             <a href="#">Add a card...</a>
           </div>
@@ -40,9 +28,7 @@ export default class App extends React.Component {
 
         <div className="List">
           <div className="List__title"> Done </div>
-          <div className="ListCard">
-            <div className="ListCard__title"> Rewrite everything in Go </div>
-          </div>
+          <ListCard title="Rewrite everything in Go" />
           <div className="AddCard">
             <a href="#">Add a card...</a>
           </div>
