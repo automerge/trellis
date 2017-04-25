@@ -6,6 +6,7 @@ export default class App extends React.Component {
   constructor() {
     super()
 
+    this.state = {}
     this.state.lists = [
       {
         id: 1,
@@ -24,34 +25,42 @@ export default class App extends React.Component {
     this.state.cards = [
       {
         id: 1,
-        list_id: 1,
+        listId: 1,
         title: "Rewrite everything in Crystal"
       },
       {
         id: 2,
-        list_id: 1,
+        listId: 1,
         title: "Solve AGI"
       },
       {
         id: 3,
-        list_id: 2,
+        listId: 2,
         title: "Add more 'pop' to the landing page"
       },
       {
-        id: 4
-        list_id: 3,
+        id: 4,
+        listId: 3,
         title: "Rewrite everything in Go"
       }
     ]
   }
 
+  cardsForList(listId) {
+    return this.state.cards.filter((card) => {
+      return card.listId === listId
+    })
+  }
+
   render() {
+    let lists = this.state.lists.map((list) => {
+      return <List key={ list.id } cards={ this.cardsForList(list.id) } />
+    })
+
     return (
       <div>
         <h1>Trellis</h1>
-        <List key="icebox" cards={ this.state.icebox } />
-        <List key="active" cards={ this.state.active } />
-        <List cards={ this.state.done   } />
+        { lists }
       </div>
     )
   }
