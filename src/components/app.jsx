@@ -52,7 +52,7 @@ export default class App extends React.Component {
 
         <div className="Card">
           <div className="Card__title">
-            Add more "pop" to the landing page
+            <h3> Add more "pop" to the landing page </h3>
           </div>
 
           <div className="Card__description">
@@ -64,6 +64,25 @@ export default class App extends React.Component {
             <b>Members</b>
             <div className="Members__member">
               <img src={gravatarURL} />
+            </div>
+          </div>
+
+          <div className="Comments">
+            <b>Comments</b>
+            <div>
+              <textarea cols="80" />
+              <button>Send</button>
+            </div>
+            <div className="Comment">
+              <div className="Comment__avatar">
+                <img src={gravatarURL} />
+              </div>
+              <div className="Comment__body">
+                That's too much pop
+              </div>
+              <div className="Comment__timestamp">
+                7 minutes ago
+              </div>
             </div>
           </div>
         </div>
