@@ -11,7 +11,7 @@ export default class ListCard extends React.Component {
 
   onDragStart(event) {
     event.dataTransfer.effectAllowed = 'move'
-    event.dataTransfer.setData("text", this.props.title)
+    event.dataTransfer.setData("text", this.props.cardId)
   }
 
   render() {

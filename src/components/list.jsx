@@ -2,9 +2,14 @@ import React from 'react'
 import ListCard from './list_card'
 
 export default class List extends React.Component {
+  constructor() {
+    super()
+    this.onDrop = this.onDrop.bind(this)
+  }
+
   onDrop(event) {
-    let cardTitle = event.dataTransfer.getData("text")
-    console.log(cardTitle)
+    let cardId = parseInt(event.dataTransfer.getData("text"))
+    this.props.moveCard(cardId, this.props.listId)
   }
 
   preventDefault(event) {
@@ -13,7 +18,7 @@ export default class List extends React.Component {
 
   render() {
     let listCards = this.props.cards.map((card) => {
-      return <ListCard key={ card.title } title={ card.title }/>
+      return <ListCard cardId={ card.id } key={ card.id } title={ card.title }/>
     })
 
     return (

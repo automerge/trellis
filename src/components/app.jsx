@@ -5,6 +5,7 @@ import Card from './card'
 export default class App extends React.Component {
   constructor() {
     super()
+    this.moveCard = this.moveCard.bind(this)
 
     this.state = {}
     this.state.lists = [
@@ -52,9 +53,21 @@ export default class App extends React.Component {
     })
   }
 
+  moveCard(cardId, listId) {
+    let cards     = this.state.cards
+    let cardIndex = cards.findIndex((card) => {
+      return card.id === cardId
+    })
+
+    cards[cardIndex].listId = listId
+
+    this.setState({ cards: cards })
+
+  }
+
   render() {
     let lists = this.state.lists.map((list) => {
-      return <List key={ list.id } cards={ this.cardsForList(list.id) } />
+      return <List listId={ list.id } key={ list.id } moveCard={ this.moveCard } cards={ this.cardsForList(list.id) } />
     })
 
     return (
