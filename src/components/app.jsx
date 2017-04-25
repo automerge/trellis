@@ -1,38 +1,28 @@
 import React from 'react'
-import ListCard from './list_card'
+import List from './list'
 
 export default class App extends React.Component {
+  constructor() {
+    super()
+    this.icebox = []
+    this.active = []
+    this.done   = []
+
+    this.icebox.push({ title: "Rewrite everything in Crystal" })
+    this.icebox.push({ title: "Solve AGI" })
+    this.active.push({ title: "Add more 'pop' to the landing page" })
+    this.done.push(  { title: "Rewrite everything in Go" })
+  }
+
   render() {
     let gravatarURL = "https://s.gravatar.com/avatar/df8958072ba78fba83c0b35dad49cdea?s=80"
 
     return (
       <div>
         <h1>Trellis</h1>
-        <div className="List">
-          <div className="List__title"> Icebox </div>
-          <ListCard title="Rewrite everything in Crystal" />
-          <listCard title="Synergize" />
-          <ListCard title="Solve AGI" />
-          <div className="AddCard">
-            <a href="#">Add a card...</a>
-          </div>
-        </div>
-
-        <div className="List">
-          <div className="List__title"> Active </div>
-          <ListCard title="Add more 'pop' to the landing page" />
-          <div className="AddCard">
-            <a href="#">Add a card...</a>
-          </div>
-        </div>
-
-        <div className="List">
-          <div className="List__title"> Done </div>
-          <ListCard title="Rewrite everything in Go" />
-          <div className="AddCard">
-            <a href="#">Add a card...</a>
-          </div>
-        </div>
+        <List cards={ this.icebox } />
+        <List cards={ this.active } />
+        <List cards={ this.done   } />
 
         <div style={{ clear: "both" }} />
 
