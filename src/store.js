@@ -2,7 +2,14 @@ import { createStore } from 'redux'
 
 export default class Store {
   constructor() {
-    let initialState = require("../initial_state.json")
+    let initialState    = {}
+    let serializedState = localStorage.getItem("state")
+
+    if(serializedState) {
+      initialState = JSON.parse(serializedState)
+    } else {
+      initialState = require("../initial_state.json")
+    }
 
     this.reduxStore = createStore((state = initialState, action) => {
       switch(action.type) {
@@ -16,6 +23,9 @@ export default class Store {
     })
 
     this.subscribe = this.reduxStore.subscribe
+    this.subscribe(() => {
+      localStorage.setItem("state", JSON.stringify(this.getState()))
+    })
   }
 
   getState() {
