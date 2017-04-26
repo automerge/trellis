@@ -5,6 +5,7 @@ export default class AddCard extends React.Component {
     super()
 
     this.showForm    = this.showForm.bind(this)
+    this.clearForm   = this.clearForm.bind(this)
     this.createCard  = this.createCard.bind(this)
     this.updateTitle = this.updateTitle.bind(this)
 
@@ -18,14 +19,17 @@ export default class AddCard extends React.Component {
     this.setState({ showForm: true })
   }
 
+  clearForm() {
+    this.setState({ title: "", showForm: false })
+  }
+
   createCard() {
     this.props.store.createCard({
       listId: this.props.listId,
       title: this.state.title
     })
 
-    // clear the form
-    this.setState({ title: "", showForm: false })
+    this.clearForm()
   }
 
   updateTitle(event) {
@@ -39,11 +43,11 @@ export default class AddCard extends React.Component {
         <div>
           <textarea onChange= { this.updateTitle } />
           <button onClick={ this.createCard }>Add</button>
-          <a href="#">X</a>
+          <a onClick={ this.clearForm } href="#">X</a>
         </div>
       )
     } else {
-      addCard = <a href="#" onClick={ this.showCardForm }>Add a card...</a>
+      addCard = <a href="#" onClick={ this.showForm }>Add a card...</a>
     }
 
     return (
