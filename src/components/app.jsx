@@ -11,13 +11,18 @@ export default class App extends React.Component {
   }
 
   render() {
-    let lists = this.state.lists.map((list) => {
-      return <List
-        listId={ list.id }
-        key={ list.id }
-        store={ this.props.store }
-      />
-    })
+    let lists
+    if(this.state.lists) {
+      lists = this.state.lists.map((list) => {
+        return <List
+          listId={ list.id }
+          key={ list.id }
+          store={ this.props.store }
+        />
+      })
+    } else {
+      lists = ""
+    }
 
     return (
       <div>

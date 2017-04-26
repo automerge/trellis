@@ -1,18 +1,21 @@
 import { createStore } from 'redux'
+import PouchDB from 'pouchdb'
 
 export default class Store {
   constructor() {
-    let initialState    = {}
-    let serializedState = localStorage.getItem("state")
+    const db            = PouchDB('trellis')
+    const remoteCouch   = false
+
 
     // Load initial state from local storage or json file
-    if(serializedState) {
-      initialState = JSON.parse(serializedState)
-    } else {
-      initialState = require("../initial_state.json")
-    }
+    db.get("1").then((doc) => {
+      this.reduxStore.dispatch({
+        type: 'SET_STATE',
+        state: doc
+      })
+    })
 
-    this.reduxStore = createStore((state = initialState, action) => {
+    this.reduxStore = createStore((state = {}, action) => {
       switch(action.type) {
         case 'UPDATE_CARD':
           return this.updateCardTransform(state, action)
@@ -20,6 +23,8 @@ export default class Store {
           return this.createCardTransform(state, action)
         case 'DELETE_CARD':
           return this.deleteCardTransform(state, action)
+        case 'SET_STATE':
+          return action.state
         default:
           return state
       }
@@ -30,7 +35,12 @@ export default class Store {
 
     this.subscribe(() => {
       console.log("new state", this.getState())
-      localStorage.setItem("state", JSON.stringify(this.getState()))
+      let state = this.getState()
+      state._id = "1"
+
+      db.put(state, (err, result) => {
+        if(err) console.log(err)
+      })
     })
   }
 
