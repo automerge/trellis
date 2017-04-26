@@ -21,8 +21,13 @@ export default class Store {
     this.subscribe = this.reduxStore.subscribe
     this.getState  = this.reduxStore.getState
 
-    const db = new PouchAdapter()
+    const db  = new PouchAdapter()
+
     db.onLoad = (initialState) => {
+      if(!initialState) {
+        initialState = require("../initial_state.json")
+      }
+
       this.reduxStore.dispatch({
         type: 'SET_STATE',
         state: initialState
