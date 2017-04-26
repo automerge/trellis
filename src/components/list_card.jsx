@@ -4,6 +4,7 @@ export default class ListCard extends React.Component {
   constructor() {
     super()
     this.onDragStart = this.onDragStart.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   onDragStart(event) {
@@ -14,6 +15,10 @@ export default class ListCard extends React.Component {
     return this.props.store.findCard(this.props.cardId)
   }
 
+  delete() {
+    this.props.store.deleteCard(this.card())
+  }
+
   render() {
     return (
       <div
@@ -21,6 +26,7 @@ export default class ListCard extends React.Component {
         draggable="true"
         onDragStart={ this.onDragStart } >
         <div className="ListCard__title"> { this.card().title }</div>
+        <div className="ListCard__delete" onClick={ this.delete }>x</div>
       </div>
     )
   }

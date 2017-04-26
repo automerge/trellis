@@ -18,6 +18,8 @@ export default class Store {
           return this.updateCardTransform(state, action)
         case 'CREATE_CARD':
           return this.createCardTransform(state, action)
+        case 'DELETE_CARD':
+          return this.deleteCardTransform(state, action)
         default:
           return state
       }
@@ -27,6 +29,7 @@ export default class Store {
     this.getState  = this.reduxStore.getState
 
     this.subscribe(() => {
+      console.log("new state", this.getState())
       localStorage.setItem("state", JSON.stringify(this.getState()))
     })
   }
@@ -62,6 +65,26 @@ export default class Store {
     })
 
     cards[cardIndex] = newCard
+
+    return Object.assign({}, state, { cards: cards })
+  }
+
+  deleteCard(card) {
+    this.reduxStore.dispatch({
+      type: 'DELETE_CARD',
+      card: card
+    })
+  }
+
+  deleteCardTransform(state, action) {
+    let deleteCard = action.card
+    let cards = state.cards
+
+    let cardIndex = cards.findIndex((card) => {
+      return card.id === deleteCard.id
+    })
+
+    cards = cards.slice(0, cardIndex).concat(cards.slice(cardIndex+1, cards.length))
 
     return Object.assign({}, state, { cards: cards })
   }
