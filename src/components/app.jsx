@@ -6,26 +6,15 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.moveCard = this.moveCard.bind(this)
-    this.state    = this.props.store.getState()
+    let store  = this.props.store
+    this.state = store.getState()
+    store.subscribe(() => { this.setState(store.getState()) })
   }
 
   cardsForList(listId) {
     return this.state.cards.filter((card) => {
       return card.listId === listId
     })
-  }
-
-  moveCard(cardId, listId) {
-    let cards     = this.state.cards
-    let cardIndex = cards.findIndex((card) => {
-      return card.id === cardId
-    })
-
-    cards[cardIndex].listId = listId
-
-    this.State({ cards: cards })
-
   }
 
   render() {
@@ -36,6 +25,7 @@ export default class App extends React.Component {
         key={ list.id }
         moveCard={ this.moveCard }
         cards={ this.cardsForList(list.id) }
+        store={ this.props.store }
       />
     })
 

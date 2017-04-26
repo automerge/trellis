@@ -3,14 +3,17 @@ import ListCard from './list_card'
 import AddCard from './add_card'
 
 export default class List extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.onDrop = this.onDrop.bind(this)
   }
 
   onDrop(event) {
-    let cardId = parseInt(event.dataTransfer.getData("text"))
-    this.props.moveCard(cardId, this.props.listId)
+    let cardId  = parseInt(event.dataTransfer.getData("text"))
+    let card    = this.props.store.findCard(cardId)
+    card.listId = this.props.listId
+
+    this.props.store.updateCard(card)
   }
 
   preventDefault(event) {
