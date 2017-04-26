@@ -2,8 +2,15 @@ import PouchDB from 'pouchdb'
 
 export default class PouchAdapter {
   constructor() {
+    let remoteConfig = {
+      auth: {
+        username: process.env.CLOUDANT_USERNAME,
+        password: process.env.CLOUDANT_PASSWORD
+      }
+    }
+
     this.db            = new PouchDB('trellis')
-    this.remoteCouch   = false
+    this.remote        = new PouchDB('https://45bits.cloudant.com/trellis/', remoteConfig)
     this.docId         = "state"
     this.doc           = {}
 
@@ -32,6 +39,8 @@ export default class PouchAdapter {
       if(err) console.log(err)
       this.doc._rev = result.rev
     })
+
+    this.db.sync(this.remote)
   }
 
   resetState() {
