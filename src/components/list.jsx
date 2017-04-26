@@ -21,14 +21,16 @@ export default class List extends React.Component {
   }
 
   render() {
-    let listCards = this.props.cards.map((card) => {
+    let listCards    = this.props.store.findCardsByList(this.props.listId)
+    let listCardsPartial = listCards.map((card) => {
       return <ListCard cardId={ card.id } key={ card.id } title={ card.title }/>
     })
 
     return (
+      // Chrome has a drag-and-drop bug that requires onDragOver to not propogate its event
       <div className="List" onDrop={ this.onDrop } onDragOver={ this.preventDefault } >
         <div className="List__title">{ this.props.title }</div>
-        { listCards }
+        { listCardsPartial }
         <AddCard listId={ this.props.listId } store={ this.props.store }/>
       </div>
     )

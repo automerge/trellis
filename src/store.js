@@ -5,6 +5,7 @@ export default class Store {
     let initialState    = {}
     let serializedState = localStorage.getItem("state")
 
+    // Load initial state from local storage or json file
     if(serializedState) {
       initialState = JSON.parse(serializedState)
     } else {
@@ -23,13 +24,11 @@ export default class Store {
     })
 
     this.subscribe = this.reduxStore.subscribe
+    this.getState  = this.reduxStore.getState
+
     this.subscribe(() => {
       localStorage.setItem("state", JSON.stringify(this.getState()))
     })
-  }
-
-  getState() {
-    return this.reduxStore.getState()
   }
 
   createCard(attributes) {

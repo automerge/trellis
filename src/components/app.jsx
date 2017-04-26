@@ -17,8 +17,6 @@ export default class App extends React.Component {
         title={ list.title }
         listId={ list.id }
         key={ list.id }
-        moveCard={ this.moveCard }
-        cards={ this.props.store.findCardsByList(list.id) }
         store={ this.props.store }
       />
     })
