@@ -2,12 +2,14 @@ import { createStore } from 'redux'
 
 export default class Store {
   constructor() {
-    let initialState = require("../initial_state.json") 
+    let initialState = require("../initial_state.json")
 
     this.reduxStore = createStore((state = initialState, action) => {
       switch(action.type) {
         case 'UPDATE_CARD':
-          return this._updateCard(state, action)
+          return this.updateCardTransform(state, action)
+        case 'CREATE_CARD':
+          return this.createCardTransform(state, action)
         default:
           return state
       }
@@ -20,6 +22,21 @@ export default class Store {
     return this.reduxStore.getState()
   }
 
+  createCard(attributes) {
+    this.reduxStore.dispatch({
+      type: 'CREATE_CARD',
+      attributes: attributes
+    })
+  }
+
+  createCardTransform(state, action) {
+    let nextId = Math.max.apply(null, state.cards.map((c) => c.id)) + 1
+    let card   = Object.assign({}, action.attributes, { id: nextId })
+    let cards  = [...state.cards, card]
+
+    return Object.assign({}, state, { cards: cards })
+  }
+
   updateCard(card) {
     this.reduxStore.dispatch({
       type: 'UPDATE_CARD',
@@ -27,7 +44,7 @@ export default class Store {
     })
   }
 
-  _updateCard(state, action) {
+  updateCardTransform(state, action) {
     let newCard = action.card
     let cards   = state.cards
 
@@ -47,4 +64,11 @@ export default class Store {
       return cardId === card.id
     })
   }
+
+  findCardsByList(listId) {
+    return this.getState().cards.filter((card) => {
+      return card.listId === listId
+    })
+  }
+
 }

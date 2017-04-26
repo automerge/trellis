@@ -29,7 +29,7 @@ export default class List extends React.Component {
       <div className="List" onDrop={ this.onDrop } onDragOver={ this.preventDefault } >
         <div className="List__title">{ this.props.title }</div>
         { listCards }
-        <AddCard />
+        <AddCard listId={ this.props.listId } store={ this.props.store }/>
       </div>
     )
   }

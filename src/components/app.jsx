@@ -11,12 +11,6 @@ export default class App extends React.Component {
     store.subscribe(() => { this.setState(store.getState()) })
   }
 
-  cardsForList(listId) {
-    return this.state.cards.filter((card) => {
-      return card.listId === listId
-    })
-  }
-
   render() {
     let lists = this.state.lists.map((list) => {
       return <List
@@ -24,7 +18,7 @@ export default class App extends React.Component {
         listId={ list.id }
         key={ list.id }
         moveCard={ this.moveCard }
-        cards={ this.cardsForList(list.id) }
+        cards={ this.props.store.findCardsByList(list.id) }
         store={ this.props.store }
       />
     })
