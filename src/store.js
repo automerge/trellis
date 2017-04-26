@@ -80,4 +80,12 @@ export default class Store {
     })
   }
 
+  findList(listId) {
+    let state = this.getState()
+
+    return state.lists.find((list) => {
+      return listId === list.id
+    })
+  }
+
 }

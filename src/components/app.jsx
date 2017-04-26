@@ -1,6 +1,5 @@
 import React from 'react'
 import List from './list'
-import Card from './card'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -14,7 +13,6 @@ export default class App extends React.Component {
   render() {
     let lists = this.state.lists.map((list) => {
       return <List
-        title={ list.title }
         listId={ list.id }
         key={ list.id }
         store={ this.props.store }
