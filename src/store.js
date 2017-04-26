@@ -1,20 +1,8 @@
 import { createStore } from 'redux'
-import PouchDB from 'pouchdb'
+import PouchAdapter from './pouch_adapter'
 
 export default class Store {
   constructor() {
-    const db            = PouchDB('trellis')
-    const remoteCouch   = false
-
-
-    // Load initial state from local storage or json file
-    db.get("1").then((doc) => {
-      this.reduxStore.dispatch({
-        type: 'SET_STATE',
-        state: doc
-      })
-    })
-
     this.reduxStore = createStore((state = {}, action) => {
       switch(action.type) {
         case 'UPDATE_CARD':
@@ -33,14 +21,19 @@ export default class Store {
     this.subscribe = this.reduxStore.subscribe
     this.getState  = this.reduxStore.getState
 
-    this.subscribe(() => {
-      console.log("new state", this.getState())
-      let state = this.getState()
-      state._id = "1"
-
-      db.put(state, (err, result) => {
-        if(err) console.log(err)
+    const db = new PouchAdapter()
+    db.onLoad = (initialState) => {
+      this.reduxStore.dispatch({
+        type: 'SET_STATE',
+        state: initialState
       })
+    }
+
+    this.subscribe(() => {
+      let state = this.getState()
+
+      console.log("new state", state)
+      db.setState(state)
     })
   }
 

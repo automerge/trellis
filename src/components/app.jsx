@@ -12,8 +12,10 @@ export default class App extends React.Component {
 
   render() {
     let lists
-    if(this.state.lists) {
-      lists = this.state.lists.map((list) => {
+    let state = this.props.store.getState()
+
+    if(state.lists) {
+      lists = state.lists.map((list) => {
         return <List
           listId={ list.id }
           key={ list.id }
@@ -21,7 +23,7 @@ export default class App extends React.Component {
         />
       })
     } else {
-      lists = ""
+      lists = []
     }
 
     return (
