@@ -34,6 +34,13 @@ export default class Store {
       })
     }
 
+    db.onChange = (state) => {
+      this.reduxStore.dispatch({
+        type: 'SET_STATE',
+        state: state
+      })
+    }
+
     this.subscribe(() => {
       let state = this.getState()
 

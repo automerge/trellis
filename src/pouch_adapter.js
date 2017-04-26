@@ -30,6 +30,23 @@ export default class PouchAdapter {
         console.log(error)
       }
     })
+
+    // Set up replication subscriptions
+    let options = { live: true }
+    PouchDB.replicate(this.db, this.remote, options)
+      .on("error", console.log)
+
+    PouchDB.replicate(this.remote, this.db, options)
+      .on("change", (info) => {
+        console.log("Remote change")
+
+        this.db.get(this.doc._id).then((doc) => {
+          this.doc = doc
+
+          if(this.onChange) this.onChange(doc.state)
+        })
+      })
+      .on("error", console.log)
   }
 
   setState(state) {
@@ -39,8 +56,6 @@ export default class PouchAdapter {
       if(err) console.log(err)
       this.doc._rev = result.rev
     })
-
-    this.db.sync(this.remote)
   }
 
   resetState() {
