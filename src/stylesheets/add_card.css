@@ -1,0 +1,43 @@
+.AddCard__link {
+  cursor: pointer;
+  padding-top: 10px;
+}
+
+.AddCard__link:hover {
+  text-decoration: underline;
+}
+
+.AddCard textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.AddCard textarea:focus {
+  outline: none;
+}
+
+.AddCard button {
+  border: none;
+  font-size: 16px;
+  padding: 5px 15px;
+  margin: 5px 0;
+  border-radius: 2px;
+  background-color: #2980b9;
+  color: white;
+  cursor: pointer;
+}
+
+.AddCard a {
+  margin-top: 10px;
+  margin-left: 5px;
+  color: #333;
+  text-decoration: none;
+}
+
+.AddCard a:hover {
+  font-weight: bold;
+}

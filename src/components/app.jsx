@@ -28,7 +28,7 @@ export default class App extends React.Component {
 
     return (
       <div className="App">
-        <h1>Trellis</h1>
+        <h1 className="App__title">Trellis</h1>
         <div className="App__lists">
           { lists }
         </div>

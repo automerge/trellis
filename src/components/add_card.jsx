@@ -47,7 +47,7 @@ export default class AddCard extends React.Component {
         </div>
       )
     } else {
-      addCard = <a href="#" onClick={ this.showForm }>Add a card...</a>
+      addCard = <div className="AddCard__link" onClick={ this.showForm }>Add a card...</div>
     }
 
     return (

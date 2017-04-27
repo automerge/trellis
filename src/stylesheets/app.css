@@ -1,3 +1,11 @@
+@font-face {
+  font-family: Pacifico;
+  src: url("../assets/fonts/Pacifico.ttf")
+}
+body {
+  background: url("../assets/images/sos.png");
+}
+
 .App {
   font-family: Helvetica Neue, Helvetica, Arial;
   color: #333;
@@ -6,4 +14,9 @@
 .App__lists {
   display: flex;
   justify-content: space-around;
+}
+
+.App__title {
+  text-align: center;
+  font-family: Pacifico;
 }
