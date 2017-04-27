@@ -2,5 +2,21 @@
   background: white;
   padding: 10px;
   border-radius: 4px;
-  margin: 10px 0;
+  margin-bottom: 10px;
+  border: 2px solid #666;
+}
+
+.ListCard__title {
+  float: left;
+  width: 80%;
+}
+
+.ListCard__delete {
+  float: right;
+  cursor: pointer;
+  color: #AAA;
+}
+
+.ListCard__delete:hover {
+  color: #333;
 }

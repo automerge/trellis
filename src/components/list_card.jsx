@@ -25,8 +25,9 @@ export default class ListCard extends React.Component {
         className="ListCard"
         draggable="true"
         onDragStart={ this.onDragStart } >
-        <div className="ListCard__title"> { this.card().title }</div>
         <div className="ListCard__delete" onClick={ this.delete }>x</div>
+        <div className="ListCard__title"> { this.card().title }</div>
+        <div style={{ clear: "both" }} />
       </div>
     )
   }
