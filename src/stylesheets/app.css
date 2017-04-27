@@ -1,0 +1,9 @@
+.App {
+  font-family: Helvetica Neue, Helvetica, Arial;
+  color: #333;
+}
+
+.App__lists {
+  display: flex;
+  justify-content: space-around;
+}

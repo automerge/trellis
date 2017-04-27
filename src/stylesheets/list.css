@@ -1,9 +1,10 @@
 .List {
-  float: left;
   margin-right: 20px;
   background: #AAA;
   padding: 10px;
   border-radius: 4px;
+  flex-grow: 1;
+  flex-basis: 0;
 }
 
 .List__title {
