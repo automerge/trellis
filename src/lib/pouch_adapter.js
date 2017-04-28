@@ -1,7 +1,7 @@
 import PouchDB from 'pouchdb'
 
 export default class PouchAdapter {
-  constructor() {
+  constructor(config={}) {
     let remoteConfig = {
       auth: {
         username: process.env.CLOUDANT_USERNAME,
@@ -13,6 +13,8 @@ export default class PouchAdapter {
     this.remote        = new PouchDB('https://45bits.cloudant.com/trellis/', remoteConfig)
     this.docId         = "state"
     this.doc           = {}
+    this.onLoad        = config.onLoad
+    this.onChange      = config.onChange
 
     // Get or initialize a 'state' document in PouchDB
     this.db.get(this.docId).then((doc) => {

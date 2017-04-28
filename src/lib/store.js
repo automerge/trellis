@@ -1,5 +1,6 @@
 import { createStore } from 'redux'
 import PouchAdapter from './pouch_adapter'
+import LocalStorageAdapter from './local_storage_adapter'
 
 export default class Store {
   constructor() {
@@ -21,25 +22,25 @@ export default class Store {
     this.subscribe = this.reduxStore.subscribe
     this.getState  = this.reduxStore.getState
 
-    const db  = new PouchAdapter()
+    const db  = new LocalStorageAdapter({
+      onLoad: (initialState) => {
+        if(!initialState) {
+          initialState = require("../../initial_state.json")
+        }
 
-    db.onLoad = (initialState) => {
-      if(!initialState) {
-        initialState = require("../initial_state.json")
+        this.reduxStore.dispatch({
+          type: 'SET_STATE',
+          state: initialState
+        })
+      },
+
+      onChange: (state) => {
+        this.reduxStore.dispatch({
+          type: 'SET_STATE',
+          state: state
+        })
       }
-
-      this.reduxStore.dispatch({
-        type: 'SET_STATE',
-        state: initialState
-      })
-    }
-
-    db.onChange = (state) => {
-      this.reduxStore.dispatch({
-        type: 'SET_STATE',
-        state: state
-      })
-    }
+    })
 
     this.subscribe(() => {
       let state = this.getState()
