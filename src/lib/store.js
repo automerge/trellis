@@ -1,6 +1,7 @@
 import { createStore } from 'redux'
 import PouchAdapter from './pouch_adapter'
 import LocalStorageAdapter from './local_storage_adapter'
+import TesseractAdapter from './tesseract_adapter'
 
 export default class Store {
   constructor() {
