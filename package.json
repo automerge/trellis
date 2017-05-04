@@ -1,6 +1,6 @@
 {
-  "name": "trellis",
-  "productName": "trellis",
+  "name": "Trellis",
+  "productName": "Trellis",
   "version": "0.0.1",
   "description": "My Electron application description",
   "main": "src/index.js",
