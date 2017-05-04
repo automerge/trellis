@@ -29,7 +29,8 @@
         ]
       },
       "electronPackagerConfig": {
-        "osxSign": true
+        "osxSign": true,
+        "icon": "./src/assets/Logo.icns"
       },
       "electronWinstallerConfig": {
         "name": "trellis"
