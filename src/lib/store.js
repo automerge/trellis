@@ -3,18 +3,18 @@ import { Store as TesseractStore } from 'tesseract'
 
 export default class Store {
   constructor() {
-    this.tesseract = new TesseractStore()
-    this.tesseract.subscribe(() => { console.log(this.tesseract.root)})
+    this.tesseract            = new TesseractStore("trellis")
     this.tesseract.root.state = require("../../initial_state.json")
+    this.tesseract.subscribe(() => { console.log(this.tesseract.root.state.cards) })
 
     this.reduxStore = createStore((state = this.tesseract.root.state,  action) => {
       switch(action.type) {
         case 'UPDATE_CARD':
-          return this.updateCardTransform(state, action)
+          return this._transform(state, this._updateCardDelta(state, action))
         case 'CREATE_CARD':
-          return this.createCardTransform(state, action)
+          return this._transform(state, this._createCardDelta(state, action))
         case 'DELETE_CARD':
-          return this.deleteCardTransform(state, action)
+          return this._transform(state, this._deleteCardDelta(state, action))
         case 'SET_STATE':
           return action.state
         default:
@@ -26,6 +26,12 @@ export default class Store {
     this.getState  = this.reduxStore.getState
   }
 
+  // Persists to Tesseract and returns new state
+  _transform(state, delta) {
+    Object.assign(this.tesseract.root.state, delta)
+    return Object.assign({}, state, delta)
+  }
+
   createCard(attributes) {
     this.reduxStore.dispatch({
       type: 'CREATE_CARD',
@@ -33,14 +39,12 @@ export default class Store {
     })
   }
 
-  createCardTransform(state, action) {
+  _createCardDelta(state, action) {
     let nextId = Math.max.apply(null, state.cards.map((c) => c.id)) + 1
     let card   = Object.assign({}, action.attributes, { id: nextId })
     let cards  = [...state.cards, card]
 
-    this.tesseract.root.state.cards.push(card)
-
-    return Object.assign({}, state, { cards: cards })
+    return { cards: cards }
   }
 
   updateCard(card) {
@@ -50,7 +54,7 @@ export default class Store {
     })
   }
 
-  updateCardTransform(state, action) {
+  _updateCardDelta(state, action) {
     let newCard = action.card
     let cards   = state.cards
 
@@ -60,7 +64,7 @@ export default class Store {
 
     cards[cardIndex] = newCard
 
-    return Object.assign({}, state, { cards: cards })
+    return { cards: cards }
   }
 
   deleteCard(card) {
@@ -70,7 +74,7 @@ export default class Store {
     })
   }
 
-  deleteCardTransform(state, action) {
+  _deleteCardDelta(state, action) {
     let deleteCard = action.card
     let cards = state.cards
 
@@ -80,7 +84,7 @@ export default class Store {
 
     cards = cards.slice(0, cardIndex).concat(cards.slice(cardIndex+1, cards.length))
 
-    return Object.assign({}, state, { cards: cards })
+    return { cards: cards }
   }
 
   findCard(cardId) {
