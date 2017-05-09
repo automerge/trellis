@@ -32,7 +32,6 @@ body {
 }
 
 .Inspector {
-  font-family: Monaco, monospace;
   font-size: 8pt;
   float: left;
   width: 23%;
@@ -42,6 +41,11 @@ body {
   height: 400pt;
 }
 
-.Inspector__record {
-  text-indent: 12pt;
+.Inspector table th {
+  text-align: left;
+  font-family: Monaco, monospace;
+  font-weight: normal;
+}
+.Inspector table td {
+  padding: 2pt;
 }
