@@ -43,13 +43,17 @@ body {
 
 .Inspector table th {
   text-align: left;
-  font-family: Monaco, monospace;
-  font-weight: normal;
 }
 .Inspector table td {
   padding: 2pt;
 }
 
 .Inspector input[type="text"] {
+  border: 1px solid #aaa;
+}
+.Inspector input[type="text"].number {
   width: 2em;
+}
+.Inspector input[type="text"].string {
+  width: 20em;
 }
