@@ -31,7 +31,7 @@ body {
   font-family: Pacifico;
 }
 
-.App__inspector {
+.Inspector {
   font-family: Monaco, monospace;
   font-size: 8pt;
   float: left;

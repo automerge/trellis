@@ -1,5 +1,6 @@
 import React from 'react'
 import List from './list'
+import Inspector from './inspector'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -35,13 +36,7 @@ export default class App extends React.Component {
           </div>
         </div>
 
-        <div className="App__inspector">
-          <div>"lists": [</div>
-            <div className="Inspector__record">&#123; "id": 1, "title": "icebox" &#125;,</div>
-            <div className="Inspector__record">&#123; "id": 2, "title": "active" &#125;,</div>
-            <div className="Inspector__record">&#123; "id": 3, "title": "done" &#125;</div>
-          <div>]</div>
-        </div>
+        <Inspector />
       </div>
     )
   }
