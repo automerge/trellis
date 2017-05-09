@@ -29,9 +29,10 @@ export default class Inspector extends React.Component {
 
   render() {
     let listCardsPartial = this.props.store.getState().cards.map((card) => {
+      let key= card.id
       let name1 = 'cardListId[' + card.id + ']'
       let name2 = 'cardTitle[' + card.id + ']'
-      return <tr>
+      return <tr key={key}>
         <td>{card.id}</td>
         <td><input type="text" className="number" name={name1} value={card.listId} onChange={this.updateListId} /></td>
         <td><input type="text" className="string" name={name2} value={card.title} onChange={this.updateTitle} /></td>
