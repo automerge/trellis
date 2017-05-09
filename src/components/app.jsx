@@ -1,6 +1,7 @@
 import React from 'react'
 import List from './list'
 import Inspector from './inspector'
+import Connection from './connection'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -37,6 +38,8 @@ export default class App extends React.Component {
         </div>
 
         <Inspector store={ this.props.store } />
+
+        <Connection connected={true} />
       </div>
     )
   }

@@ -57,3 +57,9 @@ body {
 .Inspector input[type="text"].string {
   width: 20em;
 }
+
+.Connection {
+  position: absolute;
+  bottom: 10%;
+  left: 69%;
+}
