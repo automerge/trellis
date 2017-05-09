@@ -1,20 +1,41 @@
-import { createStore } from 'redux'
 import { Store as TesseractStore } from 'tesseract'
+
+function createStore(initialState, reducer) {
+  let store      = {}
+  store.state    = initialState
+  store.reducer  = reducer
+  store.handlers = []
+
+  store.getState  = function()       { return this.state }.bind(store)
+
+  store.subscribe = function(handler) {
+    this.handlers.push(handler)
+  }.bind(store)
+
+  store.dispatch  = function(action) {
+    // Always mutate the same state object (e.g. Tesseract)
+    // Reducer should now return object deltas instead of
+    // new state object.
+    Object.assign(this.state, this.reducer(this.state, action))
+    this.handlers.forEach((handler) => { handler(this.state) })
+  }.bind(store)
+
+  return store
+}
 
 export default class Store {
   constructor() {
     this.tesseract            = new TesseractStore("trellis")
     this.tesseract.root.state = require("../../initial_state.json")
-    this.tesseract.subscribe(() => { console.log(this.tesseract.root.state.cards) })
 
-    this.reduxStore = createStore((state = this.tesseract.root.state,  action) => {
+    this.reduxStore = createStore(this.tesseract.root.state, (state,  action) => {
       switch(action.type) {
         case 'UPDATE_CARD':
-          return this._transform(state, this._updateCardDelta(state, action))
+          return this._updateCardDelta(state, action)
         case 'CREATE_CARD':
-          return this._transform(state, this._createCardDelta(state, action))
+          return this._createCardDelta(state, action)
         case 'DELETE_CARD':
-          return this._transform(state, this._deleteCardDelta(state, action))
+          return this._deleteCardDelta(state, action)
         case 'SET_STATE':
           return action.state
         default:
@@ -24,12 +45,6 @@ export default class Store {
 
     this.subscribe = this.reduxStore.subscribe
     this.getState  = this.reduxStore.getState
-  }
-
-  // Persists to Tesseract and returns new state
-  _transform(state, delta) {
-    Object.assign(this.tesseract.root.state, delta)
-    return Object.assign({}, state, delta)
   }
 
   createCard(attributes) {
