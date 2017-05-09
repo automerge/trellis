@@ -49,3 +49,7 @@ body {
 .Inspector table td {
   padding: 2pt;
 }
+
+.Inspector input[type="text"] {
+  width: 2em;
+}
