@@ -1,8 +1,13 @@
 import { createStore } from 'redux'
+import { Store as TesseractStore } from 'tesseract'
 
 export default class Store {
   constructor() {
-    this.reduxStore = createStore((state = {}, action) => {
+    this.tesseract = new TesseractStore()
+    this.tesseract.subscribe(() => { console.log(this.tesseract.root)})
+    this.tesseract.root.state = require("../../initial_state.json")
+
+    this.reduxStore = createStore((state = this.tesseract.root.state,  action) => {
       switch(action.type) {
         case 'UPDATE_CARD':
           return this.updateCardTransform(state, action)
@@ -32,6 +37,8 @@ export default class Store {
     let nextId = Math.max.apply(null, state.cards.map((c) => c.id)) + 1
     let card   = Object.assign({}, action.attributes, { id: nextId })
     let cards  = [...state.cards, card]
+
+    this.tesseract.root.state.cards.push(card)
 
     return Object.assign({}, state, { cards: cards })
   }
