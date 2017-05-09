@@ -16,8 +16,8 @@ body {
 .App__board {
   background: url("../assets/images/sos.png");
   float: left;
-  width: 70%;
-  padding: 20pt;
+  width: 600pt;
+  padding-left: 15pt;
   height: 400pt;
 }
 
@@ -34,10 +34,9 @@ body {
 .Inspector {
   font-size: 8pt;
   float: left;
-  width: 23%;
-  border-left: 2px solid #777;
-  background: #ccc;
-  padding: 20pt 12pt;
+  width: 200pt;
+  border-left: 1px solid #ccc;
+  padding-left: 8pt;
   height: 400pt;
 }
 
@@ -52,14 +51,18 @@ body {
   border: 1px solid #aaa;
 }
 .Inspector input[type="text"].number {
-  width: 2em;
+  width: 12pt;
 }
 .Inspector input[type="text"].string {
-  width: 20em;
+  width: 140pt;
 }
 
 .Connection {
   position: absolute;
-  bottom: 10%;
-  left: 69%;
+  top: -8pt;
+  left: 524pt;
+}
+.Connection img {
+  width: 80pt;
+  opacity: 0.75;
 }

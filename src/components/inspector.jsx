@@ -40,6 +40,7 @@ export default class Inspector extends React.Component {
     })
 
     return <div className="Inspector">
+      <h2>Inspector</h2>
       <h3>Cards</h3>
       <form>
       <table>
