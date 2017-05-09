@@ -28,9 +28,19 @@ export default class App extends React.Component {
 
     return (
       <div className="App">
-        <h1 className="App__title">Trellis</h1>
-        <div className="App__lists">
-          { lists }
+        <div className="App__board">
+          <h1 className="App__title">Trellis</h1>
+          <div className="App__lists">
+            { lists }
+          </div>
+        </div>
+
+        <div className="App__inspector">
+          <div>"lists": [</div>
+            <div className="Inspector__record">&#123; "id": 1, "title": "icebox" &#125;,</div>
+            <div className="Inspector__record">&#123; "id": 2, "title": "active" &#125;,</div>
+            <div className="Inspector__record">&#123; "id": 3, "title": "done" &#125;</div>
+          <div>]</div>
         </div>
       </div>
     )

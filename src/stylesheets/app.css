@@ -2,13 +2,23 @@
   font-family: Pacifico;
   src: url("../assets/fonts/Pacifico.ttf")
 }
+
 body {
-  background: url("../assets/images/sos.png");
+  margin: 0;
+  padding: 0;
 }
 
 .App {
   font-family: Helvetica Neue, Helvetica, Arial;
   color: #333;
+}
+
+.App__board {
+  background: url("../assets/images/sos.png");
+  float: left;
+  width: 70%;
+  padding: 20pt;
+  height: 400pt;
 }
 
 .App__lists {
@@ -19,4 +29,19 @@ body {
 .App__title {
   text-align: center;
   font-family: Pacifico;
+}
+
+.App__inspector {
+  font-family: Monaco, monospace;
+  font-size: 8pt;
+  float: left;
+  width: 23%;
+  border-left: 2px solid #777;
+  background: #ccc;
+  padding: 20pt 12pt;
+  height: 400pt;
+}
+
+.Inspector__record {
+  text-indent: 12pt;
 }
