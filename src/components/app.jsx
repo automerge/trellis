@@ -36,7 +36,7 @@ export default class App extends React.Component {
           </div>
         </div>
 
-        <Inspector />
+        <Inspector store={ this.props.store } />
       </div>
     )
   }
