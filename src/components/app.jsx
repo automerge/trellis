@@ -14,7 +14,7 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Board store={ this.store } />
-        <Inspector store={ this.store } />
+        <Inspector />
         <Connection connected={true} />
       </div>
     )

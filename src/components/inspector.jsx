@@ -1,4 +1,5 @@
 import React from 'react'
+import { Store as TesseractStore } from 'tesseract'
 
 export default class Inspector extends React.Component {
   constructor(props) {
@@ -6,37 +7,39 @@ export default class Inspector extends React.Component {
     this.updateListId = this.updateListId.bind(this)
     this.updateTitle = this.updateTitle.bind(this)
 
-    let store  = this.props.store
-    this.state = store.getState()
-    store.subscribe(() => { this.setState(store.getState()) })
+    this.tesseract            = new TesseractStore("trellis")
+    this.tesseract.root.cards = [ { id: 99, listId: 1, title: "Hello World" }]
+
+    this.state = this.tesseract.getState()
+    this.tesseract.subscribe((x) => {
+      console.log("tesseract says", x)
+      this.setState(this.tesseract.getState())
+    })
   }
 
   updateListId(event) {
-    let cardId  = parseInt(event.target.name.replace(/[^0-9]/g, ''))
-    let card    = this.props.store.findCard(cardId)
-
+    let index = parseInt(event.target.name.replace(/[^0-9]/g, ''))
     let newListId = parseInt(event.target.value)
+
     if (newListId >= 1 && newListId <= 3) {
-      card.listId = newListId
-      this.props.store.updateCard(card)
+      this.tesseract.root.cards[index].listId = newListId
+      this.setState(this.tesseract.getState())
     }
   }
 
   updateTitle(event) {
-    let cardId  = parseInt(event.target.name.replace(/[^0-9]/g, ''))
-    let card    = this.props.store.findCard(cardId)
-
+    let index = parseInt(event.target.name.replace(/[^0-9]/g, ''))
     let newTitle = event.target.value
-    card.title = newTitle
-    this.props.store.updateCard(card)
+
+    this.tesseract.root.cards[index].title = newTitle
+    this.setState(this.tesseract.getState())
   }
 
   render() {
-    let listCardsPartial = this.props.store.getState().cards.map((card) => {
-      let key= card.id
-      let name1 = 'cardListId[' + card.id + ']'
-      let name2 = 'cardTitle[' + card.id + ']'
-      return <tr key={key}>
+    let listCardsPartial = this.tesseract.root.cards.map((card, index) => {
+      let name1 = 'cardListId[' + index + ']'
+      let name2 = 'cardTitle[' + index + ']'
+      return <tr key={index}>
         <td>{card.id}</td>
         <td><input type="text" className="number" name={name1} value={card.listId} onChange={this.updateListId} /></td>
         <td><input type="text" className="string" name={name2} value={card.title} onChange={this.updateTitle} /></td>
