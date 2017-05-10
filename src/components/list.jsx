@@ -9,11 +9,11 @@ export default class List extends React.Component {
   }
 
   onDrop(event) {
-    let cardId  = parseInt(event.dataTransfer.getData("text"))
-    let card    = this.props.store.findCard(cardId)
-    card.listId = this.props.listId
+    let cardId        = parseInt(event.dataTransfer.getData("text"))
+    let attributes    = Object.assign({}, this.props.store.findCard(cardId))
+    attributes.listId = this.props.listId
 
-    this.props.store.updateCard(cardId, card)
+    this.props.store.updateCard(cardId, attributes)
   }
 
   preventDefault(event) {
