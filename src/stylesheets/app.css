@@ -13,7 +13,7 @@ body {
   color: #333;
 }
 
-.App__board {
+.Board {
   background: url("../assets/images/sos.png");
   float: left;
   width: 600pt;
@@ -21,12 +21,12 @@ body {
   height: 400pt;
 }
 
-.App__lists {
+.Board__lists {
   display: flex;
   justify-content: space-around;
 }
 
-.App__title {
+.Board__title {
   text-align: center;
   font-family: Pacifico;
 }

@@ -5,6 +5,10 @@ export default class Inspector extends React.Component {
     super(props)
     this.updateListId = this.updateListId.bind(this)
     this.updateTitle = this.updateTitle.bind(this)
+
+    let store  = this.props.store
+    this.state = store.getState()
+    store.subscribe(() => { this.setState(store.getState()) })
   }
 
   updateListId(event) {
