@@ -11,14 +11,8 @@ export default class App extends React.Component {
     this.store = new Store()
 
     this.inspectorTesseract            = new TesseractStore("inspector")
-//    this.inspectorTesseract.root.cards = require("../../initial_state.json").cards
-//    this.inspectorTesseract.root.lists = require("../../initial_state.json").lists
 
     this.store.link(this.inspectorTesseract)
-
-    this.inspectorTesseract.root.cards[0].title = "Change made from inspector"
-    this.inspectorTesseract.root.cards[1].title = "Another change"
-    this.inspectorTesseract.root.cards[0].title = "3rd change"
   }
 
   render() {
