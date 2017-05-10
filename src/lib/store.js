@@ -9,6 +9,7 @@ export default class Store {
 
     this.subscribe = this.tesseract.subscribe
     this.getState  = this.tesseract.getState
+    this.link      = this.tesseract.link
   }
 
   createCard(attributes) {

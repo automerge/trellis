@@ -1,5 +1,4 @@
 import React from 'react'
-import { Store as TesseractStore } from 'tesseract'
 
 export default class Inspector extends React.Component {
   constructor(props) {
@@ -7,8 +6,7 @@ export default class Inspector extends React.Component {
     this.updateListId = this.updateListId.bind(this)
     this.updateTitle = this.updateTitle.bind(this)
 
-    this.tesseract            = new TesseractStore("trellis")
-    this.tesseract.root.cards = [ { id: 99, listId: 1, title: "Hello World" }]
+    this.tesseract = this.props.tesseract
 
     this.state = this.tesseract.getState()
     this.tesseract.subscribe((x) => {
