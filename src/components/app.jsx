@@ -8,9 +8,8 @@ import { Store as TesseractStore } from 'tesseract'
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    this.store = new Store()
-
-    this.inspectorTesseract            = new TesseractStore("inspector")
+    this.store              = new Store()
+    this.inspectorTesseract = new TesseractStore("inspector")
 
     this.store.link(this.inspectorTesseract)
   }
@@ -20,7 +19,7 @@ export default class App extends React.Component {
       <div className="App">
         <Board store={ this.store } />
         <Inspector tesseract={ this.inspectorTesseract } />
-        <Connection connected={true} />
+        <Connection connected={true} store={ this.store } tesseract={ this.inspectorTesseract } />
       </div>
     )
   }

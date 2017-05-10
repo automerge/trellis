@@ -8,8 +8,15 @@ export default class Connection extends React.Component {
   }
 
   toggleConnection() {
-    this.setState({ connected: !this.state.connected })
-    console.log("connected is now", this.state.connected)
+    if(this.state.connected) {
+      this.props.store.pause()
+      this.props.tesseract.pause()
+      this.setState({connected: false}, () => { console.log("Disconnected") })
+    } else {
+      this.props.store.unpause()
+      this.props.tesseract.unpause()
+      this.setState({connected: true}, () => { console.log("Connected") })
+    }
   }
 
   render() {
