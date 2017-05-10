@@ -13,7 +13,7 @@ export default class List extends React.Component {
     let card    = this.props.store.findCard(cardId)
     card.listId = this.props.listId
 
-    this.props.store.updateCard(card)
+    this.props.store.updateCard(cardId, card)
   }
 
   preventDefault(event) {

@@ -14,46 +14,38 @@ export default class Store {
 
   createCard(attributes) {
     let state  = this.getState()
-    let nextId = Math.max.apply(null, state.cards.map((c) => c.id)) + 1
+    let ids    = Object.keys(state.cards).map((e) => parseInt(e))
+    let nextId = Math.max.apply(null, ids) + 1
     let card   = Object.assign({}, attributes, { id: nextId })
 
-    this.tesseract.root.cards.push(card)
+    this.tesseract.root.cards[nextId] = card
   }
 
-  updateCard(newCard) {
-    let cards     = this.getState().cards
-    let cardIndex = cards.findIndex((card) => card.id === newCard.id)
-
-    cards.splice(cardIndex, 1, newCard)
+  updateCard(id, attributes) {
+    let card = this.getState().cards[id]
+    Object.assign(card, attributes)
   }
 
-  deleteCard(card) {
-    let cards     = this.getState().cards
-    let cardIndex = cards.findIndex((c) => c.id === card.id)
-
-    cards.splice(cardIndex, 1)
+  deleteCard(cardId) {
+    delete this.tesseract.root.cards[cardId]
   }
 
   findCard(cardId) {
-    let state = this.getState()
-
-    return state.cards.find((card) => {
-      return cardId === card.id
-    })
+    return this.getState().cards[cardId]
   }
 
   findCardsByList(listId) {
-    return this.getState().cards.filter((card) => {
-      return card.listId === listId
-    })
+    let cards = []
+
+    for(let id in this.getState().cards) {
+      let card = this.getState().cards[id]
+      if(card.listId === listId) cards.push(Object.assign({}, card, {id: id}))
+    }
+
+    return cards
   }
 
   findList(listId) {
-    let state = this.getState()
-
-    return state.lists.find((list) => {
-      return listId === list.id
-    })
+    return this.getState().lists[listId]
   }
-
 }

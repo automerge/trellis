@@ -15,10 +15,13 @@ export default class Board extends React.Component {
     let state = this.props.store.getState()
 
     if(state.lists) {
-      lists = state.lists.map((list) => {
+      lists = Object.entries(state.lists).map((entry) => {
+        let id   = parseInt(entry[0])
+        let list = entry[1]
+
         return <List
-          listId={ list.id }
-          key={ list.id }
+          listId={ id }
+          key={ id }
           store={ this.props.store }
         />
       })
