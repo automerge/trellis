@@ -10,10 +10,8 @@ export default class List extends React.Component {
 
   onDrop(event) {
     let cardId        = parseInt(event.dataTransfer.getData("text"))
-    let attributes    = Object.assign({}, this.props.store.findCard(cardId))
-    attributes.listId = this.props.listId
 
-    this.props.store.updateCard(cardId, attributes)
+    this.props.store.updateCard(cardId, {listId: this.props.listId})
   }
 
   preventDefault(event) {
