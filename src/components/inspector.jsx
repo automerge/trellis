@@ -10,10 +10,7 @@ export default class Inspector extends React.Component {
     this.tesseract = this.props.tesseract
 
     this.state = this.tesseract.getState()
-    this.tesseract.subscribe((x) => {
-      console.log("tesseract says", x)
-      this.setState(this.tesseract.getState())
-    })
+    this.tesseract.subscribe((x) => { this.setState(this.tesseract.getState()) })
   }
 
   updateListId(event) {
