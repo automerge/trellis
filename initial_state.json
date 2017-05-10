@@ -1,39 +1,32 @@
 {
-    "lists": [
-      {
-        "id": 1,
+    "lists": {
+      "0": {
         "title": "icebox"
       },
-      {
-        "id": 2,
+      "1": {
         "title": "active"
       },
-      {
-        "id": 3,
+      "2": {
         "title": "done"
       }
-    ],
+    },
 
-    "cards": [
-      {
-        "id": 1,
-        "listId": 1,
+    "cards": {
+      "0": {
+        "listId": 0,
         "title": "Rewrite everything in Crystal"
       },
-      {
-        "id": 2,
-        "listId": 1,
+      "1": {
+        "listId": 0,
         "title": "Solve AGI"
       },
-      {
-        "id": 3,
-        "listId": 2,
+      "2": {
+        "listId": 1,
         "title": "Add more 'pop' to the landing page"
       },
-      {
-        "id": 4,
-        "listId": 3,
+      "3": {
+        "listId": 2,
         "title": "Rewrite everything in Go"
       }
-    ]
+    }
 }
