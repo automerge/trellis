@@ -1,5 +1,6 @@
 import React from 'react'
 import List from './list'
+import TesseractInfo from './tesseract_info'
 
 export default class Board extends React.Component {
   constructor(props) {
@@ -35,6 +36,8 @@ export default class Board extends React.Component {
         <div className="Board__lists">
           { lists }
         </div>
+
+        <TesseractInfo tesseract={ this.props.store.tesseract } />
       </div>
     )
   }
