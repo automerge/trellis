@@ -66,3 +66,13 @@ body {
   width: 80pt;
   opacity: 0.75;
 }
+
+.Tesseract__info {
+  margin-top: 30pt;
+  font-size: 8pt;
+  color: #777;
+}
+.Tesseract__info ul {
+  list-style-type: none;
+  padding: 0;
+}

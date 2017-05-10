@@ -47,6 +47,11 @@ export default class Inspector extends React.Component {
       </tr>
     })
 
+    let peers = Object.keys(this.tesseract.peers).map((peer) => { return peer })
+    let peer_actions = Object.keys(this.tesseract.peer_actions).map((pa) => {
+      return pa + "(" + this.tesseract.peer_actions[pa].length + ") "
+    })
+
     return <div className="Inspector">
       <h2>Inspector</h2>
       <h3>Cards</h3>
@@ -56,6 +61,14 @@ export default class Inspector extends React.Component {
         <tbody>{ listCardsPartial }</tbody>
       </table>
       </form>
+
+      <div className="Tesseract__info">
+        <ul>
+          <li>me: {this.tesseract._id}</li>
+          <li>peers: {peers}</li>
+          <li>actions: {peer_actions}</li>
+        </ul>
+      </div>
     </div>
   }
 }
