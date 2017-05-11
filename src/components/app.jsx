@@ -12,7 +12,21 @@ export default class App extends React.Component {
     this.inspectorTesseract = new TesseractStore("inspector")
 
     this.store.link(this.inspectorTesseract)
+
+    this.store.subscribe(() => {
+      let state = this.store.getState()
+
+      Object.entries(state.cards).forEach((entry) => {
+        let id   = entry[0]
+        let card = entry[1]
+
+        if(Object.keys(card._conflicts).length > 0) {
+          console.log("conflicts: ", card._conflicts)
+        }
+      })
+    })
   }
+
 
   render() {
     return (

@@ -5,7 +5,6 @@ export default class Store {
     this.tesseract            = new TesseractStore("trellis")
     this.tesseract.root.cards = require("../../initial_state.json").cards
     this.tesseract.root.lists = require("../../initial_state.json").lists
-    this.tesseract.subscribe(() => { console.log(this.getState()) })
 
     this.subscribe = this.tesseract.subscribe
     this.getState  = this.tesseract.getState
@@ -24,8 +23,7 @@ export default class Store {
   }
 
   updateCard(id, attributes) {
-    let card = this.getState().cards[id]
-    Object.assign(card, attributes)
+    this.tesseract.root.cards[id].listId = attributes.listId
   }
 
   deleteCard(cardId) {
