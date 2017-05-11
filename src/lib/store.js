@@ -2,16 +2,23 @@ import { Store as TesseractStore } from 'tesseract'
 
 export default class Store {
   constructor() {
+    let initialState = JSON.parse(localStorage.getItem("trellis"))
+    if(!initialState) initialState = require("../../initial_state.json")
+
     this.tesseract            = new TesseractStore("trellis")
-    this.tesseract.root.cards = require("../../initial_state.json").cards
-    this.tesseract.root.lists = require("../../initial_state.json").lists
-    this.tesseract.subscribe(() => { console.log(this.getState()) })
+    this.tesseract.root.cards = initialState.cards
+    this.tesseract.root.lists = initialState.lists
 
     this.subscribe = this.tesseract.subscribe
     this.getState  = this.tesseract.getState
     this.link      = this.tesseract.link
     this.pause     = this.tesseract.pause
     this.unpause   = this.tesseract.unpause
+
+    this.subscribe(() => {
+      let state = this.getState()
+      localStorage.setItem("trellis", JSON.stringify(state))
+    })
   }
 
   createCard(attributes) {
