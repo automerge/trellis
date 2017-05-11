@@ -29,11 +29,11 @@ export default class Store {
     this.tesseract.root.cards.push(card)
   }
 
-  updateCard(newCard) {
+  updateCard(cardId, attributes) {
     let cards     = this.getState().cards
-    let cardIndex = cards.findIndex((card) => card.id === newCard.id)
+    let cardIndex = cards.findIndex((card) => card.id === cardId)
 
-    cards.splice(cardIndex, 1, newCard)
+    Object.assign(cards[cardIndex], attributes)
   }
 
   deleteCard(card) {
