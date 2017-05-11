@@ -18,8 +18,8 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Board store={ this.store } />
-        <Inspector tesseract={ this.inspectorTesseract } />
         <Connection connected={true} store={ this.store } tesseract={ this.inspectorTesseract } />
+        <Inspector tesseract={ this.inspectorTesseract } />
       </div>
     )
   }

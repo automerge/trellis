@@ -3,7 +3,8 @@
   src: url("../assets/fonts/Pacifico.ttf")
 }
 
-body {
+html, body, #App {
+  height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -11,14 +12,15 @@ body {
 .App {
   font-family: Helvetica Neue, Helvetica, Arial;
   color: #333;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .Board {
-  background: url("../assets/images/sos.png");
-  float: left;
-  width: 600pt;
+  background: url("../assets/images/sos.png") repeat;
   padding-left: 15pt;
-  height: 400pt;
+  flex-grow: 1;
 }
 
 .Board__lists {
@@ -33,11 +35,8 @@ body {
 
 .Inspector {
   font-size: 8pt;
-  float: left;
   width: 200pt;
-  border-left: 1px solid #ccc;
   padding-left: 8pt;
-  height: 400pt;
 }
 
 .Inspector table th {
@@ -58,12 +57,12 @@ body {
 }
 
 .Connection {
-  position: absolute;
-  top: -8pt;
-  left: 524pt;
+  background: #DDD;
+  padding: 0 5px;
 }
+
 .Connection img {
-  width: 80pt;
+  width: 60pt;
   opacity: 0.75;
 }
 
