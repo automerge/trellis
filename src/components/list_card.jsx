@@ -16,7 +16,7 @@ export default class ListCard extends React.Component {
   }
 
   delete() {
-    this.props.store.deleteCard(this.props.cardId)
+    this.props.store.deleteCard(this.card())
   }
 
   render() {
