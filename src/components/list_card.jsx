@@ -30,7 +30,7 @@ export default class ListCard extends React.Component {
         <div className="ListCard__title"> { this.card().title }</div>
         <div style={{ clear: "both" }} />
 
-        <Assignments card={ this } />
+        <Assignments cardId={ this.props.cardId } store={ this.props.store } />
         <div style={{ clear: "both" }} />
       </div>
     )

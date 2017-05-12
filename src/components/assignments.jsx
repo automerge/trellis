@@ -3,19 +3,29 @@ import React from 'react'
 export default class Assignments extends React.Component {
   constructor() {
     super()
-    this.state = { assigned: new Set() }
     this.toggle = this.toggle.bind(this)
+  }
+
+  card() {
+    return this.props.store.findCard(this.props.cardId)
+  }
+
+  assigned() {
+    let a = this.card().assigned
+    return a ? a : {}
   }
 
   toggle(event) {
     let person = event.target.name
-    let assigned = this.state.assigned
-    if (assigned.has(person))
-      assigned.delete(person)
-    else
-      assigned.add(person)
+    let assigned = this.assigned()
 
-    this.setState({ assigned: assigned })
+    if (assigned[person])
+      delete assigned[person]
+    else
+      assigned[person] = "true"
+
+    this.props.store.updateCard(this.props.cardId, { assigned: assigned })
+    console.log("store", JSON.stringify(this.props.store.getState()))
   }
 
   people() {
@@ -25,7 +35,7 @@ export default class Assignments extends React.Component {
   render() {
     let assignments = this.people().map((person) => {
       let fname = "assets/images/avatars/" + person + ".png"
-      let klass = this.state.assigned.has(person) ? "Assignments__active" : "Assignments__inactive"
+      let klass = this.assigned()[person] ? "Assignments__active" : "Assignments__inactive"
       return <img key={person} name={person} src={fname} className={klass} onClick={ this.toggle } />
     })
     return (
