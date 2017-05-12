@@ -1,4 +1,5 @@
 import React from 'react'
+import Assignments from './assignments'
 
 export default class ListCard extends React.Component {
   constructor() {
@@ -27,6 +28,9 @@ export default class ListCard extends React.Component {
         onDragStart={ this.onDragStart } >
         <div className="ListCard__delete" onClick={ this.delete }>x</div>
         <div className="ListCard__title"> { this.card().title }</div>
+        <div style={{ clear: "both" }} />
+
+        <Assignments card={ this } />
         <div style={{ clear: "both" }} />
       </div>
     )
