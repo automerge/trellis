@@ -22,6 +22,7 @@ export default class Store {
     this.link      = this.tesseract.link
     this.pause     = this.tesseract.pause
     this.unpause   = this.tesseract.unpause
+    this.merge     = this.tesseract.merge
 
     this.tesseract.subscribe(() => {
       this.listeners.forEach((listener) => listener())

@@ -6,14 +6,15 @@ import Store from '../lib/store'
 import { Store as TesseractStore } from 'tesseract'
 
 const Tesseract = require("tesseract")
-const dialog = require("electron").remote.dialog
-const fs     = require("fs")
+const dialog    = require("electron").remote.dialog
+const fs        = require("fs")
 
 class FileDialog extends React.Component {
   constructor(props) {
     super(props)
     this.open   = this.open.bind(this)
     this.save   = this.save.bind(this)
+    this.merge  = this.merge.bind(this)
   }
 
   open() {
@@ -21,6 +22,14 @@ class FileDialog extends React.Component {
       let file = fs.readFileSync(files[0])
       let newStore = Tesseract.load(file)
       this.props.store.loadTesseract(newStore)
+    }.bind(this))
+  }
+
+  merge() {
+    dialog.showOpenDialog(function(files) {
+      let file = fs.readFileSync(files[0])
+      let newStore = Tesseract.load(file)
+      this.props.store.merge(newStore)
     }.bind(this))
   }
 
@@ -35,6 +44,7 @@ class FileDialog extends React.Component {
     return (<div>
       <a href="#" onClick={ this.open }>Open</a>
       <a href="#" onClick={ this.save }>Save</a>
+      <a href="#" onClick={ this.merge }>Merge</a>
     </div>)
   }
 }
