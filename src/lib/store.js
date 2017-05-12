@@ -1,4 +1,7 @@
 import { Store as TesseractStore } from 'tesseract'
+const remote  = require('electron').remote
+const app     = remote.getGlobal("app")
+const fs      = require("fs")
 
 export default class Store {
   constructor() {
@@ -16,8 +19,11 @@ export default class Store {
     this.unpause   = this.tesseract.unpause
 
     this.subscribe(() => {
-      let state = this.getState()
-      localStorage.setItem("trellis", JSON.stringify(state))
+      let state = JSON.stringify(this.getState())
+      localStorage.setItem("trellis", state)
+
+      let exportFile = this.tesseract.export()
+      fs.writeFileSync(app.getPath("desktop") + "/trellis.tesseract", exportFile)
     })
   }
 

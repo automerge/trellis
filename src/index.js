@@ -5,6 +5,9 @@ import { enableLiveReload } from 'electron-compile';
 // Load environment variables from .env file
 require("dotenv").config()
 
+// Set app for use in browser process
+global.app = app
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
