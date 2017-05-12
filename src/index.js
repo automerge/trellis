@@ -28,10 +28,10 @@ const createWindow = async () => {
     {
       label: 'File',
       submenu: [
-        { label: 'New' },
-        { label: 'Open' },
-        { label: 'Save' },
-        { label: 'Merge' }
+        { label: 'New', accelerator: 'CmdOrCtrl+N', click (item, focusedWindow) { console.log("file.new") } },
+        { label: 'Open', accelerator: 'CmdOrCtrl+O', click (item, focusedWindow) { console.log("file.open") } },
+        { label: 'Save', accelerator: 'CmdOrCtrl+S', click (item, focusedWindow) { console.log("file.save") } },
+        { label: 'Merge', accelerator: 'CmdOrCtrl+M', click (item, focusedWindow) { console.log("file.merge") } }
       ]
     }
   ]
