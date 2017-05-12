@@ -14,15 +14,13 @@ class FileDialog extends React.Component {
     super(props)
     this.open   = this.open.bind(this)
     this.save   = this.save.bind(this)
-    this.stores = []
   }
 
   open() {
     dialog.showOpenDialog(function(files) {
       let file = fs.readFileSync(files[0])
       let newStore = Tesseract.load(file)
-      this.props.store.link(newStore)
-      this.stores.push(newStore)
+      this.props.store.loadTesseract(newStore)
     }.bind(this))
   }
 
