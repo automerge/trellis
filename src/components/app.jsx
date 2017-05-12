@@ -12,9 +12,19 @@ const fs        = require("fs")
 class FileDialog extends React.Component {
   constructor(props) {
     super(props)
+    this.new    = this.new.bind(this)
     this.open   = this.open.bind(this)
     this.save   = this.save.bind(this)
     this.merge  = this.merge.bind(this)
+  }
+
+  new() {
+    let initialState = require("../../initial_state.json")
+    let newStore = new Tesseract.Store()
+    newStore.root.cards = initialState.cards
+    newStore.root.lists = initialState.lists
+
+    this.props.store.loadTesseract(newStore)
   }
 
   open() {
@@ -42,6 +52,7 @@ class FileDialog extends React.Component {
 
   render() {
     return (<div>
+      <a href="#" onClick={ this.new  }>New</a>
       <a href="#" onClick={ this.open }>Open</a>
       <a href="#" onClick={ this.save }>Save</a>
       <a href="#" onClick={ this.merge }>Merge</a>
