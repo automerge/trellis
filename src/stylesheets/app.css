@@ -75,3 +75,18 @@ html, body, #App {
   list-style-type: none;
   padding: 0;
 }
+
+.Assignments {
+  margin-top: 4pt;
+}
+.Assignments img {
+  float: right;
+  width: 20pt;
+  margin-left: 4pt;
+}
+.Assignments__active {
+  opacity: 1.0;
+}
+.Assignments__inactive {
+  opacity: 0.25;
+}
