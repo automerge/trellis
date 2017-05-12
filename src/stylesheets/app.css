@@ -84,3 +84,9 @@ html, body, #App {
   width: 20pt;
   margin-left: 4pt;
 }
+.Assignments__active {
+  opacity: 1.0;
+}
+.Assignments__inactive {
+  opacity: 0.25;
+}
