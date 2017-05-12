@@ -25,7 +25,6 @@ export default class Assignments extends React.Component {
       assigned[person] = "true"
 
     this.props.store.updateCard(this.props.cardId, { assigned: assigned })
-    console.log("store", JSON.stringify(this.props.store.getState()))
   }
 
   people() {
