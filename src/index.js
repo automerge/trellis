@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
 
@@ -22,6 +22,34 @@ const createWindow = async () => {
     width: 1100,
     height: 800,
   });
+
+  // Menubar template
+  const template = [
+    {
+      label: 'File',
+      submenu: [
+        { label: 'New' },
+        { label: 'Open' },
+        { label: 'Save' },
+        { label: 'Merge' }
+      ]
+    }
+  ]
+
+  // macOS requires first menu item be name of the app
+  if (process.platform === 'darwin') {
+    template.unshift({
+      label: app.getName(),
+      submenu: [
+        {role: 'about'},
+        {role: 'quit'}
+      ]
+    })
+  }
+
+  // Create the menubar
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`);
