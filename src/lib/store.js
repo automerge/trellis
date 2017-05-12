@@ -21,9 +21,6 @@ export default class Store {
     this.subscribe(() => {
       let state = JSON.stringify(this.getState())
       localStorage.setItem("trellis", state)
-
-      let exportFile = this.tesseract.export()
-      fs.writeFileSync(app.getPath("desktop") + "/trellis.tesseract", exportFile)
     })
   }
 
