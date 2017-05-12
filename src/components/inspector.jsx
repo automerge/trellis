@@ -32,15 +32,19 @@ export default class Inspector extends React.Component {
   }
 
   render() {
-    let listCardsPartial = this.tesseract.root.cards.map((card, index) => {
-      let name1 = 'cardListId[' + index + ']'
-      let name2 = 'cardTitle[' + index + ']'
-      return <tr key={index}>
-        <td>{card.id}</td>
-        <td><input type="text" className="number" name={name1} value={card.listId} onChange={this.updateListId} /></td>
-        <td><input type="text" className="string" name={name2} value={card.title} onChange={this.updateTitle} /></td>
-      </tr>
-    })
+    let listCardsPartial = ""
+
+    if(this.tesseract.root.cards) {
+      listCardsPartial = this.tesseract.root.cards.map((card, index) => {
+        let name1 = 'cardListId[' + index + ']'
+        let name2 = 'cardTitle[' + index + ']'
+        return <tr key={index}>
+          <td>{card.id}</td>
+          <td><input type="text" className="number" name={name1} value={card.listId} onChange={this.updateListId} /></td>
+          <td><input type="text" className="string" name={name2} value={card.title} onChange={this.updateTitle} /></td>
+        </tr>
+      })
+    }
 
     return <div className="Inspector">
       <h2>Inspector</h2>
