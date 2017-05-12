@@ -22,7 +22,7 @@ export default class Assignments extends React.Component {
     if (assigned[person])
       delete assigned[person]
     else
-      assigned[person] = "true"
+      assigned[person] = true
 
     this.props.store.updateCard(this.props.cardId, { assigned: assigned })
   }
