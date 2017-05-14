@@ -1,20 +1,34 @@
 import Tesseract from 'tesseract'
+import fs from 'fs'
 
 export default class Wrapper {
-  constructor(tesseract = new Tesseract.Store()) {
+  constructor(config) {
     this.listeners = []
     this.subscribe = this.subscribe.bind(this)
 
-    this.loadTesseract(tesseract)
+    this.reloadTesseract(config)
   }
 
   subscribe(listener) {
     this.listeners.push(listener)
   }
 
-  loadTesseract(newTesseract) {
-    this.tesseract = newTesseract
+  reloadTesseract(config) {
+    let tesseract
 
+    if(!config) {
+      tesseract = new Tesseract.Store()
+    } else if(typeof config === "string") {
+      let file = fs.readFileSync(config)
+      tesseract = Tesseract.load(file)
+    } else if(config.seedData) {
+      let seedData = require("../../initial_state.json")
+      tesseract = new Tesseract.Store()
+      tesseract.root.cards = seedData.cards
+      tesseract.root.lists = seedData.lists
+    }
+
+    this.tesseract = tesseract
     this.root      = this.tesseract.root
     this.getState  = this.tesseract.getState
     this.pause     = this.tesseract.pause

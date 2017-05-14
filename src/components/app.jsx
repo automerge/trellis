@@ -20,19 +20,11 @@ export default class App extends React.Component {
     this.state.store.link(this.state.inspectorStore)
 
     ipcRenderer.on("new", (event) => {
-      let initialState        = require("../../initial_state.json")
-      let newTesseract        = new Tesseract.Store()
-      newTesseract.root.cards = initialState.cards
-      newTesseract.root.lists = initialState.lists
-
-      this.reload(newTesseract)
+      this.reload({seedData: true})
     })
 
     ipcRenderer.on("open", (event, files) => {
-      let file         = fs.readFileSync(files[0])
-      let newTesseract = Tesseract.load(file)
-
-      this.reload(newTesseract)
+      this.reload(files[0])
     })
 
     ipcRenderer.on("merge", (event, files) => {
@@ -48,9 +40,9 @@ export default class App extends React.Component {
     })
   }
 
-  reload(newTesseract) {
-    this.state.store.loadTesseract(newTesseract)
-    this.state.inspectorStore.loadTesseract(new Tesseract.Store())
+  reload(config) {
+    this.state.store.reloadTesseract(config)
+    this.state.inspectorStore.reloadTesseract()
 
     this.state.store.link(this.state.inspectorStore)
 
