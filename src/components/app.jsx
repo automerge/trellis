@@ -4,61 +4,10 @@ import Inspector from './inspector'
 import Connection from './connection'
 import Store from '../lib/store'
 import { Store as TesseractStore } from 'tesseract'
+import { ipcRenderer } from 'electron'
 
 const Tesseract = require("tesseract")
-const dialog    = require("electron").remote.dialog
 const fs        = require("fs")
-
-class FileDialog extends React.Component {
-  constructor(props) {
-    super(props)
-    this.new    = this.new.bind(this)
-    this.open   = this.open.bind(this)
-    this.save   = this.save.bind(this)
-    this.merge  = this.merge.bind(this)
-  }
-
-  new() {
-    let initialState = require("../../initial_state.json")
-    let newStore = new Tesseract.Store()
-    newStore.root.cards = initialState.cards
-    newStore.root.lists = initialState.lists
-
-    this.props.store.loadTesseract(newStore)
-  }
-
-  open() {
-    dialog.showOpenDialog(function(files) {
-      let file = fs.readFileSync(files[0])
-      let newStore = Tesseract.load(file)
-      this.props.store.loadTesseract(newStore)
-    }.bind(this))
-  }
-
-  merge() {
-    dialog.showOpenDialog(function(files) {
-      let file = fs.readFileSync(files[0])
-      let newStore = Tesseract.load(file)
-      this.props.store.merge(newStore)
-    }.bind(this))
-  }
-
-  save() {
-    dialog.showSaveDialog(function(path) {
-      let exportFile = this.props.store.tesseract.save()
-      fs.writeFileSync(path, exportFile)
-    }.bind(this))
-  }
-
-  render() {
-    return (<div>
-      <a href="#" onClick={ this.new  }>New</a>
-      <a href="#" onClick={ this.open }>Open</a>
-      <a href="#" onClick={ this.save }>Save</a>
-      <a href="#" onClick={ this.merge }>Merge</a>
-    </div>)
-  }
-}
 
 export default class App extends React.Component {
   constructor(props) {
@@ -67,12 +16,39 @@ export default class App extends React.Component {
     this.inspectorTesseract = new TesseractStore("inspector")
 
     this.store.link(this.inspectorTesseract)
+
+    ipcRenderer.on("new", (event) => {
+      let initialState    = require("../../initial_state.json")
+      let newStore        = new Tesseract.Store()
+      newStore.root.cards = initialState.cards
+      newStore.root.lists = initialState.lists
+
+      this.store.loadTesseract(newStore)
+    })
+
+    ipcRenderer.on("open", (event, files) => {
+      let file      = fs.readFileSync(files[0])
+      let newStore  = Tesseract.load(file)
+
+      this.store.loadTesseract(newStore)
+    })
+
+    ipcRenderer.on("merge", (event, files) => {
+      let file     = fs.readFileSync(files[0])
+      let newStore = Tesseract.load(file)
+
+      this.store.merge(newStore)
+    })
+
+    ipcRenderer.on("save", (event, path) => {
+      let exportFile = this.store.tesseract.save()
+      fs.writeFileSync(path, exportFile)
+    })
   }
 
   render() {
     return (
       <div className="App">
-        <FileDialog store={ this.store } />
         <Board store={ this.store } />
         <Connection connected={true} store={ this.store } tesseract={ this.inspectorTesseract } />
         <Inspector tesseract={ this.inspectorTesseract } />

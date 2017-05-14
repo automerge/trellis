@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
 
@@ -28,10 +28,28 @@ const createWindow = async () => {
     {
       label: 'File',
       submenu: [
-        { label: 'New', accelerator: 'CmdOrCtrl+N', click (item, focusedWindow) { console.log("file.new") } },
-        { label: 'Open', accelerator: 'CmdOrCtrl+O', click (item, focusedWindow) { console.log("file.open") } },
-        { label: 'Save', accelerator: 'CmdOrCtrl+S', click (item, focusedWindow) { console.log("file.save") } },
-        { label: 'Merge', accelerator: 'CmdOrCtrl+M', click (item, focusedWindow) { console.log("file.merge") } }
+        {
+          label: 'New', accelerator: 'CmdOrCtrl+N', click: (item, focusedWindow) => {
+          mainWindow.webContents.send("new")
+        }},
+        {
+          label: 'Open', accelerator: 'CmdOrCtrl+O', click: (item, focusedWindow) => {
+          dialog.showOpenDialog((files) => {
+            mainWindow.webContents.send("open", files)
+          })
+        }},
+        {
+          label: 'Save', accelerator: 'CmdOrCtrl+S', click: (item, focusedWindow) => {
+          dialog.showSaveDialog((files) => {
+            mainWindow.webContents.send("save", files)
+          })
+        }},
+        {
+          label: 'Merge', accelerator: 'CmdOrCtrl+M', click: (item, focusedWindow) => {
+          dialog.showOpenDialog((files) => {
+            mainWindow.webContents.send("merge", files)
+          })
+        }}
       ]
     }
   ]
