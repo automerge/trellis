@@ -1,40 +1,6 @@
-import { Store as TesseractStore } from 'tesseract'
-const remote  = require('electron').remote
-const app     = remote.getGlobal("app")
-const fs      = require("fs")
+import Wrapper from './wrapper'
 
-export default class Store {
-  constructor(tesseract = new TesseractStore()) {
-    this.listeners = []
-    this.subscribe = this.subscribe.bind(this)
-
-    this.loadTesseract(tesseract)
-  }
-
-  subscribe(listener) {
-    this.listeners.push(listener)
-  }
-
-  loadTesseract(newTesseract) {
-    this.tesseract = newTesseract
-
-    this.root      = this.tesseract.root
-    this.getState  = this.tesseract.getState
-    this.pause     = this.tesseract.pause
-    this.unpause   = this.tesseract.unpause
-    this.merge     = this.tesseract.merge
-
-    this.tesseract.subscribe(() => {
-      this.listeners.forEach((listener) => listener())
-    })
-
-    this.listeners.forEach((l) => { l() })
-  }
-  
-  link(store) {
-    this.tesseract.link(store.tesseract)
-  }
-
+export default class Store extends Wrapper {
   createCard(attributes) {
     let state  = this.getState()
     let nextId = Math.max.apply(null, state.cards.map((c) => c.id)) + 1
@@ -78,5 +44,4 @@ export default class Store {
       return listId === list.id
     })
   }
-
 }

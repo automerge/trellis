@@ -3,6 +3,7 @@ import Board from './board'
 import Inspector from './inspector'
 import Connection from './connection'
 import Store from '../lib/store'
+import Wrapper from '../lib/wrapper'
 import { Store as TesseractStore } from 'tesseract'
 import { ipcRenderer } from 'electron'
 
@@ -15,7 +16,7 @@ export default class App extends React.Component {
 
     this.state = {
       store: new Store(),
-      inspectorStore: new Store()
+      inspectorStore: new Wrapper()
     }
 
     this.state.store.link(this.state.inspectorStore)
