@@ -4,11 +4,9 @@ import Inspector from './inspector'
 import Connection from './connection'
 import Store from '../lib/store'
 import Wrapper from '../lib/wrapper'
-import { Store as TesseractStore } from 'tesseract'
+import Tesseract from 'tesseract'
 import { ipcRenderer } from 'electron'
-
-const Tesseract = require("tesseract")
-const fs        = require("fs")
+import fs from 'fs'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,10 +20,10 @@ export default class App extends React.Component {
     this.state.store.link(this.state.inspectorStore)
 
     ipcRenderer.on("new", (event) => {
-      let initialState              = require("../../initial_state.json")
-      let newTesseract              = new Tesseract.Store()
-      newTesseract.root.cards       = initialState.cards
-      newTesseract.root.lists       = initialState.lists
+      let initialState        = require("../../initial_state.json")
+      let newTesseract        = new Tesseract.Store()
+      newTesseract.root.cards = initialState.cards
+      newTesseract.root.lists = initialState.lists
 
       this.reload(newTesseract)
     })
