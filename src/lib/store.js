@@ -4,11 +4,11 @@ const app     = remote.getGlobal("app")
 const fs      = require("fs")
 
 export default class Store {
-  constructor() {
+  constructor(tesseract = new TesseractStore()) {
     this.listeners = []
     this.subscribe = this.subscribe.bind(this)
 
-    this.loadTesseract(new TesseractStore())
+    this.loadTesseract(tesseract)
   }
 
   subscribe(listener) {
@@ -18,8 +18,8 @@ export default class Store {
   loadTesseract(newTesseract) {
     this.tesseract = newTesseract
 
+    this.root      = this.tesseract.root
     this.getState  = this.tesseract.getState
-    this.link      = this.tesseract.link
     this.pause     = this.tesseract.pause
     this.unpause   = this.tesseract.unpause
     this.merge     = this.tesseract.merge
@@ -29,6 +29,10 @@ export default class Store {
     })
 
     this.listeners.forEach((l) => { l() })
+  }
+  
+  link(store) {
+    this.tesseract.link(store.tesseract)
   }
 
   createCard(attributes) {

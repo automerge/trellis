@@ -12,46 +12,58 @@ const fs        = require("fs")
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    this.store              = new Store()
-    this.inspectorTesseract = new TesseractStore("inspector")
 
-    this.store.link(this.inspectorTesseract)
+    this.state = {
+      store: new Store(),
+      inspectorStore: new Store()
+    }
+
+    this.state.store.link(this.state.inspectorStore)
 
     ipcRenderer.on("new", (event) => {
-      let initialState    = require("../../initial_state.json")
-      let newStore        = new Tesseract.Store()
-      newStore.root.cards = initialState.cards
-      newStore.root.lists = initialState.lists
+      let initialState              = require("../../initial_state.json")
+      let newTesseract              = new Tesseract.Store()
+      newTesseract.root.cards       = initialState.cards
+      newTesseract.root.lists       = initialState.lists
 
-      this.store.loadTesseract(newStore)
+      this.reload(newTesseract)
     })
 
     ipcRenderer.on("open", (event, files) => {
-      let file      = fs.readFileSync(files[0])
-      let newStore  = Tesseract.load(file)
+      let file         = fs.readFileSync(files[0])
+      let newTesseract = Tesseract.load(file)
 
-      this.store.loadTesseract(newStore)
+      this.reload(newTesseract)
     })
 
     ipcRenderer.on("merge", (event, files) => {
       let file     = fs.readFileSync(files[0])
       let newStore = Tesseract.load(file)
 
-      this.store.merge(newStore)
+      this.state.store.merge(newStore)
     })
 
     ipcRenderer.on("save", (event, path) => {
-      let exportFile = this.store.tesseract.save()
+      let exportFile = this.state.store.tesseract.save()
       fs.writeFileSync(path, exportFile)
     })
+  }
+
+  reload(newTesseract) {
+    this.state.store.loadTesseract(newTesseract)
+    this.state.inspectorStore.loadTesseract(new Tesseract.Store())
+
+    this.state.store.link(this.state.inspectorStore)
+
+    this.setState({ store: this.state.store, inspectorStore: this.state.inspectorStore })
   }
 
   render() {
     return (
       <div className="App">
-        <Board store={ this.store } />
-        <Connection connected={true} store={ this.store } tesseract={ this.inspectorTesseract } />
-        <Inspector tesseract={ this.inspectorTesseract } />
+        <Board store={ this.state.store } />
+        <Connection connected={true} store={ this.state.store } inspectorStore={ this.state.inspectorStore } />
+        <Inspector store={ this.state.inspectorStore } />
       </div>
     )
   }
