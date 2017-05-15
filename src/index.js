@@ -2,6 +2,7 @@ import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
 import { autoUpdater } from 'electron'
+import update from './lib/update'
 
 // Load environment variables from .env file
 require("dotenv").config()
@@ -110,65 +111,5 @@ app.on('activate', () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
-const log = require("electron-log")
-
-autoUpdater.logger = log
-autoUpdater.logger.transports.file.level = 'info'
-
-autoUpdater.on('checking-for-update', () => {
-  log.info('Checking for update...');
-})
-
-autoUpdater.on('update-available', (ev, info) => {
-  log.info('Update available.');
-})
-
-autoUpdater.on('update-not-available', (ev, info) => {
-  log.info('Update not available.');
-})
-
-autoUpdater.on('error', (ev, err) => {
-  log.info('Error in auto-updater.');
-  log.info(ev)
-  log.info(err)
-})
-
-autoUpdater.on('download-progress', (ev, progressObj) => {
-  log.info('Download progress...');
-})
-
-autoUpdater.on('update-downloaded', (ev, info) => {
-  log.info('Update downloaded.');
-
-  let options = {
-    type: "question",
-    title: "Install Update?",
-    message: "There is an update available. Would you like to install it?",
-    buttons: ["Install Update", "Cancel"],
-    defaultId: 0,
-    cancelId: 1
-  }
-
-  dialog.showMessageBox(options, (response) => {
-    if(response === 0) {
-      log.info("Installing update.")
-      autoUpdater.quitAndInstall()
-    } else {
-      log.info("Update cancelled.")
-    }
-  })
-})
-
-if(!isDevMode) {
-  let platform = "osx"
-  let version  = require('../package.json').version
-
-  autoUpdater.setFeedURL('http://trellis-releases.herokuapp.com/update/' + platform + '/' + version)
-
-  // Wait a second for the window to exist before checking for updates.
-  setTimeout(function() {
-    autoUpdater.checkForUpdates()
-  }, 1000)
-}
+// Check for app updates
+if(!isDevMode) update({ dialog: dialog, updater: autoUpdater })
