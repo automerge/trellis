@@ -2,15 +2,15 @@
     "lists": [
       {
         "id": 1,
-        "title": "icebox"
+        "title": "This Week"
       },
       {
         "id": 2,
-        "title": "active"
+        "title": "Done"
       },
       {
         "id": 3,
-        "title": "done"
+        "title": "Soon"
       }
     ],
 
@@ -18,22 +18,7 @@
       {
         "id": 1,
         "listId": 1,
-        "title": "Rewrite everything in Crystal"
-      },
-      {
-        "id": 2,
-        "listId": 1,
-        "title": "Solve AGI"
-      },
-      {
-        "id": 3,
-        "listId": 2,
-        "title": "Add more 'pop' to the landing page"
-      },
-      {
-        "id": 4,
-        "listId": 3,
-        "title": "Rewrite everything in Go"
+        "title": "Hello world"
       }
     ]
 }
