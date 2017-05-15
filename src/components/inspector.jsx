@@ -7,10 +7,10 @@ export default class Inspector extends React.Component {
     this.updateListId = this.updateListId.bind(this)
     this.updateTitle = this.updateTitle.bind(this)
 
-    this.tesseract = this.props.tesseract
+    this.store = this.props.store
 
-    this.state = this.tesseract.getState()
-    this.tesseract.subscribe((x) => { this.setState(this.tesseract.getState()) })
+    this.state = this.store.getState()
+    this.store.subscribe((x) => { this.setState(this.store.getState()) })
   }
 
   updateListId(event) {
@@ -18,8 +18,8 @@ export default class Inspector extends React.Component {
     let newListId = parseInt(event.target.value)
 
     if (newListId >= 1 && newListId <= 3) {
-      this.tesseract.root.cards[index].listId = newListId
-      this.setState(this.tesseract.getState())
+      this.store.root.cards[index].listId = newListId
+      this.setState(this.store.getState())
     }
   }
 
@@ -27,15 +27,15 @@ export default class Inspector extends React.Component {
     let index = parseInt(event.target.name.replace(/[^0-9]/g, ''))
     let newTitle = event.target.value
 
-    this.tesseract.root.cards[index].title = newTitle
-    this.setState(this.tesseract.getState())
+    this.store.root.cards[index].title = newTitle
+    this.setState(this.store.getState())
   }
 
   render() {
     let listCardsPartial = ""
 
-    if(this.tesseract.root.cards) {
-      listCardsPartial = this.tesseract.root.cards.map((card, index) => {
+    if(this.store.root.cards) {
+      listCardsPartial = this.store.root.cards.map((card, index) => {
         let name1 = 'cardListId[' + index + ']'
         let name2 = 'cardTitle[' + index + ']'
         return <tr key={index}>
@@ -56,7 +56,7 @@ export default class Inspector extends React.Component {
       </table>
       </form>
 
-      <TesseractInfo tesseract={this.tesseract} />
+      <TesseractInfo tesseract={this.store.tesseract } />
     </div>
   }
 }
