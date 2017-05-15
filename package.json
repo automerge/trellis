@@ -39,7 +39,8 @@
       "electronInstallerRedhat": {},
       "github_repository": {
         "owner": "inkandswitch",
-        "name": "trellis"
+        "name": "trellis",
+        "draft": false
       },
       "windowsStoreConfig": {
         "packageName": "",
@@ -51,6 +52,7 @@
     "dotenv": "4.0.0",
     "electron-compile": "6.4.0",
     "electron-devtools-installer": "2.2.0",
+    "electron-log": "2.2.6",
     "pouchdb": "6.2.0",
     "react": "15.5.4",
     "react-dom": "15.5.4",
