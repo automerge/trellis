@@ -11,12 +11,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      store: new Store(),
-      inspectorStore: new Wrapper()
-    }
-
-    this.state.store.link(this.state.inspectorStore)
+    this.state = { store: new Store() }
 
     ipcRenderer.on("new", (event) => {
       this.reload({seedData: true})
@@ -41,18 +36,15 @@ export default class App extends React.Component {
 
   reload(config) {
     this.state.store.reloadTesseract(config)
-    this.state.inspectorStore.reloadTesseract()
 
-    this.state.store.link(this.state.inspectorStore)
-
-    this.setState({ store: this.state.store, inspectorStore: this.state.inspectorStore })
+    this.setState({ store: this.state.store })
   }
 
   render() {
     return (
       <div className="App">
         <Board store={ this.state.store } />
-        <Inspector store={ this.state.inspectorStore } />
+        <Inspector store={ this.state.store } />
       </div>
     )
   }
