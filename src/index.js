@@ -40,7 +40,7 @@ const createWindow = async () => {
         }},
         {
           label: 'Save', accelerator: 'CmdOrCtrl+S', click: (item, focusedWindow) => {
-          dialog.showSaveDialog((files) => {
+          dialog.showSaveDialog({ defaultPath: ".trellis" }, (files) => {
             mainWindow.webContents.send("save", files)
           })
         }},
