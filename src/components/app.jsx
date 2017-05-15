@@ -1,7 +1,6 @@
 import React from 'react'
 import Board from './board'
 import Inspector from './inspector'
-import Connection from './connection'
 import Store from '../lib/store'
 import Wrapper from '../lib/wrapper'
 import Tesseract from 'tesseract'
@@ -53,7 +52,6 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Board store={ this.state.store } />
-        <Connection connected={true} store={ this.state.store } inspectorStore={ this.state.inspectorStore } />
         <Inspector store={ this.state.inspectorStore } />
       </div>
     )

@@ -56,16 +56,6 @@ html, body, #App {
   width: 140pt;
 }
 
-.Connection {
-  background: #DDD;
-  padding: 0 5px;
-}
-
-.Connection img {
-  width: 60pt;
-  opacity: 0.75;
-}
-
 .Tesseract__info {
   margin-top: 30pt;
   font-size: 8pt;
