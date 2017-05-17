@@ -56,7 +56,9 @@
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "react-hot-loader": "3.0.0-beta.6",
-    "tesseract": "git+ssh://git@github.com/inkandswitch/tesseract.git"
+    "react-redux": "5.0.4",
+    "redux": "3.6.0",
+    "tesseract": "git+ssh://git@github.com/inkandswitch/tesseract.git#immutable"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "6.24.1",
