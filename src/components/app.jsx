@@ -11,14 +11,19 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { store: new Store() }
+    this.autoSave = this.autoSave.bind(this)
+
+    this.state = { savePath: null, store: new Store() }
 
     ipcRenderer.on("new", (event) => {
-      this.reload({seedData: true})
+      this.setState({ savePath: null }, () => { this.reload({seedData: true}) })
     })
 
     ipcRenderer.on("open", (event, files) => {
-      this.reload(files[0])
+      let path = files[0]
+
+      this.reload(path)
+      this.setState({ savePath: path }, this.autoSave)
     })
 
     ipcRenderer.on("merge", (event, files) => {
@@ -29,9 +34,18 @@ export default class App extends React.Component {
     })
 
     ipcRenderer.on("save", (event, path) => {
-      let exportFile = this.state.store.tesseract.save()
-      fs.writeFileSync(path, exportFile)
+      this.setState({ savePath: path }, this.autoSave)
     })
+  }
+
+  autoSave() {
+    if(!!this.state.savePath) {
+      console.log("Auto saving..")
+      let exportFile = this.state.store.tesseract.save()
+      fs.writeFileSync(this.state.savePath, exportFile)
+    }
+
+    setTimeout(this.autoSave, 5000)
   }
 
   reload(config) {
