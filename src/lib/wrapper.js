@@ -1,4 +1,5 @@
 import Tesseract from 'tesseract'
+import seedData from './seed_data'
 import fs from 'fs'
 
 export default class Wrapper {
@@ -22,10 +23,11 @@ export default class Wrapper {
       let file = fs.readFileSync(config)
       tesseract = Tesseract.load(file)
     } else if(config.seedData) {
-      let seedData = require("../../initial_state.json")
+      let data = seedData()
+
       tesseract = new Tesseract.Store()
-      tesseract.root.cards = seedData.cards
-      tesseract.root.lists = seedData.lists
+      tesseract.root.cards = data.cards
+      tesseract.root.lists = data.lists
     }
 
     this.tesseract = tesseract
