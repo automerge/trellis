@@ -31,6 +31,8 @@ export default class Wrapper {
       switch(action.type) {
         case "CREATE_CARD":
           return this.createCard(state, action)
+        case "MOVE_CARD":
+          return this.moveCard(state, action)
         default:
           return state
       }
@@ -39,6 +41,14 @@ export default class Wrapper {
     this.subscribe = this.redux.subscribe
     this.getState  = this.redux.getState
     this.dispatch  = this.redux.dispatch
+  }
+
+  moveCard(state, action) {
+    let cards     = state.cards
+    let cardId    = action.cardId
+    let cardIndex = this._findIndex(cards, (card) => card.id === cardId)
+
+    return Tesseract.set(cards[cardIndex], "listId", action.listId)
   }
 
   createCard(state, action) {

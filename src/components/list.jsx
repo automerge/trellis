@@ -11,7 +11,11 @@ export default class List extends React.Component {
   onDrop(event) {
     let cardId = event.dataTransfer.getData("text")
 
-    this.props.store.updateCard(cardId, {listId: this.props.listId})
+    this.props.store.dispatch({
+      type: "MOVE_CARD",
+      cardId: cardId,
+      listId: this.props.listId
+    })
   }
 
   preventDefault(event) {
