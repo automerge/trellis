@@ -1,17 +1,10 @@
 import Wrapper from './wrapper'
 import uuid from './uuid'
+import Tesseract from 'tesseract'
 
 export default class Store extends Wrapper {
-  createCard(attributes) {
-    let state  = this.getState()
-    let nextId = uuid()
-    let card   = Object.assign({}, attributes, { id: nextId })
-
-    this.tesseract.root.cards.push(card)
-  }
-
   updateCard(cardId, attributes) {
-    let cards     = this.getState().cards
+    let cards     = this.tesseract.cards
     let cardIndex = this._findIndex(cards, (card) => card.id === cardId)
 
     Object.assign(cards[cardIndex], attributes)

@@ -2,6 +2,7 @@ import Tesseract from 'tesseract'
 import seedData from './seed_data'
 import { createStore } from 'redux'
 import fs from 'fs'
+import uuid from './uuid'
 
 export default class Wrapper {
   constructor(config) {
@@ -27,12 +28,26 @@ export default class Wrapper {
     this.tesseract = tesseract
 
     this.redux = createStore((state = tesseract, action) => {
-      return state
+      switch(action.type) {
+        case "CREATE_CARD":
+          return this.createCard(state, action)
+        default:
+          return state
+      }
     })
 
     this.subscribe = this.redux.subscribe
     this.getState  = this.redux.getState
+    this.dispatch  = this.redux.dispatch
   }
+
+  createCard(state, action) {
+    let nextId = uuid()
+    let card   = Object.assign({}, action.attributes, { id: nextId })
+
+    return Tesseract.insert(this.tesseract.cards, this.tesseract.cards.length, card)
+  }
+
 
   link(store) {
     this.tesseract.link(store.tesseract)

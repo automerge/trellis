@@ -24,9 +24,12 @@ export default class AddCard extends React.Component {
   }
 
   createCard() {
-    this.props.store.createCard({
-      listId: this.props.listId,
-      title: this.state.title
+    this.props.store.dispatch({
+      type: "CREATE_CARD",
+      attributes: {
+        listId: this.props.listId,
+        title: this.state.title
+      }
     })
 
     this.clearForm()
