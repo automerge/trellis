@@ -1,9 +1,10 @@
 import Wrapper from './wrapper'
+import uuid from './uuid'
 
 export default class Store extends Wrapper {
   createCard(attributes) {
     let state  = this.getState()
-    let nextId = Math.max.apply(null, state.cards.map((c) => c.id)) + 1
+    let nextId = uuid()
     let card   = Object.assign({}, attributes, { id: nextId })
 
     this.tesseract.root.cards.push(card)
