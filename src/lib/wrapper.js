@@ -33,6 +33,8 @@ export default class Wrapper {
           return this.createCard(state, action)
         case "MOVE_CARD":
           return this.moveCard(state, action)
+        case "DELETE_CARD":
+          return this.deleteCard(state, action)
         default:
           return state
       }
@@ -41,6 +43,13 @@ export default class Wrapper {
     this.subscribe = this.redux.subscribe
     this.getState  = this.redux.getState
     this.dispatch  = this.redux.dispatch
+  }
+
+  deleteCard(state, action) {
+    let cards     = state.cards
+    let cardIndex = this._findIndex(cards, (c) => c.id === action.id)
+
+    return Tesseract.remove(cards, cardIndex)
   }
 
   moveCard(state, action) {

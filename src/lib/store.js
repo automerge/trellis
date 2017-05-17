@@ -3,13 +3,6 @@ import uuid from './uuid'
 import Tesseract from 'tesseract'
 
 export default class Store extends Wrapper {
-  deleteCard(card) {
-    let cards     = this.getState().cards
-    let cardIndex = cards.findIndex((c) => c.id === card.id)
-
-    cards.splice(cardIndex, 1)
-  }
-
   findCard(cardId) {
     let state = this.getState()
 
@@ -44,7 +37,7 @@ export default class Store extends Wrapper {
 
     for(let index in indices) {
       let object = array[index]
-      if(callback(object)) return index
+      if(callback(object)) return parseInt(index)
     }
   }
 
