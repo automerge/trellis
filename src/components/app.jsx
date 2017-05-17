@@ -13,7 +13,7 @@ export default class App extends React.Component {
 
     this.autoSave = this.autoSave.bind(this)
 
-    this.state = { savePath: null, store: new Store() }
+    this.state = { savePath: null, store: new Store({seedData: true}) }
 
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => { this.reload({seedData: true}) })
