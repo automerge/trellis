@@ -67,7 +67,7 @@ export default class Store extends Wrapper {
     let output  = []
 
     for(let index in indices) {
-      output[index] = callback(array[index])
+      output[index] = callback(array[index], index)
     }
 
     return output
