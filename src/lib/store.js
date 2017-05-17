@@ -12,7 +12,7 @@ export default class Store extends Wrapper {
 
   updateCard(cardId, attributes) {
     let cards     = this.getState().cards
-    let cardIndex = cards.findIndex((card) => card.id === cardId)
+    let cardIndex = this._findIndex(cards, (card) => card.id === cardId)
 
     Object.assign(cards[cardIndex], attributes)
   }
@@ -27,13 +27,54 @@ export default class Store extends Wrapper {
   findCard(cardId) {
     let state = this.getState()
 
-    return state.cards.find((card) => {
+    return this._find(state.cards, (card) => {
       return cardId === card.id
     })
   }
 
+  _filter(array, callback) {
+    let indices  = Object.keys(array)
+    let filtered = []
+
+    for(let index in indices) {
+      let object = array[index]
+      if(callback(object)) filtered.push(object)
+    }
+
+    return filtered
+  }
+
+  _find(array, callback) {
+    let indices = Object.keys(array)
+
+    for(let index in indices) {
+      let object = array[index]
+      if(callback(object)) return object
+    }
+  }
+
+  _findIndex(array, callback) {
+    let indices = Object.keys(array)
+
+    for(let index in indices) {
+      let object = array[index]
+      if(callback(object)) return index
+    }
+  }
+
+  _map(array, callback) {
+    let indices = Object.keys(array)
+    let output  = []
+
+    for(let index in indices) {
+      output[index] = callback(array[index])
+    }
+
+    return output
+  }
+
   findCardsByList(listId) {
-    return this.getState().cards.filter((card) => {
+    return this._filter(this.getState().cards, (card) => {
       return card.listId === listId
     })
   }
@@ -41,7 +82,7 @@ export default class Store extends Wrapper {
   findList(listId) {
     let state = this.getState()
 
-    return state.lists.find((list) => {
+    return this._find(state.lists, (list) => {
       return listId === list.id
     })
   }
