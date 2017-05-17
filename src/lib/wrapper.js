@@ -55,9 +55,8 @@ export default class Wrapper {
     let nextId = uuid()
     let card   = Object.assign({}, action.attributes, { id: nextId })
 
-    return Tesseract.insert(this.tesseract.cards, this.tesseract.cards.length, card)
+    return Tesseract.insert(state.cards, state.cards.length, card)
   }
-
 
   link(store) {
     this.tesseract.link(store.tesseract)
