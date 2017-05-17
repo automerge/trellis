@@ -44,6 +44,7 @@ html, body, #App {
 }
 .Inspector table td {
   padding: 2pt;
+  font-family: monospace;
 }
 
 .Inspector input[type="text"] {
