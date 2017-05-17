@@ -9,7 +9,7 @@ export default class List extends React.Component {
   }
 
   onDrop(event) {
-    let cardId        = parseInt(event.dataTransfer.getData("text"))
+    let cardId = event.dataTransfer.getData("text")
 
     this.props.store.updateCard(cardId, {listId: this.props.listId})
   }
