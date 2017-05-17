@@ -1,6 +1,5 @@
 import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
-import { enableLiveReload } from 'electron-compile';
 import { autoUpdater } from 'electron'
 import update from './lib/update'
 
@@ -14,9 +13,7 @@ global.app = app
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-const isDevMode = process.execPath.match(/[\\/]electron/);
-
-if (isDevMode) enableLiveReload({strategy: 'react-hmr'});
+const isDevMode = process.execPath.match(/[\\/]electron/)
 
 const createWindow = async () => {
   // Create the browser window.
