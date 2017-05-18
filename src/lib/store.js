@@ -27,6 +27,8 @@ export default class Store {
           return this.createCard(state, action)
         case "MOVE_CARD":
           return this.moveCard(state, action)
+        case "UPDATE_CARD_TITLE":
+          return this.updateCardTitle(state, action)
         case "DELETE_CARD":
           return this.deleteCard(state, action)
         case "UPDATE_ASSIGNMENTS":
@@ -45,6 +47,11 @@ export default class Store {
     this.subscribe = this.redux.subscribe
     this.getState  = this.redux.getState
     this.dispatch  = this.redux.dispatch
+  }
+
+  updateCardTitle(state, action) {
+    let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
+    return Tesseract.set(state.cards[cardIndex], "title", action.newTitle)
   }
 
   updateAssignments(state, action) {

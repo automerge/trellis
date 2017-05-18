@@ -34,7 +34,11 @@ export default class ListCard extends React.Component {
   handleKeyDown(event) {
     if (event.key === "Enter") {
       let newTitle = event.target.value
-      this.props.store.updateCard(this.card().id, { title: newTitle })
+      this.props.store.dispatch({
+        type: "UPDATE_CARD_TITLE",
+        cardId: this.card().id,
+        newTitle: newTitle
+      })
     }
 
     // Exit edit mode if "Enter" or "Esc" are pressed
