@@ -17,9 +17,10 @@ export default class Inspector extends React.Component {
 
   render() {
     let listCardsPartial = ""
+    let cards = this.store.getState().cards
 
-    if(this.store.root.cards) {
-      listCardsPartial = this.store.root.cards.map((card, index) => {
+    if(cards) {
+      listCardsPartial = this.store._map(cards, (card, index) => {
         let name1 = 'cardListId[' + index + ']'
         let name2 = 'cardTitle[' + index + ']'
         return <tr key={index}>
@@ -39,8 +40,6 @@ export default class Inspector extends React.Component {
         <tbody>{ listCardsPartial }</tbody>
       </table>
       </form>
-
-      <TesseractInfo tesseract={this.store.tesseract } />
     </div>
   }
 }

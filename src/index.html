@@ -18,20 +18,12 @@
   <script type="text/jsx">
     import React from 'react'
     import ReactDOM from 'react-dom'
-    import { AppContainer } from 'react-hot-loader'
 
     const render = () => {
-      const App = require('./components/app').default;
-      ReactDOM.render(
-        <AppContainer>
-          <App />
-        </AppContainer>
-      , document.getElementById('App'));
+      const App = require('./components/app').default
+      ReactDOM.render(<App />, document.getElementById('App'))
     }
 
-    render();
-    if (module.hot) {
-      module.hot.accept(render);
-    }
+    render()
   </script>
 </html>

@@ -2,7 +2,6 @@ import React from 'react'
 import Board from './board'
 import Inspector from './inspector'
 import Store from '../lib/store'
-import Wrapper from '../lib/wrapper'
 import Tesseract from 'tesseract'
 import { ipcRenderer } from 'electron'
 import fs from 'fs'
@@ -13,24 +12,28 @@ export default class App extends React.Component {
 
     this.autoSave = this.autoSave.bind(this)
 
-    this.state = { savePath: null, store: new Store() }
+    this.state = { savePath: null, store: new Store({seedData: true}) }
 
     ipcRenderer.on("new", (event) => {
-      this.setState({ savePath: null }, () => { this.reload({seedData: true}) })
+      this.setState({ savePath: null }, () => {
+        this.state.store.dispatch({ type: "NEW_DOCUMENT" })
+      })
     })
 
-    ipcRenderer.on("open", (event, files) => {
-      let path = files[0]
+    ipcRenderer.on("open", (event, path) => {
+      let file = fs.readFileSync(path)
 
-      this.reload(path)
+      this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
       this.setState({ savePath: path }, this.autoSave)
     })
 
     ipcRenderer.on("merge", (event, files) => {
-      let file     = fs.readFileSync(files[0])
-      let newStore = Tesseract.load(file)
+      let file = fs.readFileSync(files[0])
 
-      this.state.store.merge(newStore)
+      this.state.store.dispatch({
+        type: "MERGE_DOCUMENT",
+        file: file
+      })
     })
 
     ipcRenderer.on("save", (event, path) => {
@@ -41,7 +44,7 @@ export default class App extends React.Component {
   autoSave() {
     if(!!this.state.savePath) {
       console.log("Auto saving..")
-      let exportFile = this.state.store.tesseract.save()
+      let exportFile = Tesseract.save(this.state.store.getState())
       fs.writeFileSync(this.state.savePath, exportFile)
     }
 
@@ -50,7 +53,6 @@ export default class App extends React.Component {
 
   reload(config) {
     this.state.store.reloadTesseract(config)
-
     this.setState({ store: this.state.store })
   }
 

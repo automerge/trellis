@@ -11,6 +11,10 @@
   width: 80%;
 }
 
+.ListCard__title:hover {
+  cursor: pointer;
+}
+
 .ListCard__delete {
   float: right;
   cursor: pointer;
@@ -19,4 +23,9 @@
 
 .ListCard__delete:hover {
   color: #333;
+}
+
+.ListCard textarea {
+  font-size: 14px;
+  padding: 5px;
 }
