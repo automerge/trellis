@@ -65,7 +65,6 @@ export default class Store {
   }
 
   mergeDocument(state, action) {
-    debugger
     let otherTesseract = Tesseract.load(action.file)
     return Tesseract.merge(state, otherTesseract)
   }
