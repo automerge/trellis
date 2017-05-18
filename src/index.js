@@ -2,6 +2,7 @@ import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { autoUpdater } from 'electron'
 import update from './lib/update'
+import fs from 'fs'
 
 // Load environment variables from .env file
 require("dotenv").config()
@@ -34,7 +35,7 @@ const createWindow = async () => {
         {
           label: 'Open', accelerator: 'CmdOrCtrl+O', click: (item, focusedWindow) => {
           dialog.showOpenDialog((files) => {
-            mainWindow.webContents.send("open", files)
+            mainWindow.webContents.send("open", files[0])
           })
         }},
         {

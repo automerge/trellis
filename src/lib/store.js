@@ -12,17 +12,11 @@ export default class Store {
   reloadTesseract(config) {
     let tesseract
 
-    if(!config) {
-      tesseract = new Tesseract.init()
-    } else if(typeof config === "string") {
+    if(typeof config === "string") {
       let file = fs.readFileSync(config)
       tesseract = Tesseract.load(file)
-    } else if(config.seedData) {
-      let data = seedData()
-
+    } else {
       tesseract = new Tesseract.init()
-      tesseract = Tesseract.set(tesseract, "cards", data.cards)
-      tesseract = Tesseract.set(tesseract, "lists", data.lists)
     }
 
     this.tesseract = tesseract
@@ -35,6 +29,12 @@ export default class Store {
           return this.moveCard(state, action)
         case "DELETE_CARD":
           return this.deleteCard(state, action)
+        case "NEW_DOCUMENT":
+          return this.newDocument(state, action)
+        case "OPEN_DOCUMENT":
+          return this.openDocument(state, action)
+        case "MERGE_DOCUMENT":
+          return this.mergeDocument(state, action)
         default:
           return state
       }
@@ -43,6 +43,27 @@ export default class Store {
     this.subscribe = this.redux.subscribe
     this.getState  = this.redux.getState
     this.dispatch  = this.redux.dispatch
+  }
+
+  openDocument(state, action) {
+    let tesseract = Tesseract.load(action.file)
+    return tesseract
+  }
+
+  mergeDocument(state, action) {
+    debugger
+    let otherTesseract = Tesseract.load(action.file)
+    return Tesseract.merge(state, otherTesseract)
+  }
+
+  newDocument(state, action) {
+    let data      = seedData()
+    let tesseract = new Tesseract.init()
+
+    tesseract = Tesseract.set(tesseract, "cards", data.cards)
+    tesseract = Tesseract.set(tesseract, "lists", data.lists)
+
+    return tesseract
   }
 
   deleteCard(state, action) {
