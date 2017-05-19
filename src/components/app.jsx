@@ -23,8 +23,10 @@ export default class App extends React.Component {
     ipcRenderer.on("open", (event, path) => {
       let file = fs.readFileSync(path)
 
-      this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
-      this.setState({ savePath: path }, this.autoSave)
+      this.setState({ savePath: path }, () => {
+        this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+        this.autoSave()
+      })
     })
 
     ipcRenderer.on("merge", (event, files) => {
