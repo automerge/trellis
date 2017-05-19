@@ -56,7 +56,8 @@ export default class Store {
 
   updateAssignments(state, action) {
     let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
-    return Tesseract.set(state.cards[cardIndex], "assigned", action.assigned)
+
+    return Tesseract.set(state.cards[cardIndex].assigned, action.person, action.isAssigned)
   }
 
   openDocument(state, action) {
@@ -95,8 +96,8 @@ export default class Store {
   }
 
   createCard(state, action) {
-    let nextId = uuid()
-    let card   = Object.assign({}, action.attributes, { id: nextId })
+    let nextId      = uuid()
+    let card        = Object.assign({}, action.attributes, { id: nextId, assigned: {} })
 
     return Tesseract.insert(state.cards, state.cards.length, card)
   }

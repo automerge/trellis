@@ -7,7 +7,8 @@ export default function() {
 
   let cards = [ { id: uuid(),
                   listId: lists[0].id,
-                  title: "Hello world" } ]
+                  title: "Hello world",
+                  assigned: {} } ]
 
   return { lists: lists, cards: cards }
 }

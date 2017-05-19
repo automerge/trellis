@@ -16,18 +16,14 @@ export default class Assignments extends React.Component {
   }
 
   toggle(event) {
-    let person = event.target.name
-    let assigned = Object.assign({}, this.assigned())
-
-    if (assigned[person])
-      delete assigned[person]
-    else
-      assigned[person] = true
+    let person     = event.target.name
+    let isAssigned = !this.assigned()[person]
 
     this.props.store.dispatch({
       type: "UPDATE_ASSIGNMENTS",
       cardId: this.props.cardId,
-      assigned: assigned
+      person: person,
+      isAssigned: isAssigned
     })
   }
 
