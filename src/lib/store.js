@@ -6,10 +6,6 @@ import uuid from './uuid'
 
 export default class Store {
   constructor(config) {
-    this.reloadTesseract(config)
-  }
-
-  reloadTesseract(config) {
     let tesseract
 
     if(typeof config === "string") {
@@ -47,6 +43,10 @@ export default class Store {
     this.subscribe = this.redux.subscribe
     this.getState  = this.redux.getState
     this.dispatch  = this.redux.dispatch
+  }
+
+  save() {
+    return Tesseract.save(this.getState())
   }
 
   updateCardTitle(state, action) {
