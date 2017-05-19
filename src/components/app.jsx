@@ -2,7 +2,6 @@ import React from 'react'
 import Board from './board'
 import Inspector from './inspector'
 import Store from '../lib/store'
-import Tesseract from 'tesseract'
 import { ipcRenderer } from 'electron'
 import fs from 'fs'
 
@@ -13,6 +12,7 @@ export default class App extends React.Component {
     this.autoSave = this.autoSave.bind(this)
 
     this.state = { savePath: null, store: new Store({seedData: true}) }
+    this.state.store.subscribe(this.autoSave)
 
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
@@ -42,18 +42,11 @@ export default class App extends React.Component {
   }
 
   autoSave() {
-    if(!!this.state.savePath) {
-      console.log("Auto saving..")
-      let exportFile = Tesseract.save(this.state.store.getState())
+    if(this.state.savePath) {
+      console.log("Auto saving…")
+      let exportFile = this.state.store.save()
       fs.writeFileSync(this.state.savePath, exportFile)
     }
-
-    setTimeout(this.autoSave, 5000)
-  }
-
-  reload(config) {
-    this.state.store.reloadTesseract(config)
-    this.setState({ store: this.state.store })
   }
 
   render() {

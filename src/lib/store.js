@@ -49,6 +49,10 @@ export default class Store {
     this.dispatch  = this.redux.dispatch
   }
 
+  save() {
+    return Tesseract.save(this.getState())
+  }
+
   updateCardTitle(state, action) {
     let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
     return Tesseract.set(state.cards[cardIndex], "title", action.newTitle)
