@@ -6,10 +6,6 @@ import uuid from './uuid'
 
 export default class Store {
   constructor(config) {
-    this.reloadTesseract(config)
-  }
-
-  reloadTesseract(config) {
     let tesseract
 
     if(typeof config === "string") {
