@@ -3,6 +3,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-insta
 import { autoUpdater } from 'electron'
 import update from './lib/update'
 import fs from 'fs'
+import path from 'path'
 
 // Load environment variables from .env file
 require("dotenv").config()
@@ -14,13 +15,15 @@ global.app = app
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-const isDevMode = process.execPath.match(/[\\/]electron/)
+const isDevMode   = process.execPath.match(/[\\/]electron/)
+const newDocTitle = "Untitled"
 
 const createWindow = async () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 800,
+    title: newDocTitle
   });
 
   globalShortcut.register("CommandOrControl+R", () => mainWindow.webContents.reload() )
@@ -36,18 +39,26 @@ const createWindow = async () => {
       submenu: [
         {
           label: 'New', accelerator: 'CmdOrCtrl+N', click: (item, focusedWindow) => {
-          mainWindow.webContents.send("new")
+          mainWindow.webContents.send("new", mainWindow)
+          mainWindow.setTitle(newDocTitle)
         }},
         {
           label: 'Open', accelerator: 'CmdOrCtrl+O', click: (item, focusedWindow) => {
           dialog.showOpenDialog((files) => {
-            mainWindow.webContents.send("open", files[0])
+            let fullPath = files[0]
+            let name     = path.parse(fullPath).name
+
+            mainWindow.webContents.send("open", fullPath)
+            mainWindow.setTitle(name)
           })
         }},
         {
           label: 'Save As', accelerator: 'CmdOrCtrl+S', click: (item, focusedWindow) => {
-          dialog.showSaveDialog({ defaultPath: ".trellis" }, (files) => {
-            mainWindow.webContents.send("save", files)
+          dialog.showSaveDialog({ defaultPath: ".trellis" }, (fullPath) => {
+            let name = path.parse(fullPath).name
+
+            mainWindow.webContents.send("save", fullPath)
+            mainWindow.setTitle(name)
           })
         }},
         {

@@ -14,7 +14,7 @@ export default class App extends React.Component {
     this.state = { savePath: null, store: new Store({seedData: true}) }
     this.state.store.subscribe(this.autoSave)
 
-    ipcRenderer.on("new", (event) => {
+    ipcRenderer.on("new", (event, browserWindow) => {
       this.setState({ savePath: null }, () => {
         this.state.store.dispatch({ type: "NEW_DOCUMENT" })
       })
