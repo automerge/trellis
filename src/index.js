@@ -24,6 +24,10 @@ const createWindow = async () => {
   });
 
   globalShortcut.register("CommandOrControl+R", () => mainWindow.webContents.reload() )
+  globalShortcut.register("CommandOrControl+Option+I", async () => {
+    await installExtension(REACT_DEVELOPER_TOOLS)
+    mainWindow.webContents.openDevTools()
+  })
 
   // Menubar template
   const template = [
@@ -73,12 +77,6 @@ const createWindow = async () => {
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`);
-
-  // Open the DevTools.
-  if (isDevMode) {
-    await installExtension(REACT_DEVELOPER_TOOLS);
-    mainWindow.webContents.openDevTools();
-  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
