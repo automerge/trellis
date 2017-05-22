@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain, dialog, globalShortcut } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { autoUpdater } from 'electron'
 import update from './lib/update'
@@ -22,6 +22,8 @@ const createWindow = async () => {
     width: 1100,
     height: 800,
   });
+
+  globalShortcut.register("CommandOrControl+R", () => mainWindow.webContents.reload() )
 
   // Menubar template
   const template = [
