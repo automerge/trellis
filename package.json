@@ -69,5 +69,8 @@
     "electron-prebuilt-compile": "1.6.2",
     "mocha": "3.4.1",
     "spectron": "3.6.4"
+  },
+  "babel": {
+    "presets": ["env"]
   }
 }
