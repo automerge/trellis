@@ -1,7 +1,7 @@
 const Application = require('spectron').Application
-import assert from 'assert'
+const assert      = require('assert')
 
-describe('application launch', function () {
+describe('file menu', function () {
   this.timeout(10000)
 
   beforeEach(function () {
@@ -9,6 +9,7 @@ describe('application launch', function () {
       path: './node_modules/.bin/electron',
       args: ['.']
     })
+
     return this.app.start()
   })
 
@@ -18,9 +19,11 @@ describe('application launch', function () {
     }
   })
 
-  it('shows an initial window', function () {
-    return this.app.client.getWindowCount().then(function (count) {
-      assert.equal(count, 3)
+  it('opens a new document', function () {
+    return this.app.webContents.send("new")
+    .then(() => this.app.client.getText(".ListCard__title"))
+    .then((cardTitles) => {
+      assert.equal(cardTitles[0], "Hello world")
     })
   })
 })
