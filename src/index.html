@@ -18,6 +18,15 @@
   <script type="text/jsx">
     import React from 'react'
     import ReactDOM from 'react-dom'
+    import ss from 'slack-signaler'
+    import webrtc from './webrtc'
+
+    let doc_id = 9999
+    let token = process.env.SLACK_BOT_TOKEN
+    let bot = ss.init({doc_id: doc_id, bot_token: token })
+    console.log("WEBRTC",webrtc)
+    webrtc.ondatachannel = () => { console.log("Data channel open!") }
+    webrtc.join(bot)
 
     const render = () => {
       const App = require('./components/app').default
