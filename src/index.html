@@ -21,12 +21,20 @@
     import ss from 'slack-signaler'
     import webrtc from './webrtc'
 
-    let doc_id = 9999
+    let doc_id = 7777
     let token = process.env.SLACK_BOT_TOKEN
     let bot = ss.init({doc_id: doc_id, bot_token: token })
     console.log("WEBRTC",webrtc)
-    webrtc.ondatachannel = () => { console.log("Data channel open!") }
+
+    var globopeer;
+    webrtc.ondatachannel = (peer) => { 
+      console.log("Data channel open!"); globopeer = peer
+      globopeer.data_channel.onmessage = (msg) => 
+        app.state.store.dispatch({type: "MERGE_DOCUMENT", file: msg.data})
+    }
     webrtc.join(bot)
+
+    // this breaks for large boards.
 
     const render = () => {
       const App = require('./components/app').default

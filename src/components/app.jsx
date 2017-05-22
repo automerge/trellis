@@ -5,15 +5,22 @@ import Store from '../lib/store'
 import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import path from 'path'
+import tesseract from 'tesseract'
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+    window.app = this;
 
     this.autoSave = this.autoSave.bind(this)
 
     this.state = { savePath: null, store: new Store({seedData: true}) }
     this.state.store.subscribe(this.autoSave)
+    this.state.store.subscribe( () => {
+      let data = tesseract.save(app.state.store.getState())
+      console.log("sending state ("+data.length+" bytes) through globopeer datachannel: " + window.globopeer.data_channel)
+      window.globopeer.data_channel.send(data)
+    })
 
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
