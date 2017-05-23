@@ -46,26 +46,30 @@ const createWindow = async () => {
         {
           label: 'Open', accelerator: 'CmdOrCtrl+O', click: (item, focusedWindow) => {
           dialog.showOpenDialog(dialogPreferences, (files) => {
-            let fullPath = files[0]
-            let name     = path.parse(fullPath).name
+            if(files && files.length > 0) {
+              let fullPath = files[0]
+              let name     = path.parse(fullPath).name
 
-            mainWindow.webContents.send("open", fullPath)
-            mainWindow.setTitle(name)
+              mainWindow.webContents.send("open", fullPath)
+              mainWindow.setTitle(name)
+            }
           })
         }},
         {
           label: 'Save As', accelerator: 'CmdOrCtrl+S', click: (item, focusedWindow) => {
-          dialog.showSaveDialog({ defaultPath: ".trellis" }, (fullPath) => {
-            let name = path.parse(fullPath).name
+          dialog.showSaveDialog({ defaultPath: ".trellis" }, (savePath) => {
+            if(savePath) {
+              let name = path.parse(savePath).name
 
-            mainWindow.webContents.send("save", fullPath)
-            mainWindow.setTitle(name)
+              mainWindow.webContents.send("save", savePath)
+              mainWindow.setTitle(name)
+            }
           })
         }},
         {
           label: 'Merge', accelerator: 'CmdOrCtrl+M', click: (item, focusedWindow) => {
           dialog.showOpenDialog(dialogPreferences, (files) => {
-            mainWindow.webContents.send("merge", files)
+            if(files && files.length > 0) mainWindow.webContents.send("merge", files)
           })
         }}
       ]
