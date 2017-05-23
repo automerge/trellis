@@ -53,7 +53,7 @@ export default class ListCard extends React.Component {
     if(this.state.editMode) {
       title = <textarea defaultValue={ this.card().title } onKeyDown={ this.handleKeyDown } />
     } else {
-      title = <div className="ListCard__title" onClick={ this.editTitle } > { this.card().title }</div>
+      title = <div onClick={ this.editTitle } > { this.card().title }</div>
     }
 
     return (
