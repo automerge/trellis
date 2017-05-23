@@ -15,8 +15,9 @@ global.app = app
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-const isDevMode   = process.execPath.match(/[\\/]electron/)
-const newDocTitle = "Untitled"
+const isDevMode         = process.execPath.match(/[\\/]electron/)
+const newDocTitle       = "Untitled"
+const dialogPreferences = { filters: [ { name: "Trellis Files", extensions: [".trellis"] }] }
 
 const createWindow = async () => {
   // Create the browser window.
@@ -44,7 +45,7 @@ const createWindow = async () => {
         }},
         {
           label: 'Open', accelerator: 'CmdOrCtrl+O', click: (item, focusedWindow) => {
-          dialog.showOpenDialog((files) => {
+          dialog.showOpenDialog(dialogPreferences, (files) => {
             let fullPath = files[0]
             let name     = path.parse(fullPath).name
 
@@ -63,7 +64,7 @@ const createWindow = async () => {
         }},
         {
           label: 'Merge', accelerator: 'CmdOrCtrl+M', click: (item, focusedWindow) => {
-          dialog.showOpenDialog((files) => {
+          dialog.showOpenDialog(dialogPreferences, (files) => {
             mainWindow.webContents.send("merge", files)
           })
         }}
