@@ -28,14 +28,12 @@
       peer.on('message', (m) => {
         console.log("Got message on peer event handler", peer.id, m)
       })
-      peer.send({hello: "world", id: Math.floor(Math.random() * 1000) })
+      peer.send({hello: "world", id: Math.floor(Math.random() * 1000), user: process.env.USER })
     })
     webrtc.on('message', (peer, m) => {
       console.log("Got message module event handler",peer.id,m)
     })
     webrtc.join(bot)
-
-    // this breaks for large boards.
 
     const render = () => {
       const App = require('./components/app').default
