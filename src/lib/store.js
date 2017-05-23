@@ -42,6 +42,9 @@ export default class Store {
         case "MERGE_DOCUMENT":
           newState = this.mergeDocument(state, action)
           break;
+        case "APPLY_DELTAS":
+          newState = this.applyDeltas(state, action)
+          break;
         default:
           newState = state
       }
@@ -110,6 +113,10 @@ export default class Store {
   mergeDocument(state, action) {
     let otherTesseract = Tesseract.load(action.file)
     return Tesseract.merge(state, otherTesseract)
+  }
+
+  applyDeltas(state, action) {
+    return Tesseract.applyDeltas(state, action.deltas)
   }
 
   newDocument(state, action) {
