@@ -1,6 +1,7 @@
 var Peers = {}
 var Handshakes = {}
 var WebRTCServers = null
+var lzmajs = require('lzma-purejs');
 
 var notice = (peer,desc) => (event) => console.log("notice:" + peer.id + ": " + desc, event)
 
@@ -20,7 +21,10 @@ function Peer(id, send_signal) {
 
   self.send    = (message) => {
     console.log("Sending message",message)
-    self.data_channel.send(JSON.stringify(message))
+    var buffer = new Buffer(JSON.stringify(message), 'utf8')
+    var compressed = lzmajs.compressFile(buffer);
+    console.log("Compressed size: ", compressed.length)
+    self.data_channel.send(compressed)
   }
 
   Peers[self.id] = self
@@ -147,9 +151,14 @@ function join(signaler, handler) {
 }
 
 function process_message(peer, msg) {
+  console.log(msg)
+  console.log("wire size",msg.data.length)
+  var decompressed = lzmajs.decompressFile(new Buffer(msg.data));
+  var data = decompressed.toString('utf8');
+  console.log("message size",data.length)
   console.log("INCOMING MSG",msg)
-  console.log("data size",msg.data.length)
-  let message = JSON.parse(msg.data)
+
+  let message = JSON.parse(data)
   peer.handlers.message(message)
   HANDLERS.message(peer,message)
 }
