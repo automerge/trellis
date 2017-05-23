@@ -3,7 +3,6 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-insta
 import { autoUpdater } from 'electron'
 import update from './lib/update'
 import fs from 'fs'
-import path from 'path'
 
 // Load environment variables from .env file
 require("dotenv").config()
@@ -16,15 +15,14 @@ global.app = app
 let mainWindow;
 
 const isDevMode         = process.execPath.match(/[\\/]electron/)
-const newDocTitle       = "Untitled"
-const dialogPreferences = { filters: [ { name: "Trellis Files", extensions: [".trellis"] }] }
+const dialogPreferences = { filters: [ { name: "Trellis Files", extensions: ["trellis"] }] }
 
 const createWindow = async () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 800,
-    title: newDocTitle
+    title: "Untitled"
   });
 
   globalShortcut.register("CommandOrControl+R", () => mainWindow.webContents.reload() )
@@ -41,35 +39,23 @@ const createWindow = async () => {
         {
           label: 'New', accelerator: 'CmdOrCtrl+N', click: (item, focusedWindow) => {
           mainWindow.webContents.send("new", mainWindow)
-          mainWindow.setTitle(newDocTitle)
         }},
         {
           label: 'Open', accelerator: 'CmdOrCtrl+O', click: (item, focusedWindow) => {
           dialog.showOpenDialog(dialogPreferences, (files) => {
-            if(files && files.length > 0) {
-              let fullPath = files[0]
-              let name     = path.parse(fullPath).name
-
-              mainWindow.webContents.send("open", fullPath)
-              mainWindow.setTitle(name)
-            }
+            mainWindow.webContents.send("open", files)
           })
         }},
         {
           label: 'Save As', accelerator: 'CmdOrCtrl+S', click: (item, focusedWindow) => {
           dialog.showSaveDialog({ defaultPath: ".trellis" }, (savePath) => {
-            if(savePath) {
-              let name = path.parse(savePath).name
-
-              mainWindow.webContents.send("save", savePath)
-              mainWindow.setTitle(name)
-            }
+            mainWindow.webContents.send("save", savePath)
           })
         }},
         {
           label: 'Merge', accelerator: 'CmdOrCtrl+M', click: (item, focusedWindow) => {
           dialog.showOpenDialog(dialogPreferences, (files) => {
-            if(files && files.length > 0) mainWindow.webContents.send("merge", files)
+            mainWindow.webContents.send("merge", files)
           })
         }}
       ]

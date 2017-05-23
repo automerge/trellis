@@ -2,8 +2,9 @@ import React from 'react'
 import Board from './board'
 import Inspector from './inspector'
 import Store from '../lib/store'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
+import path from 'path'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,31 +18,45 @@ export default class App extends React.Component {
     ipcRenderer.on("new", (event, browserWindow) => {
       this.setState({ savePath: null }, () => {
         this.state.store.dispatch({ type: "NEW_DOCUMENT" })
+        remote.getCurrentWindow().setTitle("Untitled")
       })
     })
 
-    ipcRenderer.on("open", (event, path) => {
-      let file = fs.readFileSync(path)
+    ipcRenderer.on("open", (event, files) => {
+      if(files && files.length > 0) {
+        let openPath  = files[0]
+        let file      = fs.readFileSync(openPath)
+        let name      = path.parse(openPath).name
 
-      this.setState({ savePath: path }, () => {
-        this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
-        this.autoSave()
-      })
+        this.setState({ savePath: openPath }, () => {
+          this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+          remote.getCurrentWindow().setTitle(name)
+          this.autoSave()
+        })
+      }
     })
 
     ipcRenderer.on("merge", (event, files) => {
-      let file = fs.readFileSync(files[0])
+      if(files && files.length > 0) {
+        let file = fs.readFileSync(files[0])
 
-      this.state.store.dispatch({
-        type: "MERGE_DOCUMENT",
-        file: file
-      })
+        this.state.store.dispatch({
+          type: "MERGE_DOCUMENT",
+          file: file
+        })
+      }
     })
 
-    ipcRenderer.on("save", (event, path) => {
-      this.setState({ savePath: path }, this.autoSave)
-    })
-  }
+    ipcRenderer.on("save", (event, savePath) => {
+      if(savePath) {
+        let name = path.parse(savePath).name
+
+        this.setState({ savePath: savePath }, () => {
+          remote.getCurrentWindow().setTitle(name)
+          this.autoSave()
+        })
+      }
+    }) }
 
   autoSave() {
     if(this.state.savePath) {
