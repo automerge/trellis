@@ -18,9 +18,9 @@ html, body, #App {
 }
 
 .Board {
+  width: 70%;
   background: url("../assets/images/sos.png") repeat;
   padding-left: 15pt;
-  flex-grow: 1;
 }
 
 .Board__lists {
@@ -80,4 +80,22 @@ html, body, #App {
 }
 .Assignments__inactive {
   opacity: 0.25;
+}
+
+.Changes {
+  width: 24%;
+  float: left;
+  padding-left: 12pt;
+}
+.Changes h2 {
+  font-size: 18pt;
+}
+.Changes ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.Changes li {
+  font-size: 8pt;
+  margin-bottom: 4pt;
 }

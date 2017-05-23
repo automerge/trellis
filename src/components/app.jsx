@@ -1,5 +1,6 @@
 import React from 'react'
 import Board from './board'
+import Changes from './changes'
 import Inspector from './inspector'
 import Store from '../lib/store'
 import { ipcRenderer } from 'electron'
@@ -55,7 +56,7 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Board store={ this.state.store } />
-        <Inspector store={ this.state.store } />
+        <Changes />
       </div>
     )
   }
