@@ -24,13 +24,13 @@
     let doc_id = 4545
     let token = process.env.SLACK_BOT_TOKEN
     let bot = ss.init({doc_id: doc_id, bot_token: token })
-    let PEERS = []
+    window.PEERS = []
     webrtc.on('peer', (peer) => {
-      PEERS.push(peer)
+      window.PEERS.push(peer)
       peer.on('message', (m) => {
+        app.state.store.dispatch({type: "MERGE_DOCUMENT", file: m.data})
         console.log("Got message on peer event handler", peer.id, m)
       })
-      peer.send({hello: "world", id: Math.floor(Math.random() * 1000), user: process.env.USER })
     })
     webrtc.on('message', (peer, m) => {
       console.log("Got message module event handler",peer.id,m)

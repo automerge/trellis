@@ -9,30 +9,56 @@ export default class Store {
     let tesseract = new Tesseract.init()
 
     this.redux = createStore((state = tesseract, action) => {
+      let newState;
+       
       switch(action.type) {
         case "CREATE_CARD":
-          return this.createCard(state, action)
+          newState = this.createCard(state, action)
+          break;
         case "MOVE_CARD":
-          return this.moveCard(state, action)
+          newState = this.moveCard(state, action)
+          break;
         case "UPDATE_CARD_TITLE":
-          return this.updateCardTitle(state, action)
+          newState = this.updateCardTitle(state, action)
+          break;
         case "DELETE_CARD":
-          return this.deleteCard(state, action)
+          newState = this.deleteCard(state, action)
+          break;
         case "UPDATE_ASSIGNMENTS":
-          return this.updateAssignments(state, action)
+          newState = this.updateAssignments(state, action)
+          break;
         case "CREATE_LIST":
-          return this.createList(state, action)
+          newState = this.createList(state, action)
+          break;
         case "DELETE_LIST":
-          return this.deleteList(state, action)
+          newState = this.deleteList(state, action)
+          break;          
         case "NEW_DOCUMENT":
-          return this.newDocument(state, action)
+          newState = this.newDocument(state, action)
+          break;
         case "OPEN_DOCUMENT":
-          return this.openDocument(state, action)
+          newState = this.openDocument(state, action)
+          break;
         case "MERGE_DOCUMENT":
-          return this.mergeDocument(state, action)
+          newState = this.mergeDocument(state, action)
+          break;
         default:
-          return state
+          newState = state
       }
+
+      if (action.type != "MERGE_DOCUMENT") {
+        window.PEERS.forEach( (peer) => {
+          try {
+            let data = Tesseract.save(newState)
+            console.log("sending state ("+data.length+" bytes) through peer: " + peer)
+            peer.send({data: data})
+          } catch (e) {
+            console.log("Exception during save.", e)
+          }
+        })
+      }
+
+      return newState;
     })
 
     this.subscribe = this.redux.subscribe
