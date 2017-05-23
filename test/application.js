@@ -28,6 +28,30 @@ describe('application', function () {
     })
   })
 
+  it('merges documents', function() {
+    let forkAPath = "./test/merge-fork-a-copy.trellis"
+    let forkBPath = "./test/merge-fork-b-copy.trellis"
+
+    // copy fixtures into tmp dir so we don't overwrite them
+    fs.createReadStream("./test/merge-fork-a.trellis").pipe(fs.createWriteStream(forkAPath))
+    fs.createReadStream("./test/merge-fork-b.trellis").pipe(fs.createWriteStream(forkBPath))
+
+    return this.app.webContents.send("open", [ forkAPath ])
+    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard__title"))
+    .then((cardTitle) => {
+      assert.equal(cardTitle, "Card A")
+    })
+    .then(() => this.app.webContents.send("merge", [ forkBPath]))
+    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard:nth-child(3) .ListCard__title"))
+    .then((cardTitle) => {
+      assert.equal(cardTitle, "Card B")
+    })
+    .then(() => {
+      fs.unlinkSync(forkAPath)
+      fs.unlinkSync(forkBPath)
+    })
+  })
+
   it('opens a .trellis document', function() {
     let fixturePath = "./test/fixture.trellis"
 
