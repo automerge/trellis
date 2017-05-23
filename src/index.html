@@ -24,7 +24,9 @@
     let doc_id = 4545
     let token = process.env.SLACK_BOT_TOKEN
     let bot = ss.init({doc_id: doc_id, bot_token: token })
+    let PEERS = []
     webrtc.on('peer', (peer) => {
+      PEERS.push(peer)
       peer.on('message', (m) => {
         console.log("Got message on peer event handler", peer.id, m)
       })
