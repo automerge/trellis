@@ -15,8 +15,6 @@ export default class Store {
       tesseract = new Tesseract.init()
     }
 
-    this.tesseract = tesseract
-
     this.redux = createStore((state = tesseract, action) => {
       switch(action.type) {
         case "CREATE_CARD":
