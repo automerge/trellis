@@ -11,6 +11,10 @@ To start the app:
 
     $ npm start
 
+To run tests:
+
+    $ npm run test
+
 ## Distribution
 
 To create a packaged ".app" on Mac OSX:
