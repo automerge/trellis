@@ -53,6 +53,24 @@ describe('application', function () {
     })
   })
 
+  it("edits card titles", function() {
+    return this.app.webContents.send("new")
+    .then(() => this.app.client.click(".ListCard:nth-child(2) .ListCard__title div"))
+    .then(() => this.app.client.setValue(".ListCard:nth-child(2) .ListCard__title textarea", "New Title"))
+    .then(() => this.app.client.keys("Enter"))
+    .then(() => this.app.client.getText(".ListCard:nth-child(2) .ListCard__title"))
+    .then((title) => assert.equal(title, "New Title") )
+  })
+
+  it("cancels edits on card titles", function() {
+    return this.app.webContents.send("new")
+    .then(() => this.app.client.click(".ListCard:nth-child(2) .ListCard__title div"))
+    .then(() => this.app.client.setValue(".ListCard:nth-child(2) .ListCard__title textarea", "New Title"))
+    .then(() => this.app.client.keys("Escape"))
+    .then(() => this.app.client.getText(".ListCard:nth-child(2) .ListCard__title div"))
+    .then((title) => assert.equal(title, "Hello world") )
+  })
+
   it("creates a new card", function() {
     return this.app.webContents.send("new")
     .then(() => this.app.client.click(".AddCard__link:nth-child(1)"))
