@@ -1,4 +1,5 @@
 var Peers = {}
+var Handshakes = {}
 var WebRTCServers = null
 
 var notice = (peer,desc) => (event) => console.log("notice:" + peer.id + ": " + desc, event)
@@ -38,6 +39,13 @@ function create_webrtc(peer) {
 
   webrtc.oniceconnectionstatechange = function(event) {
     console.log("notice:statechange",peer.id,webrtc.iceConnectionState, event)
+    if (webrtc.iceConnectionState == "failed") {
+      delete Peers[peer.id]
+      HANDLERS.disconnect(peer)
+      if (Handshakes[peer.id]) {
+        Handshakes[peer.id]()
+      }
+    }
   }
 
   webrtc.onconnecting   = notice(peer,"onconnecting")
@@ -50,7 +58,7 @@ function create_webrtc(peer) {
     peer.data_channel.onerror = e => notice(peer,"datachannel error",e)
     peer.data_channel.onclose = () => notice(peer,"datachannel closed")
     peer.data_channel.onopen = () => notice(peer,"datachannel opened")
-    HANDLERS.peer(peer)
+    HANDLERS.connect(peer)
   }
   peer.webrtc = webrtc
 }
@@ -73,8 +81,8 @@ function is_connected() {
   }
 }
 
-function processHello(id, handler) {
-  if (id in Peers) return
+function beginHandshake(id, handler) {
+  delete Handshakes[id]
   let peer = new Peer(id,handler)
 
   let data = peer.webrtc.createDataChannel("datachannel",{protocol: "tcp"});
@@ -83,7 +91,7 @@ function processHello(id, handler) {
   data.onerror   = notice(peer,"data:error")
   data.onopen    = (event) => {
     peer.data_channel = data
-    HANDLERS.peer(peer)
+    HANDLERS.connect(peer)
   }
   peer.webrtc.createOffer(desc => {
     peer.webrtc.setLocalDescription(desc,
@@ -92,6 +100,15 @@ function processHello(id, handler) {
       },
       e  => console.log("error on setLocalDescription",e))
   }, e => console.log("error with createOffer",e));
+}
+
+function processHello(id, handler) {
+  let begin = () => { beginHandshake(id,handler) }
+  if (id in Peers) {
+    Handshakes[id] = begin
+  } else {
+    begin()
+  }
 }
 
 function processMessage(id, signal, handler) {
@@ -137,13 +154,7 @@ function process_message(peer, msg) {
   HANDLERS.message(peer,message)
 }
 
-function noHandler(type) {
-  return () => {
-    console.log("no event handler declared for message type",type)
-  }
-}
-
-let HANDLERS = {message: noHandler("message"), peer: noHandler("message")  }
+let HANDLERS = { message: () => {}, connect: () => {}, disconnect: () => {} }
 
 function onHandler(type, handler) {
   HANDLERS[type] = handler

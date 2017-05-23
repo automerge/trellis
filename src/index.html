@@ -20,29 +20,27 @@
     import ReactDOM from 'react-dom'
     import ss from 'slack-signaler'
     import webrtc from './webrtc'
+    import Tesseract from 'tesseract'
 
-    let doc_id = 4546
+    let doc_id = 4547
     let token = process.env.SLACK_BOT_TOKEN
     let bot = ss.init({doc_id: doc_id, bot_token: token })
     window.PEERS = []
-    webrtc.on('peer', (peer) => {
+    webrtc.on('disconnect', (peer) => {
+      console.log("Disconnect for",peer.id)
+      window.PEERS.splice(window.PEERS.indexOf(peer))
+    })
+    webrtc.on('connect', (peer) => {
       let ping = 1
       window.PEERS.push(peer)
       peer.on('message', (m) => {
-/*
-        ping += 1
-        if (ping < 500) {
-          peer.send({PING: ping})
-        }
-*/
-//        console.log("Got message on peer event handler", peer.id, m)
         app.state.store.dispatch({type: "MERGE_DOCUMENT", file: m.data})
       })
-      peer.send({PING: ping})
+      let data = Tesseract.save(app.state.store.getState())
+      console.log("sending INITAL state ("+data.length+" bytes) through peer: " + peer)
+      peer.send({data: data})
     })
-    webrtc.on('message', (peer, m) => {
-      console.log("Got message module event handler",peer.id,m)
-    })
+//    webrtc.on('message', (peer, m) => { })
     webrtc.join(bot)
 
     const render = () => {
