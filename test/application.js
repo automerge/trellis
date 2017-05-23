@@ -31,7 +31,7 @@ describe('application', function () {
   it('opens a .trellis document', function() {
     let fixturePath = "./test/fixture.trellis"
 
-    return this.app.webContents.send("open", fixturePath)
+    return this.app.webContents.send("open", [fixturePath])
     .then(() => this.app.client.getText(".ListCard__title"))
     .then((cardTitles) => {
       assert.deepEqual(cardTitles.splice(0, 3), [

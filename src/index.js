@@ -38,7 +38,7 @@ const createWindow = async () => {
       submenu: [
         {
           label: 'New', accelerator: 'CmdOrCtrl+N', click: (item, focusedWindow) => {
-          mainWindow.webContents.send("new", mainWindow)
+          mainWindow.webContents.send("new")
         }},
         {
           label: 'Open', accelerator: 'CmdOrCtrl+O', click: (item, focusedWindow) => {
