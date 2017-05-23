@@ -2,7 +2,7 @@ const Application = require('spectron').Application
 const assert      = require('assert')
 const fs          = require('fs')
 
-describe('file menu', function () {
+describe('application', function () {
   this.timeout(10000)
 
   beforeEach(function () {
