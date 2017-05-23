@@ -46,7 +46,10 @@ function create_webrtc(peer) {
   webrtc.onremovestream = notice(peer,"onremovestream")
   webrtc.ondatachannel  = function(event) {
     peer.data_channel = event.channel
-    peer.data_channel.onmessage = msg => process_message(peer, JSON.parse(msg.data))
+    peer.data_channel.onmessage = msg => process_message(peer, msg)
+    peer.data_channel.onerror = e => notice(peer,"datachannel error",e)
+    peer.data_channel.onclose = () => notice(peer,"datachannel closed")
+    peer.data_channel.onopen = () => notice(peer,"datachannel opened")
     HANDLERS.peer(peer)
   }
   peer.webrtc = webrtc
@@ -74,8 +77,8 @@ function processHello(id, handler) {
   if (id in Peers) return
   let peer = new Peer(id,handler)
 
-  let data = peer.webrtc.createDataChannel("datachannel",{reliable: false});
-  data.onmessage = msg => process_message(peer, JSON.parse(msg.data))
+  let data = peer.webrtc.createDataChannel("datachannel",{protocol: "tcp"});
+  data.onmessage = msg => process_message(peer, msg)
   data.onclose   = notice(peer,"data:onclose")
   data.onerror   = notice(peer,"data:error")
   data.onopen    = (event) => {
@@ -126,7 +129,10 @@ function join(signaler, handler) {
   signaler.start()
 }
 
-function process_message(peer, message) {
+function process_message(peer, msg) {
+  console.log("INCOMING MSG",msg)
+  console.log("data size",msg.data.length)
+  let message = JSON.parse(msg.data)
   peer.handlers.message(message)
   HANDLERS.message(peer,message)
 }
