@@ -16,7 +16,7 @@ export default class AddList extends React.Component {
   }
 
   showForm() {
-    this.setState({ showForm: true })
+    this.setState({ showForm: true }, () => this.titleInput.focus())
   }
 
   clearForm() {
@@ -34,20 +34,26 @@ export default class AddList extends React.Component {
         title: this.state.title
       }
     })
+
+    this.clearForm()
   }
 
   render() {
     let partial
 
     if(this.state.showForm) {
-      partial = 
+      partial =
       <div>
-        <input type="text" placeholder="Add a list…" onChange={ this.updateTitle } /> 
-        <button onClick={ this.createList }>Save</button>
-        <a onClick={ this.clearForm }>X</a>
+        <input
+          ref={ (input) => this.titleInput = input }
+          type="text" placeholder="Add a list…" onChange={ this.updateTitle } />
+        <div>
+          <a className="AddList__save" onClick={ this.createList }>Save</a>
+          <a className="AddList__clearForm" onClick={ this.clearForm }>X</a>
+        </div>
       </div>
     } else {
-      partial = <a onClick={ this.showForm }> Add a list… </a>
+      partial = <a className="AddList__show" onClick={ this.showForm }> Add a list… </a>
     }
 
     return (

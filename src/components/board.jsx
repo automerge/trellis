@@ -31,9 +31,9 @@ export default class Board extends React.Component {
     return (
       <div className="Board">
         <h1 className="Board__title">Trellis</h1>
-        <AddList store={ this.props.store } />
         <div className="Board__lists">
           { lists }
+          <AddList store={ this.props.store } />
         </div>
       </div>
     )

@@ -81,3 +81,45 @@ html, body, #App {
 .Assignments__inactive {
   opacity: 0.25;
 }
+
+.AddList {
+  margin-right: 20px;
+  background: #AAA;
+  padding: 10px;
+  border-radius: 4px;
+  flex-grow: 0.5;
+  flex-basis: 0;
+}
+
+.AddList__show:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.AddList input[type="text"] {
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.AddList input[type="text"]:focus {
+  outline: none;
+}
+
+.AddList__save {
+  padding: 5px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #2980b9;
+  color: white;
+  cursor: pointer;
+}
+
+.AddList__clearForm {
+  float: right;
+  cursor: pointer;
+}

@@ -16,7 +16,7 @@ export default class AddCard extends React.Component {
   }
 
   showForm() {
-    this.setState({ showForm: true })
+    this.setState({ showForm: true }, () => this.titleInput.focus() )
   }
 
   clearForm() {
@@ -44,7 +44,9 @@ export default class AddCard extends React.Component {
     if(this.state.showForm) {
       addCard = (
         <div>
-          <textarea onChange= { this.updateTitle } />
+          <textarea
+            ref={ (input) => this.titleInput = input }
+            onChange= { this.updateTitle } />
           <button onClick={ this.createCard }>Add</button>
           <a onClick={ this.clearForm } href="#">X</a>
         </div>
