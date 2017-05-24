@@ -10,6 +10,13 @@ html, body, #App {
   overflow: hidden;
 }
 
+h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   font-family: Helvetica Neue, Helvetica, Arial;
   color: #333;
@@ -19,9 +26,13 @@ html, body, #App {
 }
 
 .Board {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 75%;
+  height: 60%;
   background: url("../assets/images/sos.png") repeat;
   padding-left: 15pt;
-  flex-grow: 1;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -43,11 +54,29 @@ html, body, #App {
   flex-shrink: 0;
 }
 
+.Changes {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25%;
+  height: 60%;
+  padding: 10pt 14pt;
+  background-color: #f8f8f8;
+  border-left: 1px solid #aaa;
+}
+
 .Inspector {
+  position: absolute;
+  top: 60%;
+  left: 0;
+  width: 20%;
+  height: 40%;
+  background-color: #f8f8f8;
   font-size: 8pt;
-  width: 200pt;
+  width: 75%;
   flex-shrink: 0;
-  padding-left: 8pt;
+  padding: 10pt 14pt;
+  border-top: 1px solid #aaa;
 }
 
 .Inspector table th {
@@ -66,6 +95,18 @@ html, body, #App {
 }
 .Inspector input[type="text"].string {
   width: 140pt;
+}
+
+.Peers {
+  position: absolute;
+  top: 60%;
+  right: 0;
+  width: 25%;
+  height: 40%;
+  padding: 10pt 14pt;
+  background-color: #f8f8f8;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
 }
 
 .Tesseract__info {
