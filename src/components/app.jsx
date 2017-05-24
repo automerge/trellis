@@ -75,7 +75,7 @@ export default class App extends React.Component {
         <Board store={ this.state.store } />
         <Changes />
         <Inspector store={ this.state.store } />
-        <Peers webrtc={ this.props.webrtc } />
+        <Peers docId={ this.props.docId } webrtc={ this.props.webrtc } />
       </div>
     )
   }

@@ -63,7 +63,7 @@
 
     const render = () => {
       const App = require('./components/app').default
-      ReactDOM.render(<App webrtc={ webrtc } />, document.getElementById('App'))
+      ReactDOM.render(<App docId={ process.env.TRELLIS_DOC_ID } webrtc={ webrtc } />, document.getElementById('App'))
     }
 
     render()

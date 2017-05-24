@@ -36,7 +36,7 @@ export default class Peers extends React.Component {
 
       <div className="docID">
         <span className="label">DocID</span>
-        <span className="ID">63fa5277-8012-4ba1-a70f-407a5a45bea9</span>
+        <span className="ID">{ this.props.docId }</span>
       </div>
     </div>
   }
