@@ -14,7 +14,7 @@ html, body, #App {
   color: #333;
   height: 100%;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 25% 25% 25% 25%;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
@@ -72,13 +72,30 @@ h2 {
   font-size: 8pt;
   padding: 10pt 14pt;
   border-top: 1px solid #aaa;
+  overflow: scroll;
+}
+
+.Inspector__container {
+  display: flex;
+}
+
+.Inspector table {
+  border-collapse: collapse;
+  margin-right: 40px;
 }
 
 .Inspector table th {
+  background: #CCC;
+}
+
+.Inspector table th, .Inspector table td {
+  padding: 5px 10px;
+  border: 1px solid #AAA;
   text-align: left;
 }
-.Inspector table td {
-  padding: 2pt;
+
+.Inspector__cards__cardId, .Inspector__cards__listId,
+.Inspector__cards__assigned, .Inspector__lists__listId {
   font-family: Monaco, monospace;
 }
 
@@ -199,3 +216,4 @@ h2 {
   float: right;
   cursor: pointer;
 }
+
