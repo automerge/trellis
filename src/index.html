@@ -63,7 +63,7 @@
 
     const render = () => {
       const App = require('./components/app').default
-      ReactDOM.render(<App />, document.getElementById('App'))
+      ReactDOM.render(<App webrtc={ webrtc } />, document.getElementById('App'))
     }
 
     render()
