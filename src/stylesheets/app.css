@@ -7,22 +7,22 @@ html, body, #App {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 .App {
   font-family: Helvetica Neue, Helvetica, Arial;
   color: #333;
   height: 100%;
-  display: flex;
-  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .Board {
+  grid-row: 1 / 4;
+  grid-column: 1 / 4;
   background: url("../assets/images/sos.png") repeat;
   padding-left: 15pt;
-  flex-grow: 1;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -43,11 +43,35 @@ html, body, #App {
   flex-shrink: 0;
 }
 
+h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+}
+.Changes img,
+.Inspector img,
+.Peers img {
+  height: 20px;
+  padding-left: 4px;
+}
+
+.Changes {
+  grid-row: 1 / 4;
+  grid-column: 4;
+  padding: 10pt 14pt;
+  background-color: #f8f8f8;
+  border-left: 1px solid #aaa;
+}
+
 .Inspector {
+  grid-row: 4;
+  grid-column: 1 / 4;
+  background-color: #f8f8f8;
   font-size: 8pt;
-  width: 200pt;
-  flex-shrink: 0;
-  padding-left: 8pt;
+  padding: 10pt 14pt;
+  border-top: 1px solid #aaa;
 }
 
 .Inspector table th {
@@ -55,7 +79,7 @@ html, body, #App {
 }
 .Inspector table td {
   padding: 2pt;
-  font-family: monospace;
+  font-family: Monaco, monospace;
 }
 
 .Inspector input[type="text"] {
@@ -66,6 +90,47 @@ html, body, #App {
 }
 .Inspector input[type="text"].string {
   width: 140pt;
+}
+
+.Peers {
+  grid-row: 4;
+  grid-column: 4;
+  padding: 10pt 14pt;
+  background-color: #f8f8f8;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  font-size: 12px;
+  position: relative;
+}
+.Peers td {
+  padding: 0;
+  padding-bottom: 8px;
+  padding-right: 6px;
+}
+.Peers td.LED img {
+  width: 10px;
+  height: 10px;
+  margin-left: -7px;
+}
+.Peers td.ip,
+.Peers td.lastChange {
+  font-size: 10px;
+}
+.Peers .docID {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+.Peers .docID .label {
+  color: #aaa;
+  font-size: 10px;
+  font-weight: 500;
+  padding-right: 4px;
+}
+.Peers .docID .ID {
+  font-family: Monaco, monospace;
+  color: #777;
+  font-size: 10px;
 }
 
 .Tesseract__info {
