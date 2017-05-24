@@ -22,7 +22,10 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 800,
-    title: "Untitled"
+    title: "Untitled",
+    webPreferences: {
+      experimentalFeatures: true
+    }
   });
 
   globalShortcut.register("CommandOrControl+R", () => mainWindow.webContents.reload() )
