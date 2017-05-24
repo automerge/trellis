@@ -79,7 +79,7 @@ h2 {
 }
 .Inspector table td {
   padding: 2pt;
-  font-family: monospace;
+  font-family: Monaco, monospace;
 }
 
 .Inspector input[type="text"] {
@@ -100,6 +100,7 @@ h2 {
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
   font-size: 12px;
+  position: relative;
 }
 .Peers td {
   padding: 0;
@@ -113,6 +114,22 @@ h2 {
 }
 .Peers td.ip,
 .Peers td.lastChange {
+  font-size: 10px;
+}
+.Peers .docID {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+.Peers .docID .label {
+  color: #aaa;
+  font-size: 10px;
+  font-weight: 500;
+  padding-right: 4px;
+}
+.Peers .docID .ID {
+  font-family: Monaco, monospace;
+  color: #777;
   font-size: 10px;
 }
 
