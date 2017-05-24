@@ -7,6 +7,7 @@ html, body, #App {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 .App {
@@ -14,28 +15,38 @@ html, body, #App {
   color: #333;
   height: 100%;
   display: flex;
-  flex-wrap: wrap;
+  overflow: hidden;
 }
 
 .Board {
   background: url("../assets/images/sos.png") repeat;
   padding-left: 15pt;
   flex-grow: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .Board__lists {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  overflow: auto;
+  flex-grow: 1;
+  margin-bottom: 20px;
 }
 
 .Board__title {
   text-align: center;
   font-family: Pacifico;
+  margin: 0;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 .Inspector {
   font-size: 8pt;
   width: 200pt;
+  flex-shrink: 0;
   padding-left: 8pt;
 }
 
@@ -87,8 +98,8 @@ html, body, #App {
   background: #AAA;
   padding: 10px;
   border-radius: 4px;
-  flex-grow: 0.5;
-  flex-basis: 0;
+  width: 200px;
+  flex-shrink: 0;
 }
 
 .AddList__show:hover {
