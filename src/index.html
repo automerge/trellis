@@ -25,18 +25,18 @@
     let doc_id = 98765
     let token = process.env.SLACK_BOT_TOKEN
     let bot = ss.init({doc_id: doc_id, bot_token: token })
+    
     window.PEERS = []
+    
     webrtc.on('disconnect', (peer) => {
       console.log("Disconnect for",peer.id)
       window.PEERS.splice(window.PEERS.indexOf(peer))
     })
+
     webrtc.on('connect', (peer) => {
-      let ping = 1
       window.PEERS.push(peer)
       peer.on('message', (m) => {
-        console.log("Received message ${m} from ${peer}")
         if (m.deltas) {
-          console.log("Got "+m.deltas.length+" deltas.")
           if (m.deltas.length > 0) {
             app.state.store.dispatch({type: "APPLY_DELTAS", deltas: m.deltas})
           }
@@ -45,16 +45,14 @@
           let deltas = Tesseract.getDeltasAfter(app.state.store.getState(), m.vectorClock)
           let reply = {
             vectorClock: Tesseract.getVClock(app.state.store.getState()), 
-            deltas: deltas
+            deltas: deltas.slice(0, 5) // just send up to five deltas at a time
           }
           peer.send(reply)
         }
       })
-      let data = Tesseract.save(app.state.store.getState())
-      console.log("sending INITAL state ("+data.length+" bytes) through peer: " + peer)
+
       peer.send({vectorClock: Tesseract.getVClock(app.state.store.getState())})
     })
-//    webrtc.on('message', (peer, m) => { })
     webrtc.join(bot)
 
     const render = () => {
