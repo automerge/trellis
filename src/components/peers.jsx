@@ -7,7 +7,7 @@ export default class Peers extends React.Component {
 
   render() {
     return <div className="Peers">
-      <h2>Peers</h2>
+      <h2>Peers <img src="assets/images/peers.svg" /></h2>
     </div>
   }
 }

@@ -7,7 +7,7 @@ export default class Changes extends React.Component {
 
   render() {
     return <div className="Changes">
-      <h2>Changes</h2>
+      <h2>Changes <img src="assets/images/delta.svg" /></h2>
     </div>
   }
 }
