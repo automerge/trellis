@@ -22,38 +22,44 @@
     import webrtc from './webrtc'
     import Tesseract from 'tesseract'
 
-    let doc_id = 98765
-    let token = process.env.SLACK_BOT_TOKEN
-    let bot = ss.init({doc_id: doc_id, bot_token: token })
-    
     window.PEERS = []
-    
-    webrtc.on('disconnect', (peer) => {
-      console.log("Disconnect for",peer.id)
-      window.PEERS.splice(window.PEERS.indexOf(peer))
-    })
+    let doc_id = process.env.TRELLIS_DOC_ID
+    let token = process.env.SLACK_BOT_TOKEN
 
-    webrtc.on('connect', (peer) => {
-      window.PEERS.push(peer)
-      peer.on('message', (m) => {
-        if (m.deltas) {
-          if (m.deltas.length > 0) {
-            app.state.store.dispatch({type: "APPLY_DELTAS", deltas: m.deltas})
-          }
-        }
-        if (m.vectorClock) {
-          let deltas = Tesseract.getDeltasAfter(app.state.store.getState(), m.vectorClock)
-          let reply = {
-            vectorClock: Tesseract.getVClock(app.state.store.getState()), 
-            deltas: deltas.slice(0, 5) // just send up to five deltas at a time
-          }
-          peer.send(reply)
-        }
+    if (token && doc_id) {
+      let bot = ss.init({doc_id: doc_id, bot_token: token })
+
+      webrtc.on('disconnect', (peer) => {
+        console.log("Disconnect for",peer.id)
+        window.PEERS.splice(window.PEERS.indexOf(peer))
       })
 
-      peer.send({vectorClock: Tesseract.getVClock(app.state.store.getState())})
-    })
-    webrtc.join(bot)
+      webrtc.on('connect', (peer) => {
+        window.PEERS.push(peer)
+        peer.on('message', (m) => {
+          if (m.deltas) {
+            if (m.deltas.length > 0) {
+              app.state.store.dispatch({type: "APPLY_DELTAS", deltas: m.deltas})
+            }
+          }
+          if (m.vectorClock) {
+            let deltas = Tesseract.getDeltasAfter(app.state.store.getState(), m.vectorClock)
+            let reply = {
+              vectorClock: Tesseract.getVClock(app.state.store.getState()), 
+              deltas: deltas.slice(0, 5) // just send up to five deltas at a time
+            }
+            peer.send(reply)
+          }
+        })
+
+        peer.send({vectorClock: Tesseract.getVClock(app.state.store.getState())})
+      })
+      webrtc.join(bot)
+    } else {
+      console.log("Network disabled")
+      console.log("TRELLIS_DOC_ID:",doc_id)
+      console.log("SLACK_BOT_TOKEN:",token)
+    }
 
     const render = () => {
       const App = require('./components/app').default
