@@ -53,6 +53,14 @@ export default class Store {
 
   deleteList(state, action) {
     let listIndex = this._findIndex(state.lists, (l) => l.id === action.listId)
+    let listCards = this.findCardsByList(action.listId)
+    let listCardIndexes = this._map(listCards, (lc) => {
+      return this._findIndex(state.cards, (c) => c.id === lc.id)
+    })
+
+    listCardIndexes.forEach((index) => {
+      state = Tesseract.remove(state.cards, index)
+    })
 
     return Tesseract.remove(state.lists, listIndex)
   }
