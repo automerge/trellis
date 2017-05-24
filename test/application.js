@@ -106,6 +106,28 @@ describe('application', function () {
     })
   })
 
+  it("creates a new list", function() {
+    return this.app.client.click(".AddList__show")
+    .then(() => this.app.client.setValue(".AddList input[type='text']", "Another List"))
+    .then(() => this.app.client.click(".AddList .AddList__save"))
+    .then(() => this.app.client.getText(".List:nth-child(4) .List__title"))
+    .then((title) => {
+      assert.equal(title, "ANOTHER LIST")
+    })
+  })
+
+  it("deletes a list", function() {
+    return this.app.client.getText(".List__title")
+    .then((titles) => {
+      assert.deepEqual(titles, ["THIS WEEK", "DONE", "SOON"])
+    })
+    .then(() => this.app.client.click(".List:nth-child(1) .List__delete"))
+    .then(() => this.app.client.getText(".List__title"))
+    .then((titles) => {
+      assert.deepEqual(titles, ["DONE", "SOON"])
+    })
+  })
+
   it.skip("drags and drops", function() {
     return this.app.webContents.send("new")
     .then(() => this.app.client.getText(".ListCard"))
