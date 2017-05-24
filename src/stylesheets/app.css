@@ -7,7 +7,6 @@ html, body, #App {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 h2 {
@@ -21,19 +20,16 @@ h2 {
   font-family: Helvetica Neue, Helvetica, Arial;
   color: #333;
   height: 100%;
-  display: flex;
-  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .Board {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 75%;
-  height: 60%;
+  grid-row: 1 / 4;
+  grid-column: 1 / 4;
   background: url("../assets/images/sos.png") repeat;
   padding-left: 15pt;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -55,26 +51,18 @@ h2 {
 }
 
 .Changes {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 25%;
-  height: 60%;
+  grid-row: 1 / 4;
+  grid-column: 4;
   padding: 10pt 14pt;
   background-color: #f8f8f8;
   border-left: 1px solid #aaa;
 }
 
 .Inspector {
-  position: absolute;
-  top: 60%;
-  left: 0;
-  width: 20%;
-  height: 40%;
+  grid-row: 4;
+  grid-column: 1 / 4;
   background-color: #f8f8f8;
   font-size: 8pt;
-  width: 75%;
-  flex-shrink: 0;
   padding: 10pt 14pt;
   border-top: 1px solid #aaa;
 }
@@ -98,11 +86,8 @@ h2 {
 }
 
 .Peers {
-  position: absolute;
-  top: 60%;
-  right: 0;
-  width: 25%;
-  height: 40%;
+  grid-row: 4;
+  grid-column: 4;
   padding: 10pt 14pt;
   background-color: #f8f8f8;
   border-top: 1px solid #aaa;
