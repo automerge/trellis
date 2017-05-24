@@ -6,14 +6,10 @@ import uuid from './uuid'
 
 export default class Store {
   constructor(config) {
-    let tesseract
+    let tesseract = new Tesseract.init()
 
-    if(typeof config === "string") {
-      let file = fs.readFileSync(config)
-      tesseract = Tesseract.load(file)
-    } else {
-      tesseract = new Tesseract.init()
-    }
+    tesseract = Tesseract.set(tesseract, "cards", [])
+    tesseract = Tesseract.set(tesseract, "lists", [])
 
     this.redux = createStore((state = tesseract, action) => {
       switch(action.type) {
@@ -27,6 +23,8 @@ export default class Store {
           return this.deleteCard(state, action)
         case "UPDATE_ASSIGNMENTS":
           return this.updateAssignments(state, action)
+        case "CREATE_LIST":
+          return this.createList(state, action)
         case "NEW_DOCUMENT":
           return this.newDocument(state, action)
         case "OPEN_DOCUMENT":
@@ -45,6 +43,11 @@ export default class Store {
 
   save() {
     return Tesseract.save(this.getState())
+  }
+
+  createList(state, action) {
+    let attributes = Object.assign({}, action.attributes, { id: uuid() })
+    return Tesseract.insert(state.lists, state.lists.length, attributes)
   }
 
   updateCardTitle(state, action) {
@@ -94,8 +97,7 @@ export default class Store {
   }
 
   createCard(state, action) {
-    let nextId      = uuid()
-    let card        = Object.assign({}, action.attributes, { id: nextId, assigned: {} })
+    let card = Object.assign({}, action.attributes, { id: uuid(), assigned: {} })
 
     return Tesseract.insert(state.cards, state.cards.length, card)
   }

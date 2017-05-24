@@ -1,5 +1,6 @@
 import React from 'react'
 import List from './list'
+import AddList from './add_list'
 
 export default class Board extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ export default class Board extends React.Component {
     return (
       <div className="Board">
         <h1 className="Board__title">Trellis</h1>
+        <AddList store={ this.props.store } />
         <div className="Board__lists">
           { lists }
         </div>
