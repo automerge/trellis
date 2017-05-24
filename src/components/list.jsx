@@ -6,6 +6,7 @@ export default class List extends React.Component {
   constructor(props) {
     super(props)
     this.onDrop = this.onDrop.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   onDrop(event) {
@@ -26,6 +27,13 @@ export default class List extends React.Component {
     return this.props.store.findList(this.props.listId)
   }
 
+  delete() {
+    this.props.store.dispatch({
+      type: "DELETE_LIST",
+      listId: this.props.listId
+    })
+  }
+
   render() {
     let listCards    = this.props.store.findCardsByList(this.props.listId)
     let listCardsPartial = listCards.map((card) => {
@@ -36,6 +44,7 @@ export default class List extends React.Component {
       // Chrome has a drag-and-drop bug that requires onDragOver to not propogate its event
       <div className="List" onDrop={ this.onDrop } onDragOver={ this.preventDefault } >
         <div className="List__title">{ this.list().title }</div>
+        <a className="List__delete" onClick={ this.delete }>X</a>
         { listCardsPartial }
         <AddCard listId={ this.props.listId } store={ this.props.store }/>
       </div>

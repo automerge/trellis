@@ -42,7 +42,7 @@ describe('application', function () {
       assert.equal(cardTitle, "Card A")
     })
     .then(() => this.app.webContents.send("merge", [ forkBPath]))
-    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard:nth-child(3) .ListCard__title"))
+    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard:nth-child(4) .ListCard__title"))
     .then((cardTitle) => {
       assert.equal(cardTitle, "Card B")
     })
@@ -79,28 +79,28 @@ describe('application', function () {
 
   it("edits card titles", function() {
     return this.app.webContents.send("new")
-    .then(() => this.app.client.click(".ListCard:nth-child(2) .ListCard__title div"))
-    .then(() => this.app.client.setValue(".ListCard:nth-child(2) .ListCard__title textarea", "New Title"))
+    .then(() => this.app.client.click(".ListCard:nth-child(3) .ListCard__title div"))
+    .then(() => this.app.client.setValue(".ListCard:nth-child(3) .ListCard__title textarea", "New Title"))
     .then(() => this.app.client.keys("Enter"))
-    .then(() => this.app.client.getText(".ListCard:nth-child(2) .ListCard__title"))
+    .then(() => this.app.client.getText(".ListCard:nth-child(3) .ListCard__title"))
     .then((title) => assert.equal(title, "New Title") )
   })
 
   it("cancels edits on card titles", function() {
     return this.app.webContents.send("new")
-    .then(() => this.app.client.click(".ListCard:nth-child(2) .ListCard__title div"))
-    .then(() => this.app.client.setValue(".ListCard:nth-child(2) .ListCard__title textarea", "New Title"))
+    .then(() => this.app.client.click(".ListCard:nth-child(3) .ListCard__title div"))
+    .then(() => this.app.client.setValue(".ListCard:nth-child(3) .ListCard__title textarea", "New Title"))
     .then(() => this.app.client.keys("Escape"))
-    .then(() => this.app.client.getText(".ListCard:nth-child(2) .ListCard__title div"))
+    .then(() => this.app.client.getText(".ListCard:nth-child(3) .ListCard__title div"))
     .then((title) => assert.equal(title, "Hello world") )
   })
 
   it("creates a new card", function() {
     return this.app.webContents.send("new")
     .then(() => this.app.client.click(".AddCard__link:nth-child(1)"))
-    .then(() => this.app.client.setValue(".List:nth-child(1) .AddCard:nth-child(3) textarea", "Another Card"))
-    .then(() => this.app.client.click(".List:nth-child(1) .AddCard:nth-child(3) button"))
-    .then(() => this.app.client.getText(".List:nth-child(1) .ListCard:nth-child(3) .ListCard__title"))
+    .then(() => this.app.client.setValue(".List:nth-child(1) .AddCard textarea", "Another Card"))
+    .then(() => this.app.client.click(".List:nth-child(1) .AddCard button"))
+    .then(() => this.app.client.getText(".List:nth-child(1) .ListCard:nth-child(4) .ListCard__title"))
     .then((title) => {
       assert.equal(title, "Another Card")
     })

@@ -22,6 +22,8 @@ export default class Store {
           return this.updateAssignments(state, action)
         case "CREATE_LIST":
           return this.createList(state, action)
+        case "DELETE_LIST":
+          return this.deleteList(state, action)
         case "NEW_DOCUMENT":
           return this.newDocument(state, action)
         case "OPEN_DOCUMENT":
@@ -47,6 +49,12 @@ export default class Store {
   createList(state, action) {
     let attributes = Object.assign({}, action.attributes, { id: uuid() })
     return Tesseract.insert(state.lists, state.lists.length, attributes)
+  }
+
+  deleteList(state, action) {
+    let listIndex = this._findIndex(state.lists, (l) => l.id === action.listId)
+
+    return Tesseract.remove(state.lists, listIndex)
   }
 
   updateCardTitle(state, action) {
@@ -82,7 +90,7 @@ export default class Store {
 
   deleteCard(state, action) {
     let cards     = state.cards
-    let cardIndex = this._findIndex(cards, (c) => c.id === action.id)
+    let cardIndex = this._findIndex(cards, (c) => c.id === action.cardId)
 
     return Tesseract.remove(cards, cardIndex)
   }
