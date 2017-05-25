@@ -14,7 +14,7 @@ export default class Store {
       switch(action.type) {
         case "CREATE_CARD":
           newState = this.createCard(state, action)
-          break;
+          break; 
         case "MOVE_CARD":
           newState = this.moveCard(state, action)
           break;

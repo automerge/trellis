@@ -7,10 +7,56 @@ import Store from '../lib/store'
 import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import path from 'path'
+import ss from '../slack-signaler'
+import webrtc from '../webrtc'
+import Tesseract from 'tesseract'
+
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+
+    window.PEERS = []
+
+    this.doc_id = process.env.TRELLIS_DOC_ID
+    this.token = process.env.SLACK_BOT_TOKEN
+
+    if (this.token && this.doc_id) {
+      let bot = ss.init({doc_id: this.doc_id, bot_token: this.token })
+
+      webrtc.on('disconnect', (peer) => {
+        console.log("PEER: disconnected",peer.id)
+        window.PEERS.splice(window.PEERS.indexOf(peer))
+      })
+
+      webrtc.on('connect', (peer) => {
+        console.log("PEER: connected", peer.id)
+        window.PEERS.push(peer)
+        peer.on('message', (m) => {
+          if (m.deltas) {
+            if (m.deltas.length > 0) {
+              app.state.store.dispatch({type: "APPLY_DELTAS", deltas: m.deltas})
+            }
+          }
+          if (m.vectorClock) {
+            let deltas = Tesseract.getDeltasAfter(app.state.store.getState(), m.vectorClock)
+            let reply = {
+              vectorClock: Tesseract.getVClock(app.state.store.getState()), 
+              deltas: deltas.slice(0, 5) // just send up to five deltas at a time
+            }
+            peer.send(reply)
+          }
+        })
+
+        peer.send({vectorClock: Tesseract.getVClock(app.state.store.getState())})
+      })
+      webrtc.join(bot)
+    } else {
+      console.log("Network disabled")
+      console.log("TRELLIS_DOC_ID:", this.doc_id)
+      console.log("SLACK_BOT_TOKEN:", this.token)
+    }
+
     window.app = this;
 
     this.autoSave = this.autoSave.bind(this)
@@ -75,7 +121,7 @@ export default class App extends React.Component {
         <Board store={ this.state.store } />
         <Changes />
         <Inspector store={ this.state.store } />
-        <Peers docId={ this.props.docId } webrtc={ this.props.webrtc } />
+        <Peers docId={ this.doc_id } webrtc={ webrtc } />
       </div>
     )
   }
