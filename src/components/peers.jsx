@@ -8,7 +8,7 @@ export default class Peers extends React.Component {
 
     this.props.webrtc.on('connect', (peer) => {
       let peers = this.state.peers
-      peers[peer.id] = { connected: true }
+      peers[peer.id] = { connected: true, lastActivity: Date.now() }
       this.setState({ peers: peers })
     })
 
@@ -16,6 +16,14 @@ export default class Peers extends React.Component {
       let peers = this.state.peers
       peers[peer.id] = { connected: false }
       this.setState({ peers: peers })
+    })
+
+    this.props.webrtc.on('message', (peer, message) => {
+      let peers = this.state.peers
+      if (message.deltas && message.deltas.length > 0) {
+        peers[peer.id] = { connected: true, lastActivity: Date.now() }
+        this.setState({ peers: peers })
+      }
     })
   }
 
@@ -29,9 +37,17 @@ export default class Peers extends React.Component {
       let peer = peers[id]
       let ledColor = peer.connected ? "green" : "yellow"
       let ledPath = "assets/images/LED-" + ledColor + ".svg"
+
+      let activity = ""
+      if (peer.lastActivity) {
+        let t = new Date(peer.lastActivity)
+        activity = t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + "." + t.getMilliseconds()
+      }
+
       return <tr>
             <td className="LED"><img src={ledPath} /></td>
             <td className="user">{this.formatUUID(id)}…</td>
+            <td className="activity">{activity}</td>
           </tr>
     })
 
