@@ -18,7 +18,7 @@ export default class App extends React.Component {
 
     this.autoSave = this.autoSave.bind(this)
 
-    this.state = { savePath: null, store: new Store({seedData: true}) }
+    this.state = { savePath: null, store: new Store() }
     this.state.store.subscribe(this.autoSave)
 
     this.network = new Network({

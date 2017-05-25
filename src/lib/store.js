@@ -5,7 +5,7 @@ import uuid from './uuid'
 import seedData from './seed_data'
 
 export default class Store {
-  constructor(config) {
+  constructor() {
     let tesseract = new Tesseract.init()
 
     this.redux = createStore((state = tesseract, action) => {
@@ -123,6 +123,7 @@ export default class Store {
     let data      = seedData()
     let tesseract = new Tesseract.init()
 
+    tesseract = Tesseract.set(tesseract, "docId", uuid())
     tesseract = Tesseract.set(tesseract, "cards", data.cards)
     tesseract = Tesseract.set(tesseract, "lists", data.lists)
 
