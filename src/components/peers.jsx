@@ -4,29 +4,34 @@ export default class Peers extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { 'peers': [] }
+    this.state = { 'peers': {} }
 
     this.props.webrtc.on('connect', (peer) => {
       let peers = this.state.peers
-      peers.push(peer)
+      peers[peer.id] = { connected: true }
       this.setState({ peers: peers })
     })
+
     this.props.webrtc.on('disconnect', (peer) => {
       let peers = this.state.peers
-      peers.splice(peers.indexOf(peer))
+      peers[peer.id] = { connected: false }
       this.setState({ peers: peers })
     })
   }
 
+  formatUUID(uuid) {
+    return uuid.toUpperCase().substring(0,4)
+  }
+
   render() {
     let peers = this.state.peers
-    let peersPartial = peers.map((peer) => {
+    let peersPartial = Object.keys(peers).map((id) => {
+      let peer = peers[id]
+      let ledColor = peer.connected ? "green" : "yellow"
+      let ledPath = "assets/images/LED-" + ledColor + ".svg"
       return <tr>
-            <td className="LED"><img src="assets/images/LED-green.svg" /></td>
-            <td className="user">{peer.id}</td>
-            <td className="device">iMac</td>
-            <td className="ip">204.1.73.21</td>
-            <td className="lastChange">3 seconds ago</td>
+            <td className="LED"><img src={ledPath} /></td>
+            <td className="user">{this.formatUUID(id)}…</td>
           </tr>
     })
 
