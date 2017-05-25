@@ -21,10 +21,15 @@ html, body, #App {
 .Board {
   grid-row: 1 / 4;
   grid-column: 1 / 4;
-  background: url("../assets/images/sos.png") repeat;
   padding-left: 15pt;
   display: flex;
   flex-direction: column;
+  background-color: #5BCFFF;
+  font-family: "Nunito";
+}
+
+.Board textarea, .Board input[type="text"] {
+  font-family: "Nunito";
 }
 
 .Board__lists {
@@ -41,6 +46,7 @@ html, body, #App {
   margin: 0;
   flex-grow: 0;
   flex-shrink: 0;
+  color: #1D779C;
 }
 
 h2 {
@@ -161,23 +167,24 @@ h2 {
 }
 
 .Assignments {
-  margin-top: 4pt;
+  margin-top: 10pt;
+  float: left;
 }
 .Assignments img {
   float: right;
-  width: 20pt;
+  width: 15pt;
   margin-left: 4pt;
 }
 .Assignments__active {
-  opacity: 1.0;
+  opacity: 0.8;
 }
 .Assignments__inactive {
-  opacity: 0.25;
+  opacity: 0.2;
+  filter: grayscale(100%)
 }
 
 .AddList {
   margin-right: 20px;
-  background: #AAA;
   padding: 10px;
   border-radius: 4px;
   width: 200px;

@@ -13,7 +13,8 @@
   padding: 10px;
   border: none;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 14px;
+  color: #666;
 }
 
 .AddCard textarea:focus {

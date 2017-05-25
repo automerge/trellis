@@ -43,7 +43,7 @@ export default class List extends React.Component {
     return (
       // Chrome has a drag-and-drop bug that requires onDragOver to not propogate its event
       <div className="List" onDrop={ this.onDrop } onDragOver={ this.preventDefault } >
-        <a className="List__delete" onClick={ this.delete }>X</a>
+        <a className="List__delete" onClick={ this.delete }>✕</a>
         <div className="List__title">{ this.list().title }</div>
         { listCardsPartial }
         <AddCard listId={ this.props.listId } store={ this.props.store }/>
