@@ -3,7 +3,9 @@
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 10px;
-  border: 2px solid #666;
+  font-size: 14px;
+  box-shadow: 0 2px 10px 0px #59ADD0;
+  color: #777;
 }
 
 .ListCard__title {
@@ -27,5 +29,8 @@
 
 .ListCard textarea {
   font-size: 14px;
-  padding: 5px;
+  border: none;
+  outline: none;
+  margin-top: -1px;
+  margin-left: -2px;
 }

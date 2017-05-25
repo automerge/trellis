@@ -28,7 +28,7 @@ export default class ListCard extends React.Component {
   }
 
   editTitle() {
-    this.setState({ editMode: true })
+    this.setState({ editMode: true }, () => this.titleInput.focus())
   }
 
   handleKeyDown(event) {
@@ -51,7 +51,9 @@ export default class ListCard extends React.Component {
     let title = ""
 
     if(this.state.editMode) {
-      title = <textarea defaultValue={ this.card().title } onKeyDown={ this.handleKeyDown } />
+      title = <textarea 
+        ref= { (input) => this.titleInput = input }
+        defaultValue={ this.card().title } onKeyDown={ this.handleKeyDown } />
     } else {
       title = <div onClick={ this.editTitle } > { this.card().title }</div>
     }
@@ -61,7 +63,7 @@ export default class ListCard extends React.Component {
         className="ListCard"
         draggable="true"
         onDragStart={ this.onDragStart } >
-        <div className="ListCard__delete" onClick={ this.delete }>x</div>
+        <div className="ListCard__delete" onClick={ this.delete }>✕</div>
         <div className="ListCard__title"> { title } </div>
         <div style={{ clear: "both" }} />
 

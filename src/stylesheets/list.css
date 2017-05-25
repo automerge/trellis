@@ -1,17 +1,18 @@
 .List {
   margin-right: 20px;
-  background: #AAA;
   padding: 10px;
-  border-radius: 4px;
-  border: 2px solid #333;
-  width: 200px;
+  width: 240px;
+  overflow-y: scroll;
   flex-shrink: 0;
+  color: #E0F6FF;
 }
 
 .List__title {
   text-transform: uppercase;
   font-weight: bold;
   margin-bottom: 10px;
+  font-family: "Open Sans";
+  font-size: 18px;
 }
 
 .List__delete {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>microscope</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="microscope" fill-rule="nonzero" fill="#333333">
+            <g id="microscope-icon" transform="translate(6.000000, 0.000000)">
+                <polygon id="Shape" points="0.13104 37.47198 29.3013 37.47198 29.3013 41.67198 0.13104 41.67198"></polygon>
+                <polygon id="Shape" points="16.1259 0.34125 19.789434 1.785 18.911718 4.012974 15.248184 2.569224"></polygon>
+                <polygon id="Shape" points="13.5975 2.884224 19.82526 5.33862 13.90746 20.35866 7.6797 17.904264"></polygon>
+                <polygon id="Shape" points="9.81078 20.2125 7.284228 19.228104 5.971728 20.573406 7.743624 22.312458"></polygon>
+                <polygon id="Shape" points="11.05776 23.59224 13.518708 23.526615 13.4858955 21.656313 10.9593435 20.671917"></polygon>
+                <path d="M20.67198,34.9125 C20.40948,35.240625 20.114178,35.535948 19.818876,35.798448 L25.331376,35.798448 C26.807928,33.075 27.693876,29.728188 27.693876,26.053188 C27.693876,18.834228 24.281376,12.731208 19.523616,10.598448 L17.784564,14.962668 C21.197064,16.504866 23.625084,20.868708 23.625084,26.020428 C23.625084,28.875126 22.870386,31.467408 21.656334,33.468708 L15.093834,30.679656 L18.243834,30.679656 L18.243834,27.529656 L2.592114,27.529656 L2.592114,30.679656 L10.893834,30.679656 L20.67198,34.9125 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>
