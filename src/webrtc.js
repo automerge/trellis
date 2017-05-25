@@ -45,7 +45,7 @@ function create_webrtc(peer) {
     console.log("notice:statechange",peer.id,webrtc.iceConnectionState, event)
     if (webrtc.iceConnectionState == "failed") {
       delete Peers[peer.id]
-      HANDLERS.disconnect(peer)
+      invoke('disconnect',peer)
       if (Handshakes[peer.id]) {
         Handshakes[peer.id]()
       }
@@ -57,12 +57,13 @@ function create_webrtc(peer) {
   webrtc.onaddstream    = notice(peer,"onaddstream")
   webrtc.onremovestream = notice(peer,"onremovestream")
   webrtc.ondatachannel  = function(event) {
+    console.log("DATA CHANNEL!")
     peer.data_channel = event.channel
     peer.data_channel.onmessage = msg => process_message(peer, msg)
     peer.data_channel.onerror = e => notice(peer,"datachannel error",e)
     peer.data_channel.onclose = () => notice(peer,"datachannel closed")
     peer.data_channel.onopen = () => notice(peer,"datachannel opened")
-    HANDLERS.connect(peer)
+    invoke('connect',peer)
   }
   peer.webrtc = webrtc
 }
@@ -89,13 +90,15 @@ function beginHandshake(id, handler) {
   delete Handshakes[id]
   let peer = new Peer(id,handler)
 
+  console.log("DATA CHANNEL START")
   let data = peer.webrtc.createDataChannel("datachannel",{protocol: "tcp"});
   data.onmessage = msg => process_message(peer, msg)
   data.onclose   = notice(peer,"data:onclose")
   data.onerror   = notice(peer,"data:error")
   data.onopen    = (event) => {
+    console.log("DATA CHANNEL OPEN!")
     peer.data_channel = data
-    HANDLERS.connect(peer)
+    invoke('connect',peer)
   }
   peer.webrtc.createOffer(desc => {
     peer.webrtc.setLocalDescription(desc,
@@ -160,13 +163,21 @@ function process_message(peer, msg) {
 
   let message = JSON.parse(data)
   peer.handlers.message(message)
-  HANDLERS.message(peer,message)
+  invoke('message',peer,message)
 }
 
-let HANDLERS = { message: () => {}, connect: () => {}, disconnect: () => {} }
+let HANDLERS = { message: [], connect: [], disconnect: [] }
+
+function invoke() {
+  let args = Array.from(arguments)
+  let type = args.shift()
+  HANDLERS[type].forEach((handler) => handler(...args))
+}
 
 function onHandler(type, handler) {
-  HANDLERS[type] = handler
+  if (HANDLERS[type]) {
+    HANDLERS[type].push(handler)
+  }
 }
 
 module.exports = {
