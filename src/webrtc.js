@@ -1,6 +1,14 @@
 var Peers = {}
 var Handshakes = {}
-var WebRTCServers = null
+var WebRTCConfig = {
+  'iceServers': [
+    {url:'stun:stun.l.google.com:19302'},
+    {url:'stun:stun1.l.google.com:19302'},
+    {url:'stun:stun2.l.google.com:19302'},
+    {url:'stun:stun3.l.google.com:19302'},
+    {url:'stun:stun4.l.google.com:19302'}
+  ]
+};
 var lzmajs = require('lzma-purejs');
 
 var notice = (peer,desc) => (event) => console.log("notice:" + peer.id + ": " + desc, event)
@@ -33,7 +41,7 @@ function Peer(id, send_signal) {
 }
 
 function create_webrtc(peer) {
-  var webrtc = new RTCPeerConnection(WebRTCServers)
+  var webrtc = new RTCPeerConnection(WebRTCConfig)
 
   webrtc.onicecandidate = function(event) {
     if (event.candidate) {
