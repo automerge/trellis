@@ -13,24 +13,29 @@ export default class Peers extends React.Component {
 
     let webrtc = nextProps.network.webrtc
 
-    webrtc.on('connect', (peer) => {
+    console.log("IN REACT - SETUP WEBRTC SIGNALS")
+    webrtc.on('peer', (peer) => {
       let peers = this.state.peers
-      peers[peer.id] = { connected: true, name: peer.name, lastActivity: Date.now() }
+      peers[peer.id] = { connected: false, name: peer.name, lastActivity: Date.now() }
       this.setState({ peers: peers })
-    })
 
-    webrtc.on('disconnect', (peer) => {
-      let peers = this.state.peers
-      peers[peer.id] = { connected: false }
-      this.setState({ peers: peers, name: peer.name })
-    })
-
-    webrtc.on('message', (peer, message) => {
-      let peers = this.state.peers
-      if (message.deltas && message.deltas.length > 0) {
+      peer.on('connect', () => {
+        let peers = this.state.peers
         peers[peer.id] = { connected: true, name: peer.name, lastActivity: Date.now() }
         this.setState({ peers: peers })
-      }
+      })
+      peer.on('disconnect', () => {
+        let peers = this.state.peers
+        peers[peer.id] = { connected: false }
+        this.setState({ peers: peers, name: peer.name })
+      })
+      peer.on('message', (message) => {
+        let peers = this.state.peers
+        if (message.deltas && message.deltas.length > 0) {
+          peers[peer.id] = { connected: true, name: peer.name, lastActivity: Date.now() }
+          this.setState({ peers: peers })
+        }
+      })
     })
   }
 

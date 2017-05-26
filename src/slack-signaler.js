@@ -29,12 +29,19 @@ function init(config) {
   let NAME = config.name || "unknown"
   let DOC_ID;
   let last_ts
+  let onConnectHandler = () => {}
+  let CONNECT_DISPATCH = (h) => {
+    console.log("GET SLACK CONNECT HANDLER")
+    onConnectHandler = h
+  }
 
   rtm = new RtmClient(config.bot_token);
   DOC_ID = config.doc_id
 
   // The client will emit an RTM.AUTHENTICATED event on successful connection, with the `rtm.start` payload
   rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
+    console.log("CALL SLACK CONNECT HANDLER")
+    onConnectHandler()
     for (const c of rtmStartData.channels) {
       if (c.is_member && c.name ==='signals') { CHANNEL = c.id }
     }
@@ -86,7 +93,13 @@ function init(config) {
   });
   return { 
     on: (type,handler) => { HANDLERS[type] = handler },
-    start: () => { rtm.start() },
+    start: (handler) => {
+      rtm.start()
+      if (handler) {
+        console.log("SELF HANDLER")
+        handler(SESSION, NAME, CONNECT_DISPATCH)
+      }
+    },
     stop: () => { rtm.stop() }
   }
 }

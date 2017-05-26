@@ -14,31 +14,37 @@ var lzmajs = require('lzma-purejs');
 var notice = (peer,desc) => (event) => console.log("notice:" + peer.id + ": " + desc, event)
 
 function Peer(id, name, send_signal) {
-  let self   = this
+  this.id             = id
+  this.name           = name
+  this.handlers       = { connect: [], disconnect: [], message: [] }
+  this.self           = (send_signal == undefined)
 
-  self.id             = id
-  self.name           = name
-  self.handlers = { message: () => {} }
-
-  self.on = (type,handler) => {
-    self.handlers[type] = handler
+  this.on = (type,handler) => {
+    this.handlers[type].push(handler)
   }
 
-  self.is_connected        = is_connected
+  this.dispatch = (type,arg) => {
+    this.handlers[type].forEach((h) => h(arg))
+  }
 
-  self.send_signal      = send_signal
+  this.send_signal      = send_signal
 
-  self.send    = (message) => {
+  this.send    = (message) => {
+    if (this.self) return; // dont send messages to ourselves
     //console.log("Sending message",message)
     var buffer = new Buffer(JSON.stringify(message), 'utf8')
     var compressed = lzmajs.compressFile(buffer);
     //console.log("Compressed size: ", compressed.length)
-    self.data_channel.send(compressed)
+    this.data_channel.send(compressed)
   }
 
-  Peers[self.id] = self
+  Peers[this.id] = this
 
-  create_webrtc(self)
+  if (!this.self) {
+    create_webrtc(this)
+  }
+
+  dispatch("peer", this)
 }
 
 function create_webrtc(peer) {
@@ -54,7 +60,7 @@ function create_webrtc(peer) {
     console.log("notice:statechange",peer.id,webrtc.iceConnectionState, event)
     if (webrtc.iceConnectionState == "failed") {
       delete Peers[peer.id]
-      invoke('disconnect',peer)
+      peer.dispatch('disconnect')
       if (Handshakes[peer.id]) {
         Handshakes[peer.id]()
       }
@@ -72,11 +78,12 @@ function create_webrtc(peer) {
     peer.data_channel.onerror = e => notice(peer,"datachannel error",e)
     peer.data_channel.onclose = () => notice(peer,"datachannel closed")
     peer.data_channel.onopen = () => notice(peer,"datachannel opened")
-    invoke('connect',peer)
+    peer.dispatch('connect')
   }
   peer.webrtc = webrtc
 }
 
+/*
 function is_connected() {
   let self = this;
 
@@ -94,6 +101,7 @@ function is_connected() {
       return false
   }
 }
+*/
 
 function beginHandshake(id, name, handler) {
   delete Handshakes[id]
@@ -107,7 +115,7 @@ function beginHandshake(id, name, handler) {
   data.onopen    = (event) => {
     console.log("DATA CHANNEL OPEN!")
     peer.data_channel = data
-    invoke('connect',peer)
+    peer.dispatch('connect')
   }
   peer.webrtc.createOffer(desc => {
     peer.webrtc.setLocalDescription(desc,
@@ -132,7 +140,7 @@ function processHello(msg, handler) {
 function processMessage(msg, signal, handler) {
   let id = msg.session
   let name = msg.name
-  let peer = Peers[id] || (new Peer(id,name, handler))
+  let peer = Peers[id] || (new Peer(id, name, handler))
 
   var callback = function() { };
   if (signal.type == "offer") callback = function() {
@@ -155,7 +163,7 @@ function processMessage(msg, signal, handler) {
   }
 }
 
-function join(signaler, handler) {
+function join(signaler) {
   signaler.on('hello', processHello)
   signaler.on('offer', processMessage)
   signaler.on('reply', processMessage)
@@ -163,7 +171,14 @@ function join(signaler, handler) {
     console.log("ERROR-MESSAGE",message)
     console.log("ERROR",e)
   })
-  signaler.start()
+  signaler.start((id,name,onConnect) => {
+    console.log("MAKE SELF PEER")
+    let me = new Peer(id,name)
+    onConnect(() => {
+      console.log("CONNECT SELF PEER")
+      me.dispatch('connect')
+    })
+  })
 }
 
 function process_message(peer, msg) {
@@ -175,13 +190,12 @@ function process_message(peer, msg) {
   //console.log("INCOMING MSG",msg)
 
   let message = JSON.parse(data)
-  peer.handlers.message(message)
-  invoke('message',peer,message)
+  peer.dispatch('message',message)
 }
 
-let HANDLERS = { message: [], connect: [], disconnect: [] }
+let HANDLERS = { peer: [] }
 
-function invoke() {
+function dispatch() {
   let args = Array.from(arguments)
   let type = args.shift()
   HANDLERS[type].forEach((handler) => handler(...args))
