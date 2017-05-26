@@ -26,11 +26,26 @@ export default class Network extends EventEmitter {
         window.PEERS.push(peer)
 
         peer.on('message', (m) => {
+          let store = this.store
+
           if (m.deltas && m.deltas.length > 0) {
+            console.log("BEFORE DISPATCH")
+            console.log("m.deltas", m.deltas)
+            console.log("m.vectorClock", m.vectorClock)
+            console.log("Tesseract.getVClock(store.getState()", Tesseract.getVClock(store.getState()))
+            console.log("Tesseract.getDeltasAfter(store.getState(), m.vectorClock", Tesseract.getDeltasAfter(store.getState(), m.vectorClock))
+
             this.store.dispatch({
               type: "APPLY_DELTAS",
               deltas: m.deltas
             })
+
+            console.log("AFTER DISPATCH")
+            console.log("m.deltas", m.deltas)
+            console.log("m.vectorClock", m.vectorClock)
+            console.log("Tesseract.getVClock(store.getState()", Tesseract.getVClock(store.getState()))
+            console.log("Tesseract.getDeltasAfter(store.getState(), m.vectorClock", Tesseract.getDeltasAfter(store.getState(), m.vectorClock))
+
           }
 
           if (m.vectorClock) {
@@ -39,6 +54,7 @@ export default class Network extends EventEmitter {
               vectorClock: Tesseract.getVClock(this.store.getState()), 
               deltas: deltas.slice(0, 5) // just send up to five deltas at a time
             }
+
             peer.send(reply)
           }
         })
