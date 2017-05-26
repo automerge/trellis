@@ -21,16 +21,15 @@ export default class App extends React.Component {
     this.state = { savePath: null, store: new Store() }
     this.state.store.subscribe(this.autoSave)
 
-    this.network = new Network({
+    this.state.network = new Network({
       docId: process.env.TRELLIS_DOC_ID,
       token: process.env.SLACK_BOT_TOKEN,
       store: this.state.store
     })
 
-    this.network.on("deltasReceived", (deltas) => {
+    this.state.network.on("deltasReceived", (deltas) => {
       this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
     })
-
 
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
@@ -47,6 +46,17 @@ export default class App extends React.Component {
 
         this.setState({ savePath: openPath }, () => {
           this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+          this.setState({
+            network: new Network({
+              docId: this.state.store.getState().docId,
+              token: process.env.SLACK_BOT_TOKEN,
+              store: this.state.store
+            })
+          }, () => {
+            this.state.network.on("deltasReceived", (deltas) => {
+              this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
+            })
+          })
 
           remote.getCurrentWindow().setTitle(name)
           this.autoSave()
@@ -91,7 +101,7 @@ export default class App extends React.Component {
         <Board store={ this.state.store } />
         <Changes />
         <Inspector store={ this.state.store } />
-        <Peers network={ this.network } />
+        <Peers network={ this.state.network } />
       </div>
     )
   }
