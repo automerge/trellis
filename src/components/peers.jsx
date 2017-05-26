@@ -3,22 +3,27 @@ import React from 'react'
 export default class Peers extends React.Component {
   constructor(props) {
     super(props)
-
     this.state = { 'peers': {} }
+  }
 
-    this.props.webrtc.on('connect', (peer) => {
+  // The constructor is not necessarily called on
+  // re-renders, so set our webrtc listeners here
+  componentDidMount() {
+    let webrtc = this.props.network.webrtc
+
+    webrtc.on('connect', (peer) => {
       let peers = this.state.peers
       peers[peer.id] = { connected: true, lastActivity: Date.now() }
       this.setState({ peers: peers })
     })
 
-    this.props.webrtc.on('disconnect', (peer) => {
+    webrtc.on('disconnect', (peer) => {
       let peers = this.state.peers
       peers[peer.id] = { connected: false }
       this.setState({ peers: peers })
     })
 
-    this.props.webrtc.on('message', (peer, message) => {
+    webrtc.on('message', (peer, message) => {
       let peers = this.state.peers
       if (message.deltas && message.deltas.length > 0) {
         peers[peer.id] = { connected: true, lastActivity: Date.now() }
@@ -57,7 +62,7 @@ export default class Peers extends React.Component {
 
       <div className="docID">
         <span className="label">DocID</span>
-        <span className="ID">{ this.props.docId }</span>
+        <span className="ID">{ this.props.network.doc_id }</span>
       </div>
     </div>
   }

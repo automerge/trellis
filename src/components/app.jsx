@@ -30,7 +30,8 @@ export default class App extends React.Component {
     this.network.on("deltasReceived", (deltas) => {
       this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
     })
-    
+
+
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
         this.state.store.dispatch({ type: "NEW_DOCUMENT" })
@@ -46,6 +47,7 @@ export default class App extends React.Component {
 
         this.setState({ savePath: openPath }, () => {
           this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+
           remote.getCurrentWindow().setTitle(name)
           this.autoSave()
         })
@@ -72,7 +74,7 @@ export default class App extends React.Component {
           this.autoSave()
         })
       }
-    }) 
+    })
   }
 
   autoSave() {
@@ -89,7 +91,7 @@ export default class App extends React.Component {
         <Board store={ this.state.store } />
         <Changes />
         <Inspector store={ this.state.store } />
-        <Peers docId={ process.env.TRELLIS_DOC_ID } webrtc={ this.network.webrtc } />
+        <Peers network={ this.network } />
       </div>
     )
   }
