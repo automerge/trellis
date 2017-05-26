@@ -39,8 +39,6 @@ export default class Peers extends React.Component {
   }
 
   render() {
-    if(!this.props.network) return <div></div>
-
     let peers = this.state.peers
     let peersPartial = Object.keys(peers).map((id) => {
       let peer = peers[id]
@@ -53,6 +51,8 @@ export default class Peers extends React.Component {
         activity = t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + "." + t.getMilliseconds()
       }
 
+
+
       return <tr>
             <td className="LED"><img src={ledPath} /></td>
             <td className="user">{this.formatUUID(id)}…</td>
@@ -60,14 +60,24 @@ export default class Peers extends React.Component {
           </tr>
     })
 
-    return <div className="Peers">
-      <h2>Peers <img src="assets/images/peers.svg" /></h2>
-      <table><tbody>{ peersPartial }</tbody></table>
+    let connected = this.props.network && this.props.network.connected() ? "on" : "off"
+    let switchPath = "assets/images/switch-" + connected + ".svg"
 
-      <div className="docID">
+    let docIdPartial = '';
+    if (this.props.network && this.props.network.doc_id) {
+      docIdPartial = <div className="docID">
         <span className="label">DocID</span>
         <span className="ID">{ this.props.network.doc_id }</span>
       </div>
+    }
+
+    return <div className="Peers">
+      <h2>Peers <img src="assets/images/peers.svg" /></h2>
+      <img className="networkSwitch" src={switchPath} />
+      
+      <table><tbody>{ peersPartial }</tbody></table>
+
+      { docIdPartial }
     </div>
   }
 }

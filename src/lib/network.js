@@ -51,4 +51,8 @@ export default class Network extends EventEmitter {
       console.log("SLACK_BOT_TOKEN:", this.token)
     }
   }
+
+  connected() {
+    return (this.token && this.doc_id);
+  }
 }
