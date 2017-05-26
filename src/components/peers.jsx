@@ -22,13 +22,13 @@ export default class Peers extends React.Component {
     webrtc.on('disconnect', (peer) => {
       let peers = this.state.peers
       peers[peer.id] = { connected: false }
-      this.setState({ peers: peers })
+      this.setState({ peers: peers, name: peer.name })
     })
 
     webrtc.on('message', (peer, message) => {
       let peers = this.state.peers
       if (message.deltas && message.deltas.length > 0) {
-        peers[peer.id] = { connected: true, lastActivity: Date.now() }
+        peers[peer.id] = { connected: true, name: peer.name, lastActivity: Date.now() }
         this.setState({ peers: peers })
       }
     })
