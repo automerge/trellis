@@ -15,7 +15,7 @@ export default class Peers extends React.Component {
 
     webrtc.on('connect', (peer) => {
       let peers = this.state.peers
-      peers[peer.id] = { connected: true, lastActivity: Date.now() }
+      peers[peer.id] = { connected: true, name: peer.name, lastActivity: Date.now() }
       this.setState({ peers: peers })
     })
 
@@ -42,6 +42,8 @@ export default class Peers extends React.Component {
     let peers = this.state.peers
     let peersPartial = Object.keys(peers).map((id) => {
       let peer = peers[id]
+      let name = peer.name
+      console.log("PEER NAME",peer,name)
       let ledColor = peer.connected ? "green" : "yellow"
       let ledPath = "assets/images/LED-" + ledColor + ".svg"
 
@@ -52,10 +54,11 @@ export default class Peers extends React.Component {
       }
 
 
+            //<td className="user">{this.formatUUID(id)}…</td>
 
       return <tr>
             <td className="LED"><img src={ledPath} /></td>
-            <td className="user">{this.formatUUID(id)}…</td>
+            <td className="user">{name}</td>
             <td className="activity">{activity}</td>
           </tr>
     })

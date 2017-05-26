@@ -40,6 +40,7 @@ export default class App extends React.Component {
             network: new Network({
               docId: this.state.store.getState().docId,
               token: process.env.SLACK_BOT_TOKEN,
+              name:  process.env.NAME,
               store: this.state.store
             })
           }, () => {

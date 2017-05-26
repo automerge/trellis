@@ -13,10 +13,11 @@ var lzmajs = require('lzma-purejs');
 
 var notice = (peer,desc) => (event) => console.log("notice:" + peer.id + ": " + desc, event)
 
-function Peer(id, send_signal) {
+function Peer(id, name, send_signal) {
   let self   = this
 
   self.id             = id
+  self.name           = name
   self.handlers = { message: () => {} }
 
   self.on = (type,handler) => {
@@ -28,10 +29,10 @@ function Peer(id, send_signal) {
   self.send_signal      = send_signal
 
   self.send    = (message) => {
-    console.log("Sending message",message)
+    //console.log("Sending message",message)
     var buffer = new Buffer(JSON.stringify(message), 'utf8')
     var compressed = lzmajs.compressFile(buffer);
-    console.log("Compressed size: ", compressed.length)
+    //console.log("Compressed size: ", compressed.length)
     self.data_channel.send(compressed)
   }
 
@@ -94,9 +95,9 @@ function is_connected() {
   }
 }
 
-function beginHandshake(id, handler) {
+function beginHandshake(id, name, handler) {
   delete Handshakes[id]
-  let peer = new Peer(id,handler)
+  let peer = new Peer(id,name,handler)
 
   console.log("DATA CHANNEL START")
   let data = peer.webrtc.createDataChannel("datachannel",{protocol: "tcp"});
@@ -117,8 +118,10 @@ function beginHandshake(id, handler) {
   }, e => console.log("error with createOffer",e));
 }
 
-function processHello(id, handler) {
-  let begin = () => { beginHandshake(id,handler) }
+function processHello(msg, handler) {
+  let id = msg.session
+  let name = msg.name
+  let begin = () => { beginHandshake(id,name,handler) }
   if (id in Peers) {
     Handshakes[id] = begin
   } else {
@@ -126,8 +129,10 @@ function processHello(id, handler) {
   }
 }
 
-function processMessage(id, signal, handler) {
-  let peer = Peers[id] || (new Peer(id,handler))
+function processMessage(msg, signal, handler) {
+  let id = msg.session
+  let name = msg.name
+  let peer = Peers[id] || (new Peer(id,name, handler))
 
   var callback = function() { };
   if (signal.type == "offer") callback = function() {
@@ -162,12 +167,12 @@ function join(signaler, handler) {
 }
 
 function process_message(peer, msg) {
-  console.log(msg)
-  console.log("wire size",msg.data.length)
+  //console.log(msg)
+  //console.log("wire size",msg.data.length)
   var decompressed = lzmajs.decompressFile(new Buffer(msg.data));
   var data = decompressed.toString('utf8');
-  console.log("message size",data.length)
-  console.log("INCOMING MSG",msg)
+  //console.log("message size",data.length)
+  //console.log("INCOMING MSG",msg)
 
   let message = JSON.parse(data)
   peer.handlers.message(message)

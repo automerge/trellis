@@ -10,10 +10,11 @@ export default class Network extends EventEmitter {
     this.token  = config.token
     this.doc_id = config.docId
     this.store  = config.store
+    this.name   = config.name
     this.webrtc = webrtc
 
     if (this.token && this.doc_id) {
-      let bot = ss.init({doc_id: this.doc_id, bot_token: this.token })
+      let bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token })
 
       webrtc.on('disconnect', (peer) => {
         console.log("PEER: disconnected",peer.id)
@@ -21,7 +22,7 @@ export default class Network extends EventEmitter {
       })
 
       webrtc.on('connect', (peer) => {
-        console.log("PEER: connected", peer.id)
+        console.log("PEER: connected", peer.id, peer.name)
         window.PEERS.push(peer)
 
         peer.on('message', (m) => {

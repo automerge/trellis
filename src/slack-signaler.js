@@ -25,7 +25,8 @@ var UUID = (function() {
 function init(config) {
   let HANDLERS = { hello: () => {}, reply: () => {}, offer: () => {}, error: () => {} }
   let CHANNEL;
-  let USER_ID = UUID.generate()
+  let SESSION = UUID.generate()
+  let NAME = config.name || "unknown"
   let DOC_ID;
   let last_ts
 
@@ -42,7 +43,7 @@ function init(config) {
 
   // you need to wait for the client to fully connect before you can send messages
   rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, function () {
-    let msg = JSON.stringify({ action: "hello", user:USER_ID, doc_id:DOC_ID })
+    let msg = JSON.stringify({ action: "hello", name:NAME, session:SESSION, doc_id:DOC_ID })
     rtm.sendMessage(msg, CHANNEL);
   });
 
@@ -53,22 +54,22 @@ function init(config) {
     console.log('Message:', message);
     try {
       let msg = JSON.parse(message.text)
-      if (msg.user != USER_ID) {
+      if (msg.session != SESSION) {
         if (msg.doc_id == DOC_ID) {
           if (msg.action == "hello") {
-            HANDLERS['hello'](msg.user, (reply) => {
-                let msgJSON = JSON.stringify({ action: "offer", user:USER_ID, doc_id:DOC_ID, to:msg.user, body:reply})
+            HANDLERS['hello'](msg, (reply) => {
+                let msgJSON = JSON.stringify({ action: "offer", name: NAME, session:SESSION, doc_id:DOC_ID, to:msg.session, body:reply})
                 rtm.sendMessage(msgJSON, CHANNEL);
             })
           }
-          if (msg.action == "offer" && msg.to == USER_ID) {
-            HANDLERS['offer'](msg.user, msg.body, (reply) => {
-                let msgJSON = JSON.stringify({ action: "reply", user:USER_ID, doc_id:DOC_ID, to:msg.user, body:reply})
+          if (msg.action == "offer" && msg.to == SESSION) {
+            HANDLERS['offer'](msg, msg.body, (reply) => {
+                let msgJSON = JSON.stringify({ action: "reply", name: NAME, session:SESSION, doc_id:DOC_ID, to:msg.session, body:reply})
                 rtm.sendMessage(msgJSON, CHANNEL);
             })
           }
-          if (msg.action == "reply" && msg.to == USER_ID) {
-            HANDLERS['reply'](msg.user, msg.body)
+          if (msg.action == "reply" && msg.to == SESSION) {
+            HANDLERS['reply'](msg, msg.body)
           }
         } else {
           console.log("Message about a document other than the one we're managing - ignore")
