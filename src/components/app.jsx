@@ -21,16 +21,6 @@ export default class App extends React.Component {
     this.state = { savePath: null, store: new Store() }
     this.state.store.subscribe(this.autoSave)
 
-    this.state.network = new Network({
-      docId: process.env.TRELLIS_DOC_ID,
-      token: process.env.SLACK_BOT_TOKEN,
-      store: this.state.store
-    })
-
-    this.state.network.on("deltasReceived", (deltas) => {
-      this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
-    })
-
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
         this.state.store.dispatch({ type: "NEW_DOCUMENT" })

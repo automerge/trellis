@@ -8,8 +8,10 @@ export default class Peers extends React.Component {
 
   // The constructor is not necessarily called on
   // re-renders, so set our webrtc listeners here
-  componentDidMount() {
-    let webrtc = this.props.network.webrtc
+  componentWillReceiveProps(nextProps) {
+    if(!nextProps.network) return
+
+    let webrtc = nextProps.network.webrtc
 
     webrtc.on('connect', (peer) => {
       let peers = this.state.peers
@@ -37,6 +39,8 @@ export default class Peers extends React.Component {
   }
 
   render() {
+    if(!this.props.network) return <div></div>
+
     let peers = this.state.peers
     let peersPartial = Object.keys(peers).map((id) => {
       let peer = peers[id]

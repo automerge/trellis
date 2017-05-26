@@ -10,6 +10,7 @@ export default class Store {
 
     this.redux = createStore((state = tesseract, action) => {
       let newState;
+      console.log("ACTION: ", action.type)
        
       switch(action.type) {
         case "CREATE_CARD":
@@ -47,9 +48,10 @@ export default class Store {
           break;
         default:
           newState = state
+
       }
 
-      if (action.type != "MERGE_DOCUMENT") {
+      if (action.type != "APPLY_DELTAS") {
         window.PEERS.forEach( (peer) => {
           try {
             let data = Tesseract.save(newState)
@@ -67,8 +69,6 @@ export default class Store {
     this.subscribe = this.redux.subscribe
     this.getState  = this.redux.getState
     this.dispatch  = this.redux.dispatch
-
-    this.dispatch({ type: "NEW_DOCUMENT" })
   }
 
   save() {
