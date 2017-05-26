@@ -52,6 +52,7 @@ export default class Store {
       }
 
       if (action.type != "APPLY_DELTAS") {
+        console.log("BROADCASTING")
         window.PEERS.forEach( (peer) => {
           try {
             let data = Tesseract.save(newState)

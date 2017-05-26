@@ -26,9 +26,10 @@ export default class Network extends EventEmitter {
 
         peer.on('message', (m) => {
           if (m.deltas && m.deltas.length > 0) {
-            if (m.deltas.length > 0) {
-              this.emit('deltasReceived', m.deltas)
-            }
+            this.store.dispatch({
+              type: "APPLY_DELTAS",
+              deltas: m.deltas
+            })
           }
 
           if (m.vectorClock) {
