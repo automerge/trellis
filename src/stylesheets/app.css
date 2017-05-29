@@ -105,6 +105,10 @@ h2 {
   font-family: Monaco, monospace;
 }
 
+.Inspector table tr.changed {
+  background: #FFF465;
+}
+
 .Inspector input[type="text"] {
   border: 1px solid #aaa;
 }
