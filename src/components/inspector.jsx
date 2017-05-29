@@ -40,15 +40,19 @@ formatAssigned(map) {
     let oldCards = this.stateHistory[this.stateHistory.length-2].cards
     if (!oldCards) return
 
+    let oldCard = undefined
     for (var i = 0; i < oldCards.length; i++) {
-      var oldCard = oldCards[i]
-      if (oldCard.id == card.id) {
-        if (card.listId != oldCard.listId ||
-            card.title != oldCard.title ||
-            !this.hashesAreEqual(card.assigned, oldCard.assigned))
-          return true
-      }
+      if (oldCards[i].id == card.id)
+        oldCard = oldCards[i]
     }
+
+    if (!oldCard)
+      return true // it didn't exist before so assume it was just created
+
+    if (card.listId != oldCard.listId ||
+        card.title != oldCard.title ||
+        !this.hashesAreEqual(card.assigned, oldCard.assigned))
+      return true
 
     return false
   }
