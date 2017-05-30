@@ -16,6 +16,7 @@ NAME="Your Name and Machine Name Here"
 
 To start the app:
 
+    $ npm update
     $ npm start
 
 To run tests:
