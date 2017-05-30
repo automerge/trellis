@@ -62,7 +62,12 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    this.open()
+    let lastFileOpened = localStorage.getItem("lastFileOpened")
+
+    if(lastFileOpened && fs.existsSync(lastFileOpened))
+      this.open(lastFileOpened)
+    else
+      this.open()
   }
 
   open(path) {
@@ -75,6 +80,7 @@ export default class App extends React.Component {
 
       this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
       remote.getCurrentWindow().setTitle(name)
+      localStorage.setItem("lastFileOpened", path)
     }
     else {
       this.state.store.dispatch({ type: "NEW_DOCUMENT" })
