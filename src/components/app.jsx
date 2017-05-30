@@ -55,6 +55,7 @@ export default class App extends React.Component {
 
         this.setState({ savePath: savePath }, () => {
           remote.getCurrentWindow().setTitle(name)
+          localStorage.setItem("lastFileOpened", savePath)
           this.autoSave()
         })
       }
