@@ -17,13 +17,13 @@ export default class Inspector extends React.Component {
     return uuid.toUpperCase().substring(0,4)
   }
 
-formatAssigned(map) {
-  if(!map) return ""
+  formatAssigned(map) {
+    if(!map) return ""
 
-  let formatted = {}
-  Object.keys(map).forEach((key) => formatted[key] = map[key])
-  return JSON.stringify(formatted)
-}
+    let formatted = {}
+    Object.keys(map).forEach((key) => formatted[key] = map[key])
+    return JSON.stringify(formatted)
+  }
 
   componentWillUpdate(nextProps, nextState) {
     this.stateHistory.push(nextState)
