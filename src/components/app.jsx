@@ -13,7 +13,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
 
-    window.app = this;
+    window.app   = this
     window.PEERS = []
 
     this.autoSave = this.autoSave.bind(this)
@@ -24,6 +24,18 @@ export default class App extends React.Component {
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
         this.state.store.dispatch({ type: "NEW_DOCUMENT" })
+        this.setState({
+          network: new Network({
+            docId: this.state.store.getState().docId,
+            token: process.env.SLACK_BOT_TOKEN,
+            name:  process.env.NAME,
+            store: this.state.store
+          })
+        }, () => {
+          this.state.network.on("deltasReceived", (deltas) => {
+            this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
+          })
+        })
         remote.getCurrentWindow().setTitle("Untitled")
       })
     })
@@ -76,6 +88,9 @@ export default class App extends React.Component {
         })
       }
     })
+  }
+
+  open(file) {
   }
 
   autoSave() {
