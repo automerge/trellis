@@ -42,7 +42,9 @@ describe('application', function () {
       assert.equal(cardTitle, "Card A")
     })
     .then(() => this.app.webContents.send("merge", [ forkBPath]))
-    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard:nth-child(4) .ListCard__title"))
+    .then(() => {
+    })
+    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard:nth-child(3) .ListCard__title"))
     .then((cardTitle) => {
       assert.equal(cardTitle, "Card B")
     })
