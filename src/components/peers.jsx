@@ -11,31 +11,9 @@ export default class Peers extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(!nextProps.network) return
 
-    let webrtc = nextProps.network.webrtc
-
-    console.log("IN REACT - SETUP WEBRTC SIGNALS")
-    webrtc.on('peer', (peer) => {
-      let peers = this.state.peers
-      peers[peer.id] = { connected: false, name: peer.name, lastActivity: Date.now() }
-      this.setState({ peers: peers })
-
-      peer.on('connect', () => {
-        let peers = this.state.peers
-        peers[peer.id] = { connected: true, name: peer.name, lastActivity: Date.now() }
-        this.setState({ peers: peers })
-      })
-      peer.on('disconnect', () => {
-        let peers = this.state.peers
-        peers[peer.id] = { connected: false }
-        this.setState({ peers: peers, name: peer.name })
-      })
-      peer.on('message', (message) => {
-        let peers = this.state.peers
-        if (message.deltas && message.deltas.length > 0) {
-          peers[peer.id] = { connected: true, name: peer.name, lastActivity: Date.now() }
-          this.setState({ peers: peers })
-        }
-      })
+    this.setState({ peers: Object.assign({},nextProps.network.peers) })
+    nextProps.network.on('peer',() => {
+      this.setState({ peers: Object.assign({},nextProps.network.peers) })
     })
   }
 
@@ -48,7 +26,6 @@ export default class Peers extends React.Component {
     let peersPartial = Object.keys(peers).map((id) => {
       let peer = peers[id]
       let name = peer.name
-      console.log("PEER NAME",peer,name)
       let ledColor = peer.connected ? "green" : "yellow"
       let ledPath = "assets/images/LED-" + ledColor + ".svg"
 

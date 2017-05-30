@@ -12,24 +12,35 @@ export default class Network extends EventEmitter {
     this.store  = config.store
     this.name   = config.name
     this.webrtc = webrtc
+    this.peers  = {}
+    window.PEERS = []
 
     if (this.token && this.doc_id) {
       let bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token })
 
+
       webrtc.on('peer', (peer) => {
-        console.log("NEW PEER:", peer.id, peer.name)
         window.PEERS.push(peer)
+        console.log("NEW PEER:", peer.id, peer.name)
+        this.peers[peer.id] = { connected: false, name: peer.name, lastActivity: Date.now() }
+        this.emit('peer')
 
         peer.on('disconnect', () => {
-          console.log("PEER: disconnected",peer.id)
           window.PEERS.splice(window.PEERS.indexOf(peer))
+          console.log("PEER: disconnected",peer.id)
+          this.peers[peer.id].connected = false
+          this.emit('peer')
         })
 
-        if (peer.self == false) {
-          peer.on('connect', () => {
+          console.log("Setting up connect handler")
+        peer.on('connect', () => {
+          this.peers[peer.id].connected = true
+          this.peers[peer.id].lastActivity = true
+          this.emit('peer')
+          if (peer.self == false) {
             peer.send({vectorClock: Tesseract.getVClock(this.store.getState())})
-          })
-        }
+          }
+        })
 
         peer.on('message', (m) => {
           let store = this.store
@@ -63,6 +74,8 @@ export default class Network extends EventEmitter {
 
             peer.send(reply)
           }
+          this.peers[peer.id].lastActivity = true
+          this.emit('peer')
         })
 
       })
