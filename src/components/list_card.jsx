@@ -58,9 +58,13 @@ export default class ListCard extends React.Component {
       title = <div onClick={ this.editTitle } > { this.card().title }</div>
     }
 
+    let klass = "ListCard"
+    if (this.props.store.didCardChange(this.card()))
+      klass += " changed"
+
     return (
       <div
-        className="ListCard"
+        className={klass}
         draggable="true"
         onDragStart={ this.onDragStart } >
         <div className="ListCard__delete" onClick={ this.delete }>✕</div>

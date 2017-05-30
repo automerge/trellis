@@ -49,6 +49,10 @@ html, body, #App {
   color: #1D779C;
 }
 
+.ListCard.changed {
+  background: #FFF465;
+}
+
 h2 {
   font-size: 20px;
   font-weight: 500;
