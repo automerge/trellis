@@ -23,19 +23,7 @@ export default class App extends React.Component {
 
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
-        this.state.store.dispatch({ type: "NEW_DOCUMENT" })
-        this.setState({
-          network: new Network({
-            docId: this.state.store.getState().docId,
-            token: process.env.SLACK_BOT_TOKEN,
-            name:  process.env.NAME,
-            store: this.state.store
-          })
-        }, () => {
-          this.state.network.on("deltasReceived", (deltas) => {
-            this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
-          })
-        })
+        this.open()
         remote.getCurrentWindow().setTitle("Untitled")
       })
     })
@@ -47,20 +35,7 @@ export default class App extends React.Component {
         let name      = path.parse(openPath).name
 
         this.setState({ savePath: openPath }, () => {
-          this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
-          this.setState({
-            network: new Network({
-              docId: this.state.store.getState().docId,
-              token: process.env.SLACK_BOT_TOKEN,
-              name:  process.env.NAME,
-              store: this.state.store
-            })
-          }, () => {
-            this.state.network.on("deltasReceived", (deltas) => {
-              this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
-            })
-          })
-
+          this.open(file)
           remote.getCurrentWindow().setTitle(name)
           this.autoSave()
         })
@@ -90,7 +65,28 @@ export default class App extends React.Component {
     })
   }
 
+  componentDidMount() {
+    this.open()
+  }
+
   open(file) {
+    if(file)
+      this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+    else
+      this.state.store.dispatch({ type: "NEW_DOCUMENT" })
+
+    this.setState({
+      network: new Network({
+        docId: this.state.store.getState().docId,
+        token: process.env.SLACK_BOT_TOKEN,
+        name:  process.env.NAME,
+        store: this.state.store
+      })
+    }, () => {
+      this.state.network.on("deltasReceived", (deltas) => {
+        this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
+      })
+    })
   }
 
   autoSave() {
