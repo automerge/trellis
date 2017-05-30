@@ -6,14 +6,14 @@ import Peers from './peers'
 import Store from '../lib/store'
 import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
-import path from 'path'
+import Path from 'path'
 import Network from '../lib/network'
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
 
-    window.app = this;
+    window.app   = this
     window.PEERS = []
 
     this.autoSave = this.autoSave.bind(this)
@@ -23,33 +23,16 @@ export default class App extends React.Component {
 
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
-        this.state.store.dispatch({ type: "NEW_DOCUMENT" })
-        remote.getCurrentWindow().setTitle("Untitled")
+        this.open()
       })
     })
 
     ipcRenderer.on("open", (event, files) => {
       if(files && files.length > 0) {
         let openPath  = files[0]
-        let file      = fs.readFileSync(openPath)
-        let name      = path.parse(openPath).name
 
         this.setState({ savePath: openPath }, () => {
-          this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
-          this.setState({
-            network: new Network({
-              docId: this.state.store.getState().docId,
-              token: process.env.SLACK_BOT_TOKEN,
-              name:  process.env.NAME,
-              store: this.state.store
-            })
-          }, () => {
-            this.state.network.on("deltasReceived", (deltas) => {
-              this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
-            })
-          })
-
-          remote.getCurrentWindow().setTitle(name)
+          this.open(openPath)
           this.autoSave()
         })
       }
@@ -68,13 +51,47 @@ export default class App extends React.Component {
 
     ipcRenderer.on("save", (event, savePath) => {
       if(savePath) {
-        let name = path.parse(savePath).name
+        let name = Path.parse(savePath).name
 
         this.setState({ savePath: savePath }, () => {
           remote.getCurrentWindow().setTitle(name)
           this.autoSave()
         })
       }
+    })
+  }
+
+  componentDidMount() {
+    let lastFileOpened = localStorage.getItem("lastFileOpened")
+
+    if(lastFileOpened && fs.existsSync(lastFileOpened))
+      this.open(lastFileOpened)
+    else
+      this.open()
+  }
+
+  open(path) {
+    if(this.state.network)
+      this.state.network.stop()
+
+    if(path) {
+      let file = fs.readFileSync(path)
+      let name = Path.parse(path).name
+
+      this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+      remote.getCurrentWindow().setTitle(name)
+      localStorage.setItem("lastFileOpened", path)
+    }
+    else {
+      this.state.store.dispatch({ type: "NEW_DOCUMENT" })
+      remote.getCurrentWindow().setTitle("Untitled")
+    }
+
+    this.setState({
+      network: new Network({
+        docId: this.state.store.getState().docId,
+        store: this.state.store
+      })
     })
   }
 

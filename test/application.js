@@ -28,6 +28,21 @@ describe('application', function () {
     })
   })
 
+  it('opens the previously opened document', function() {
+    let fixturePath = "./test/fixture.trellis"
+
+    return this.app.webContents.send("open", [fixturePath])
+    .then(() => this.app.restart())
+    .then(() => this.app.client.getText(".ListCard__title"))
+    .then((cardTitles) => {
+      assert.deepEqual(cardTitles.splice(0, 3), [
+        "Trellis MVP core featureset",
+        "Team Summit",
+        "Omniview design sketch"
+      ])
+    })
+  })
+
   it('merges documents', function() {
     let forkAPath = "./test/merge-fork-a-copy.trellis"
     let forkBPath = "./test/merge-fork-b-copy.trellis"
@@ -42,7 +57,9 @@ describe('application', function () {
       assert.equal(cardTitle, "Card A")
     })
     .then(() => this.app.webContents.send("merge", [ forkBPath]))
-    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard:nth-child(4) .ListCard__title"))
+    .then(() => {
+    })
+    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard:nth-child(3) .ListCard__title"))
     .then((cardTitle) => {
       assert.equal(cardTitle, "Card B")
     })
@@ -107,7 +124,8 @@ describe('application', function () {
   })
 
   it("creates a new list", function() {
-    return this.app.client.click(".AddList__show")
+    return this.app.webContents.send("new")
+    .then(() => this.app.client.click(".AddList__show"))
     .then(() => this.app.client.setValue(".AddList input[type='text']", "Another List"))
     .then(() => this.app.client.click(".AddList .AddList__save"))
     .then(() => this.app.client.getText(".List:nth-child(4) .List__title"))
@@ -117,7 +135,8 @@ describe('application', function () {
   })
 
   it("deletes a list", function() {
-    return this.app.client.getText(".List__title")
+    return this.app.webContents.send("new")
+    .then(() => this.app.client.getText(".List__title"))
     .then((titles) => {
       assert.deepEqual(titles, ["THIS WEEK", "DONE", "SOON"])
     })
