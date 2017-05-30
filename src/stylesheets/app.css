@@ -79,6 +79,9 @@ h2 {
   padding: 0;
   font-size: 12px;
 }
+.Changes li:last-child {
+  background: #FFF465;
+}
 
 .Inspector {
   grid-row: 4;
