@@ -21,13 +21,6 @@ export default class App extends React.Component {
     this.state = { savePath: null, store: new Store() }
     this.state.store.subscribe(this.autoSave)
 
-    let lastFileOpened = localStorage.getItem("lastFileOpened")
-    if(lastFileOpened && fs.existsSync(lastFileOpened))
-      this.state.store.dispatch({
-        type: "OPEN_DOCUMENT",
-        file: fs.readFileSync(lastFileOpened)
-      })
-
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
         this.state.store.dispatch({ type: "NEW_DOCUMENT" })
@@ -43,7 +36,6 @@ export default class App extends React.Component {
 
         this.setState({ savePath: openPath }, () => {
           this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
-          localStorage.setItem("lastFileOpened", openPath)
           this.setState({
             network: new Network({
               docId: this.state.store.getState().docId,

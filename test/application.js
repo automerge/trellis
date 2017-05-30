@@ -28,21 +28,6 @@ describe('application', function () {
     })
   })
 
-  it('opens the previously opened document', function() {
-    let fixturePath = "./test/fixture.trellis"
-
-    return this.app.webContents.send("open", [fixturePath])
-    .then(() => this.app.restart())
-    .then(() => this.app.client.getText(".ListCard__title"))
-    .then((cardTitles) => {
-      assert.deepEqual(cardTitles.splice(0, 3), [
-        "Trellis MVP core featureset",
-        "Team Summit",
-        "Omniview design sketch"
-      ])
-    })
-  })
-
   it('merges documents', function() {
     let forkAPath = "./test/merge-fork-a-copy.trellis"
     let forkBPath = "./test/merge-fork-b-copy.trellis"
