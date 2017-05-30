@@ -108,6 +108,28 @@ export default class Store {
     return false
   }
 
+  changeHistory() {
+    let lastState = undefined
+    return this.stateHistory.map((state, index) => {
+      if (index == 0)
+        return { id: index, user: "Someone", "action": "initialized" }
+
+      let lastState = this.stateHistory[index-1]
+      let oldCards = lastState.cards
+      let newCards = state.cards
+
+      let action = "?"
+      if (newCards.length > oldCards.length)
+        action = "created"
+      else if (newCards.length < oldCards.length)
+        action = "deleted"
+      else
+        action = "updated"
+
+      return { id: index, user: "Someone", "action": action }
+    })
+  }
+
   save() {
     return Tesseract.save(this.getState())
   }

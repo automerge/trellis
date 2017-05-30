@@ -10,8 +10,10 @@ export default class Changes extends React.Component {
   }
 
   render() {
-    let changesPartial = this.store.stateHistory.map((change) => {
-      return <li>Martin created a card</li>
+    let changesPartial = this.store.changeHistory().map((change) => {
+      console.log("change", change)
+      let key = "change[" + change.id + "]"
+      return <li key={key}>{change.user} {change.action} a card</li>
     })
 
     return <div className="Changes">
