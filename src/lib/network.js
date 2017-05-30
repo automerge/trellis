@@ -7,10 +7,10 @@ export default class Network extends EventEmitter {
   constructor(config={}) {
     super()
 
-    this.token  = config.token
+    this.token  = process.env.SLACK_BOT_TOKEN
+    this.name   = process.env.NAME
     this.doc_id = config.docId
     this.store  = config.store
-    this.name   = config.name
     this.webrtc = webrtc
 
     if (this.token && this.doc_id) {
@@ -57,7 +57,7 @@ export default class Network extends EventEmitter {
           if (m.vectorClock) {
             let deltas = Tesseract.getDeltasAfter(this.store.getState(), m.vectorClock)
             let reply = {
-              vectorClock: Tesseract.getVClock(this.store.getState()), 
+              vectorClock: Tesseract.getVClock(this.store.getState()),
               deltas: deltas.slice(0, 5) // just send up to five deltas at a time
             }
 
@@ -77,5 +77,13 @@ export default class Network extends EventEmitter {
 
   connected() {
     return (this.token && this.doc_id);
+  }
+
+  // FIXME
+  //    - close peerGroup connection so we stop receiving messages
+  //    - stop any subscriptions to the store
+  //    - stop any modifications/dispatches to the store
+  //    - reset window.PEERS
+  stop() {
   }
 }

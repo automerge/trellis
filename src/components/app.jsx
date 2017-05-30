@@ -70,6 +70,9 @@ export default class App extends React.Component {
   }
 
   open(file) {
+    if(this.state.network)
+      this.state.network.stop()
+
     if(file)
       this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
     else
@@ -78,13 +81,7 @@ export default class App extends React.Component {
     this.setState({
       network: new Network({
         docId: this.state.store.getState().docId,
-        token: process.env.SLACK_BOT_TOKEN,
-        name:  process.env.NAME,
         store: this.state.store
-      })
-    }, () => {
-      this.state.network.on("deltasReceived", (deltas) => {
-        this.state.store.dispatch({type: "APPLY_DELTAS", deltas: deltas})
       })
     })
   }
