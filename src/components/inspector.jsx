@@ -9,8 +9,6 @@ export default class Inspector extends React.Component {
 
     this.state = this.store.getState()
     this.store.subscribe((x) => { this.setState(this.store.getState()) })
-
-    this.stateHistory = []
   }
 
   formatUUID(uuid) {
@@ -25,38 +23,6 @@ export default class Inspector extends React.Component {
     return JSON.stringify(formatted)
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    this.stateHistory.push(nextState)
-  }
-
-  hashesAreEqual(a, b) {
-    let keys = Object.keys(a).concat(Object.keys(b))
-    return keys.every((key) => a[key] == b[key])
-  }
-
-  didCardChange(card) {
-    if (this.stateHistory.length < 2) return
-
-    let oldCards = this.stateHistory[this.stateHistory.length-2].cards
-    if (!oldCards) return
-
-    let oldCard = undefined
-    for (var i = 0; i < oldCards.length; i++) {
-      if (oldCards[i].id == card.id)
-        oldCard = oldCards[i]
-    }
-
-    if (!oldCard)
-      return true // it didn't exist before so assume it was just created
-
-    if (card.listId != oldCard.listId ||
-        card.title != oldCard.title ||
-        !this.hashesAreEqual(card.assigned, oldCard.assigned))
-      return true
-
-    return false
-  }
-
   render() {
     let listCardsPartial = ""
     let listsPartial     = ""
@@ -65,7 +31,7 @@ export default class Inspector extends React.Component {
 
     if(cards) {
       listCardsPartial = this.store._map(cards, (card, index) => {
-        let changed = this.didCardChange(card)
+        let changed = this.store.didCardChange(card)
         let highlightClass = changed ? "changed" : ""
 
         return <tr key={index} className={highlightClass}>

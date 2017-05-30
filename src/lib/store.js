@@ -70,6 +70,42 @@ export default class Store {
     this.subscribe = this.redux.subscribe
     this.getState  = this.redux.getState
     this.dispatch  = this.redux.dispatch
+
+    this.stateHistory = []
+    this.redux.subscribe(() => {
+      this.stateHistory.push(this.getState())
+    })
+  }
+
+  hashesAreEqual(a, b) {
+    let keys = Object.keys(a).concat(Object.keys(b))
+    return keys.every((key) => a[key] == b[key])
+  }
+
+  didCardChange(card) {
+    if (this.stateHistory.length < 2) return
+
+    let prevState = this.stateHistory[this.stateHistory.length-2]
+    if (!prevState) return
+
+    let oldCards = prevState.cards
+    if (!oldCards) return
+
+    let oldCard = undefined
+    for (var i = 0; i < oldCards.length; i++) {
+      if (oldCards[i].id == card.id)
+        oldCard = oldCards[i]
+    }
+
+    if (!oldCard)
+      return true // it didn't exist before so assume it was just created
+
+    if (card.listId != oldCard.listId ||
+        card.title != oldCard.title ||
+        !this.hashesAreEqual(card.assigned, oldCard.assigned))
+      return true
+
+    return false
   }
 
   save() {
