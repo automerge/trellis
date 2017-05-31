@@ -16,9 +16,13 @@ export default class Network extends EventEmitter {
     this.clocks = {}
     window.PEERS = []
 
-    this.store.on('change', (state) => {
+    this.store.on('change', (action,state) => {
       window.PEERS.forEach((peer) => {
-        this.updatePeer(peer, state, this.clocks[peer.id])
+        if (action == "APPLY_DELTAS") {
+          peer.send({vectorClock: Tesseract.getVClock(state)})
+        } else {
+          this.updatePeer(peer, state, this.clocks[peer.id])
+        }
       })
     })
 
@@ -71,7 +75,6 @@ export default class Network extends EventEmitter {
             console.log("Tesseract.getVClock(store.getState()", Tesseract.getVClock(store.getState()))
             console.log("Tesseract.getDeltasAfter(store.getState(), m.vectorClock", Tesseract.getDeltasAfter(store.getState(), m.vectorClock))
 */
-            peer.send({vectorClock: Tesseract.getVClock(this.store.getState())})
           }
 
           if (m.vectorClock) {

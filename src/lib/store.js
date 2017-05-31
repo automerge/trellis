@@ -54,9 +54,7 @@ export default class Store extends EventEmitter {
 
       }
 
-      if (action.type != "APPLY_DELTAS") {
-        this.emit('change', newState)
-      }
+      this.emit('change', action.type, newState)
 
       return newState;
     })
