@@ -265,3 +265,7 @@ h2 {
   cursor: pointer;
 }
 
+.DropTarget {
+  background: black;
+  height: 20px;
+}
