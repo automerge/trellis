@@ -9,7 +9,8 @@ var WebRTCConfig = {
     {url:'stun:stun4.l.google.com:19302'}
   ]
 };
-var lzmajs = require('lzma-purejs');
+
+var lz4 = require('lz4')
 
 var notice = (peer,desc) => (event) => console.log("notice:" + peer.id + ": " + desc, event)
 
@@ -38,10 +39,8 @@ function Peer(id, name, send_signal) {
 
   this.send    = (message) => {
     if (this.self) return; // dont send messages to ourselves
-    //console.log("Sending message",message)
     var buffer = new Buffer(JSON.stringify(message), 'utf8')
-    var compressed = lzmajs.compressFile(buffer);
-    //console.log("Compressed size: ", compressed.length)
+    var compressed = lz4.encode(buffer);
     this.data_channel.send(compressed)
   }
 
@@ -209,7 +208,7 @@ function join(signaler) {
 function process_message(peer, msg) {
   //console.log(msg)
   //console.log("wire size",msg.data.length)
-  var decompressed = lzmajs.decompressFile(new Buffer(msg.data));
+  var decompressed = lz4.decode(new Buffer(msg.data));
   var data = decompressed.toString('utf8');
   //console.log("message size",data.length)
   //console.log("INCOMING MSG",msg)

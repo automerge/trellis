@@ -55,7 +55,7 @@
     "electron-compile": "6.4.0",
     "electron-devtools-installer": "2.2.0",
     "electron-log": "2.2.6",
-    "lzma-purejs": "^0.9.3",
+    "lz4": "0.5.3",
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "react-hot-loader": "3.0.0-beta.6",
