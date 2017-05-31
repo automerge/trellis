@@ -64,7 +64,8 @@ export default class App extends React.Component {
   componentDidMount() {
     let lastFileOpened = localStorage.getItem("lastFileOpened")
 
-    if(lastFileOpened && fs.existsSync(lastFileOpened))
+    // disabled
+    if(false && lastFileOpened && fs.existsSync(lastFileOpened))
       this.open(lastFileOpened)
     else
       this.open()
