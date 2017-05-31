@@ -52,16 +52,16 @@ describe('application', function () {
     fs.createReadStream("./test/merge-fork-b.trellis").pipe(fs.createWriteStream(forkBPath))
 
     return this.app.webContents.send("open", [ forkAPath ])
-    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard__title"))
-    .then((cardTitle) => {
-      assert.equal(cardTitle, "Card A")
+    .then(() => this.app.client.getText(".ListCard__title"))
+    .then((cardTitles) => {
+      assert.equal(cardTitles[1], "Card A")
     })
     .then(() => this.app.webContents.send("merge", [ forkBPath]))
     .then(() => {
     })
-    .then(() => this.app.client.getText(".List:nth-child(2) .ListCard:nth-child(3) .ListCard__title"))
-    .then((cardTitle) => {
-      assert.equal(cardTitle, "Card B")
+    .then(() => this.app.client.getText(".ListCard__title"))
+    .then((cardTitles) => {
+      assert.equal(cardTitles[1], "Card B")
     })
     .then(() => {
       fs.unlinkSync(forkAPath)
@@ -96,30 +96,30 @@ describe('application', function () {
 
   it("edits card titles", function() {
     return this.app.webContents.send("new")
-    .then(() => this.app.client.click(".ListCard:nth-child(3) .ListCard__title div"))
-    .then(() => this.app.client.setValue(".ListCard:nth-child(3) .ListCard__title textarea", "New Title"))
+    .then(() => this.app.client.click(".ListCard__title div"))
+    .then(() => this.app.client.setValue(".ListCard__title textarea", "New Title"))
     .then(() => this.app.client.keys("Enter"))
-    .then(() => this.app.client.getText(".ListCard:nth-child(3) .ListCard__title"))
+    .then(() => this.app.client.getText(".ListCard__title"))
     .then((title) => assert.equal(title, "New Title") )
   })
 
   it("cancels edits on card titles", function() {
     return this.app.webContents.send("new")
-    .then(() => this.app.client.click(".ListCard:nth-child(3) .ListCard__title div"))
-    .then(() => this.app.client.setValue(".ListCard:nth-child(3) .ListCard__title textarea", "New Title"))
+    .then(() => this.app.client.click(".ListCard__title div"))
+    .then(() => this.app.client.setValue(".ListCard__title textarea", "New Title"))
     .then(() => this.app.client.keys("Escape"))
-    .then(() => this.app.client.getText(".ListCard:nth-child(3) .ListCard__title div"))
+    .then(() => this.app.client.getText(".ListCard__title div"))
     .then((title) => assert.equal(title, "Hello world") )
   })
 
   it("creates a new card", function() {
     return this.app.webContents.send("new")
-    .then(() => this.app.client.click(".AddCard__link:nth-child(1)"))
-    .then(() => this.app.client.setValue(".List:nth-child(1) .AddCard textarea", "Another Card"))
-    .then(() => this.app.client.click(".List:nth-child(1) .AddCard button"))
-    .then(() => this.app.client.getText(".List:nth-child(1) .ListCard:nth-child(4) .ListCard__title"))
-    .then((title) => {
-      assert.equal(title, "Another Card")
+    .then(() => this.app.client.click(".AddCard__link"))
+    .then(() => this.app.client.setValue(".AddCard textarea", "Another Card"))
+    .then(() => this.app.client.click(".AddCard button"))
+    .then(() => this.app.client.getText(".ListCard__title"))
+    .then((titles) => {
+      assert.equal(titles[1], "Another Card")
     })
   })
 
@@ -128,9 +128,9 @@ describe('application', function () {
     .then(() => this.app.client.click(".AddList__show"))
     .then(() => this.app.client.setValue(".AddList input[type='text']", "Another List"))
     .then(() => this.app.client.click(".AddList .AddList__save"))
-    .then(() => this.app.client.getText(".List:nth-child(4) .List__title"))
-    .then((title) => {
-      assert.equal(title, "ANOTHER LIST")
+    .then(() => this.app.client.getText(".List__title"))
+    .then((titles) => {
+      assert.equal(titles[3], "ANOTHER LIST")
     })
   })
 
