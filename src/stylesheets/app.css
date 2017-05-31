@@ -70,6 +70,11 @@ h2 {
   background-color: #f8f8f8;
   border-left: 1px solid #aaa;
 }
+.Changes ul {
+  list-style-type: none;
+  padding: 0;
+  font-size: 12px;
+}
 
 .Inspector {
   grid-row: 4;

@@ -107,7 +107,7 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Board store={ this.state.store } />
-        <Changes />
+        <Changes store ={ this.state.store } />
         <Inspector store={ this.state.store } />
         <Peers network={ this.state.network } />
       </div>

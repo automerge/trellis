@@ -212,4 +212,12 @@ export default class Store extends EventEmitter {
       return listId === list.id
     })
   }
+
+  changes() {
+    return [
+      { id: 1, user: "Adam", action: "create"  },
+      { id: 2, user: "Peter", action: "move"  },
+      { id: 3, user: "Peter", action: "assign"  }
+    ]
+  }
 }
