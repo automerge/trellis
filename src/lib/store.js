@@ -131,25 +131,41 @@ export default class Store extends EventEmitter {
   }
 
   moveCard(state, action) {
+    // Move card to next list
     let cards     = state.cards
     let cardId    = action.cardId
     let cardIndex = this._findIndex(cards, (card) => card.id === cardId)
-
-    let listCards   = this.findCardsByList(action.listId)
-    let insertIndex = this._findIndex(listCards, (card) => card.id === action.afterCardId)
-    let order       = (listCards[insertIndex].order || 0) + 1
-
-    // Move card
     let nextState = Tesseract.set(cards[cardIndex], "listId", action.listId)
-    nextState     = Tesseract.set(nextState.cards[cardIndex], "order", order)
 
-    // Updater order of every following card
-    for(let index = insertIndex + 1; index <= listCards.length - 1; index++) {
-      let globalIndex = this._findIndex(state.cards, (card) => card.id === listCards[index].id) 
+    // Update order of every following card
+    if(action.afterCardId) {
+      let listCards   = this.findCardsByList(action.listId)
+      let insertIndex = this._findIndex(listCards, (card) => card.id === action.afterCardId)
+      let order       = (listCards[insertIndex].order || 0) + 1
 
-      if(globalIndex != cardIndex) {
-        order = order + 1
-        nextState = Tesseract.set(nextState.cards[globalIndex], "order", order)
+      nextState = Tesseract.set(nextState.cards[cardIndex], "order", order)
+
+      for(let index = insertIndex + 1; index <= listCards.length - 1; index++) {
+        let globalIndex = this._findIndex(state.cards, (card) => card.id === listCards[index].id) 
+
+        if(globalIndex != cardIndex) {
+          order = order + 1
+          nextState = Tesseract.set(nextState.cards[globalIndex], "order", order)
+        }
+      }
+    } else {
+      let listCards = this.findCardsByList(action.listId)
+      let order     = 0
+
+      nextState = Tesseract.set(nextState.cards[cardIndex], "order", order)
+
+      for(let index = 0; index < listCards.length; index++) {
+        let globalIndex = this._findIndex(state.cards, (card) => card.id === listCards[index].id) 
+
+        if(globalIndex != cardIndex) {
+          order = order + 1
+          nextState = Tesseract.set(nextState.cards[globalIndex], "order", order)
+        }
       }
     }
 
@@ -157,7 +173,14 @@ export default class Store extends EventEmitter {
   }
 
   createCard(state, action) {
-    let card = Object.assign({}, action.attributes, { id: uuid(), assigned: {} })
+    let card      = Object.assign({}, action.attributes, { id: uuid(), assigned: {} })
+    let listCards = this.findCardsByList(action.attributes.listId)
+    let order
+
+    if(listCards.length > 0)
+      order = (listCards[listCards.length - 1].order || 0) + 1
+    else
+      order = 0
 
     return Tesseract.insert(state.cards, state.cards.length, card)
   }
