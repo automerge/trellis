@@ -103,8 +103,8 @@ export default class Network extends EventEmitter {
     }
   }
 
-  connected() {
-    return (this.token && this.doc_id);
+  connect() {
+    console.log("connect to network - Orion, write me!")
   }
 
   // FIXME
@@ -112,6 +112,7 @@ export default class Network extends EventEmitter {
   //    - stop any subscriptions to the store
   //    - stop any modifications/dispatches to the store
   //    - reset window.PEERS
-  stop() {
+  disconnect() {
+    console.log("disconnect from network - Orion, write me!")
   }
 }

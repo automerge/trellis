@@ -19,7 +19,15 @@ export default class Peers extends React.Component {
   }
 
   toggleNetwork() {
-    this.setState({ peers: this.state.peers, connected: !this.state.connected })
+    let newConnected = !this.state.connected
+
+    this.setState({ peers: this.state.peers, connected: newConnected })
+
+    if (this.props.network)
+      if (newConnected)
+        this.props.network.connect()
+      else
+        this.props.network.disconnect()
   }
 
   render() {
