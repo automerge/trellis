@@ -75,6 +75,24 @@ h2 {
   padding: 0;
   font-size: 12px;
 }
+.Changes li {
+  position: relative;
+  height: 22px;
+  padding-left: 24px;
+}
+.Changes img.changeNode {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  left: 0;
+  top: 1px;
+}
+.Changes img.changeEdge {
+  position: absolute;
+  height: 11px;
+  left: 5.5px;
+  top: 12px;
+}
 
 .Inspector {
   grid-row: 4;

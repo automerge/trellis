@@ -13,9 +13,18 @@ export default class Changes extends React.Component {
     let changes = this.store.changes()
     changes = changes.slice(-20)
 
-    let changesPartial = changes.map((change) => {
+    let changesPartial = changes.map((change, index) => {
       let key = "change-" + change.id
-      return <li key={key}>{change.user} {change.action} a {change.type}</li>
+
+      let edgeImg = ""
+      if (index < changes.length-1)
+        edgeImg = <img className="changeEdge" src="assets/images/change-edge.svg" />
+
+      return <li key={key}>
+        <img className="changeNode" src="assets/images/change-node.svg" />
+        {edgeImg}
+        {change.user} {change.action} a {change.type}
+      </li>
     })
 
     return <div className="Changes">
