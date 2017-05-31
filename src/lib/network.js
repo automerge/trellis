@@ -3,23 +3,37 @@ import webrtc from '../webrtc'
 import Tesseract from 'tesseract'
 import EventEmitter from 'events'
 
+
 export default class Network extends EventEmitter {
-  constructor(config={}) {
+  constructor() {
     super()
 
     this.token  = process.env.SLACK_BOT_TOKEN
     this.name   = process.env.NAME
-    this.doc_id = config.docId
-    this.store  = config.store
     this.webrtc = webrtc
+    this.connected = false
+  }
+
+  connect(config) {
+    if (this.connected) throw "network already connected - disconnect first"
+    console.log("NETWORK CONNECT",config)
+    this.config = config || this.config
     this.peers  = {}
     this.clocks = {}
     window.PEERS = []
 
+    this.doc_id = this.config.docId
+    this.store  = this.config.store
+
+    this.connected = true
+
     this.store.on('change', (action,state) => {
       window.PEERS.forEach((peer) => {
         if (action == "APPLY_DELTAS") {
-          peer.send({vectorClock: Tesseract.getVClock(state)})
+          console.log("SENDING VECTOR CLOCK", Tesseract.getVClock(state))
+          peer.send({vectorClock: Tesseract.getVClock(state), docId: this.doc_id})
+          this.peers[peer.id].messagesSent += 1
+          this.emit('peer')
         } else {
           this.updatePeer(peer, state, this.clocks[peer.id])
         }
@@ -51,6 +65,7 @@ export default class Network extends EventEmitter {
         peer.on('connect', () => {
           this.peers[peer.id].connected = true
           this.peers[peer.id].lastActivity = Date.now()
+          this.peers[peer.id].messagesSent += 1
           this.emit('peer')
           if (peer.self == false) {
             peer.send({vectorClock: Tesseract.getVClock(this.store.getState())})
@@ -61,6 +76,7 @@ export default class Network extends EventEmitter {
           let store = this.store
 
           if (m.deltas && m.deltas.length > 0) {
+            console.log("GOT DELTAS",m.deltas)
 /*
             console.log("BEFORE DISPATCH")
             console.log("m.deltas", m.deltas)
@@ -84,7 +100,7 @@ export default class Network extends EventEmitter {
           }
 
           if (m.vectorClock) {
-            console.log("GOT VECTOR CLOCK")
+            console.log("GOT VECTOR CLOCK",m.vectorClock)
             this.clocks[peer.id] = m.vectorClock
             this.updatePeer(peer,this.store.getState(), m.vectorClock)
           }
@@ -106,16 +122,14 @@ export default class Network extends EventEmitter {
   updatePeer(peer, state, clock) {
     if (peer == undefined) return
     if (clock == undefined) return
+    console.log("Checking to send deltas vs clock",clock)
     let deltas = Tesseract.getDeltasAfter(state, clock)
     if (deltas.length > 0) {
       console.log("SENDING DELTAS:", deltas.length)
       peer.send({deltas: deltas})
       this.peers[peer.id].messagesSent += 1
+      this.emit('peer')
     }
-  }
-
-  connect() {
-    console.log("connect to network - Orion, write me!")
   }
 
   // FIXME
@@ -124,6 +138,11 @@ export default class Network extends EventEmitter {
   //    - stop any modifications/dispatches to the store
   //    - reset window.PEERS
   disconnect() {
-    console.log("disconnect from network - Orion, write me!")
+    if (this.connected == false) throw "network already disconnected - connect first"
+    console.log("NETWORK DISCONNECT")
+    this.store.removeAllListeners('change')
+    delete this.store
+    webrtc.close()
+    this.connected = false
   }
 }

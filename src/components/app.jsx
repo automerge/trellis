@@ -72,8 +72,9 @@ export default class App extends React.Component {
   }
 
   open(path) {
-    //    if(this.state.network)
-    //      this.state.network.disconnect()
+    console.log("APP OPEN",path)
+    if(this.state.network)
+       this.state.network.disconnect()
 
     if(path) {
       let file = fs.readFileSync(path)
@@ -88,12 +89,12 @@ export default class App extends React.Component {
       remote.getCurrentWindow().setTitle("Untitled")
     }
 
-    this.setState({
-      network: new Network({
-        docId: this.state.store.getState().docId,
-        store: this.state.store
-      })
+    let network = new Network()
+    network.connect({
+      docId: this.state.store.getState().docId,
+      store: this.state.store
     })
+    this.setState({ network: network })
   }
 
   autoSave() {

@@ -29,6 +29,12 @@ function Peer(id, name, send_signal) {
 
   this.send_signal      = send_signal
 
+  this.close    = () => {
+    if (this.webrtc) {
+      this.webrtc.close()
+    }
+  }
+
   this.send    = (message) => {
     if (this.self) return; // dont send messages to ourselves
     //console.log("Sending message",message)
@@ -163,7 +169,25 @@ function processMessage(msg, signal, handler) {
   }
 }
 
+let Signaler = undefined
+let HANDLERS = { peer: [] }
+
+function close() {
+  console.log("STOP SIGNALER")
+  if (Signaler) {
+    Signaler.stop()
+    Signaler = undefined
+    for (let id in Peers) {
+      console.log("CLOSE PEER",id)
+      Peers[id].close()
+    }
+    Handshakes = {}
+    HANDLERS = { peer: [] }
+  }
+}
+
 function join(signaler) {
+  Signaler = signaler
   signaler.on('hello', processHello)
   signaler.on('offer', processMessage)
   signaler.on('reply', processMessage)
@@ -193,8 +217,6 @@ function process_message(peer, msg) {
   peer.dispatch('message',message)
 }
 
-let HANDLERS = { peer: [] }
-
 function dispatch() {
   let args = Array.from(arguments)
   let type = args.shift()
@@ -209,5 +231,6 @@ function onHandler(type, handler) {
 
 module.exports = {
   join:      join,
+  close:     close,
   on:        onHandler
 }

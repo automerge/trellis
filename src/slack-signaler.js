@@ -100,7 +100,7 @@ function init(config) {
         handler(SESSION, NAME, CONNECT_DISPATCH)
       }
     },
-    stop: () => { rtm.stop() }
+    stop: () => { rtm.disconnect() }
   }
 }
 
