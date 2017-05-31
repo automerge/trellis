@@ -154,6 +154,12 @@ h2 {
   right: 16px;
   width: 32px;
 }
+.Peers th {
+  font-weight: normal;
+  font-size: 9px;
+  text-align: left;
+  color: #aaa;
+}
 .Peers td {
   padding: 0;
   padding-bottom: 8px;

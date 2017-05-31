@@ -32,7 +32,13 @@ export default class Network extends EventEmitter {
       webrtc.on('peer', (peer) => {
         window.PEERS.push(peer)
         console.log("NEW PEER:", peer.id, peer.name)
-        this.peers[peer.id] = { connected: false, name: peer.name, lastActivity: Date.now() }
+        this.peers[peer.id] = {
+          connected: false,
+          name: peer.name,
+          lastActivity: Date.now(),
+          messagesSent: 0,
+          messagesReceived: 0
+        }
         this.emit('peer')
 
         peer.on('disconnect', () => {
@@ -83,6 +89,7 @@ export default class Network extends EventEmitter {
             this.updatePeer(peer,this.store.getState(), m.vectorClock)
           }
           this.peers[peer.id].lastActivity = Date.now()
+          this.peers[peer.id].messagesReceived += 1
           this.emit('peer')
         })
 
@@ -103,6 +110,7 @@ export default class Network extends EventEmitter {
     if (deltas.length > 0) {
       console.log("SENDING DELTAS:", deltas.length)
       peer.send({deltas: deltas})
+      this.peers[peer.id].messagesSent += 1
     }
   }
 

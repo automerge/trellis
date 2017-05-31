@@ -32,24 +32,18 @@ export default class Peers extends React.Component {
 
   render() {
     let peers = this.state.peers
-    let peersPartial = Object.keys(peers).map((id) => {
+    let peersPartial = Object.keys(peers).map((id, index) => {
       let peer = peers[id]
       let name = peer.name
       let ledColor = peer.connected ? "green" : "yellow"
       let ledPath = "assets/images/LED-" + ledColor + ".svg"
-
-      let activity = ""
-      if (peer.lastActivity) {
-        let t = new Date(peer.lastActivity)
-        activity = t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + "." + t.getMilliseconds()
-      }
-
       let key = "peer-" + id
 
       return <tr key={key}>
             <td className="LED"><img src={ledPath} /></td>
             <td className="user">{name}</td>
-            <td className="activity">{activity}</td>
+            <td className="activity">{index > 0 ? peer.messagesSent : ""}</td>
+            <td className="activity">{index > 0 ? peer.messagesReceived : ""}</td>
           </tr>
     })
 
@@ -68,7 +62,10 @@ export default class Peers extends React.Component {
       <h2>Peers <img src="assets/images/peers.svg" /></h2>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
       
-      <table><tbody>{ peersPartial }</tbody></table>
+      <table>
+        <thead><tr><th></th><th>Name</th><th>Sent</th><th>Received</th></tr></thead>
+        <tbody>{ peersPartial }</tbody>
+      </table>
 
       { docIdPartial }
     </div>
