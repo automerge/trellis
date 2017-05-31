@@ -72,7 +72,7 @@ export default class ListCard extends React.Component {
           <Assignments cardId={ this.props.cardId } store={ this.props.store } />
           <div style={{ clear: "both" }} />
         </div>
-        <DropTarget store={ this.props.store } listId={ this.card().listId } />
+        <DropTarget store={ this.props.store } listId={ this.card().listId } afterCardId={ this.card().id } />
       </div>
     )
   }
