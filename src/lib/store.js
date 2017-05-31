@@ -218,8 +218,8 @@ export default class Store extends EventEmitter {
     //
     // tesseract._state = { actor_id: [ action1, action2, action3 ] }
     //
-    // So here's we'll flatten and filter to just actions we think are interesting
-    // for display to the end user.
+    // So here's we'll flatten and filter to just actions we think are
+    // interesting for display to the end user.
 
     let nestedActions = this.getState()._state.get('actions').toJS()
 
@@ -232,32 +232,36 @@ export default class Store extends EventEmitter {
 
     let people = [ "orion", "adam", "pvh", "roshan", "martin" ]
 
-    // hacky assumption: first target ID in the list is for cards
-    // allows us to tell difference between cards and lists
+    // For now, we can only differentiate "me" from "everyone else" in the
+    // actions list. Get Orion or Martin to help tie together peer IDs, names,
+    // and Tesseract changes.
+    let myTesseractId = this.getState()._state.get('_id')
+
+    // Hacky assumption: first target ID in the list is for cards allows us to
+    // tell difference between cards and lists.
     let cardsId = undefined
 
     actions.forEach((action, index) => {
       let r = undefined
 
-      if (action.action == "ins") {
-        if (!cardsId)
-          cardsId = action.target
+      if (!cardsId && action.action == "ins")
+        cardsId = action.target
 
-        let type = (cardsId == action.target) ? "card" : "list"
-        r = { id: index, user: "Someone", action: "created", type: type }
-      }
+      let type = (cardsId == action.target) ? "card" : "list"
+      let user = (action.by == myTesseractId) ? "You" : "Someone else"
+
+      if (action.action == "ins")
+        r = { id: index, user: user, action: "created", type: type }
 
       if (action.action == "set" && action.key == "listId" &&
           result.length > 0 && result[result.length-1].action != "created")
-        r = { id: index, user: "Someone", action: "moved", type: "card" }
+        r = { id: index, user: user, action: "moved", type: "card" }
 
       if (action.action == "set" && people.includes(action.key))
-        r = { id: index, user: "Someone", action: "assigned", type: "card" }
+        r = { id: index, user: user, action: "assigned", type: "card" }
 
-      if (action.action == "del") {
-        let type = (cardsId == action.target) ? "card" : "list"
-        r = { id: index, user: "Someone", action: "deleted", type: type }
-      }
+      if (action.action == "del")
+        r = { id: index, user: user, action: "deleted", type: type }
 
       if (r) result.push(r)
     })
