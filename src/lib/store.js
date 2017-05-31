@@ -248,7 +248,7 @@ export default class Store extends EventEmitter {
         cardsId = action.target
 
       let type = (cardsId == action.target) ? "card" : "list"
-      let user = (action.by == myTesseractId) ? "You" : "Someone else"
+      let user = (action.by == myTesseractId) ? "You" : "Someone"
 
       if (action.action == "ins")
         r = { id: index, user: user, action: "created", type: type }

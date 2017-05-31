@@ -31,7 +31,7 @@ export default class Peers extends React.Component {
         activity = t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + "." + t.getMilliseconds()
       }
 
-      let key = "peer-" + peer
+      let key = "peer-" + id
 
       return <tr key={key}>
             <td className="LED"><img src={ledPath} /></td>

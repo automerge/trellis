@@ -10,7 +10,10 @@ export default class Changes extends React.Component {
   }
 
   render() {
-    let changesPartial = this.store.changes().map((change) => {
+    let changes = this.store.changes()
+    changes = changes.slice(-20)
+
+    let changesPartial = changes.map((change) => {
       let key = "change-" + change.id
       return <li key={key}>{change.user} {change.action} a {change.type}</li>
     })
