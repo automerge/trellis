@@ -123,7 +123,7 @@ export default class Network extends EventEmitter {
     if (peer == undefined) return
     if (clock == undefined) return
     console.log("Checking to send deltas vs clock",clock)
-    process.nextTick(() => {
+    setTimeout(() => {
       let deltas = Tesseract.getDeltasAfter(state, clock)
       if (deltas.length > 0) {
         console.log("SENDING DELTAS:", deltas.length)
@@ -131,7 +131,7 @@ export default class Network extends EventEmitter {
         this.peers[peer.id].messagesSent += 1
         this.emit('peer')
       }
-    })
+    },200)
   }
 
   // FIXME
