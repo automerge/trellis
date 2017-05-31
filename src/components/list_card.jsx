@@ -1,5 +1,6 @@
 import React from 'react'
 import Assignments from './assignments'
+import DropTarget from './drop_target'
 
 export default class ListCard extends React.Component {
   constructor() {
@@ -59,16 +60,19 @@ export default class ListCard extends React.Component {
     }
 
     return (
-      <div
-        className="ListCard"
-        draggable="true"
-        onDragStart={ this.onDragStart } >
-        <div className="ListCard__delete" onClick={ this.delete }>✕</div>
-        <div className="ListCard__title"> { title } </div>
-        <div style={{ clear: "both" }} />
+      <div>
+        <div
+          className="ListCard"
+          draggable="true"
+          onDragStart={ this.onDragStart } >
+          <div className="ListCard__delete" onClick={ this.delete }>✕</div>
+          <div className="ListCard__title"> { title } </div>
+          <div style={{ clear: "both" }} />
 
-        <Assignments cardId={ this.props.cardId } store={ this.props.store } />
-        <div style={{ clear: "both" }} />
+          <Assignments cardId={ this.props.cardId } store={ this.props.store } />
+          <div style={{ clear: "both" }} />
+        </div>
+        <DropTarget store={ this.props.store } listId={ this.card().listId } />
       </div>
     )
   }
