@@ -12,7 +12,7 @@ export default class Changes extends React.Component {
   render() {
     let changesPartial = this.store.changes().map((change) => {
       let key = "change-" + change.id
-      return <li key={key}>{change.user} {change.action}d a card</li>
+      return <li key={key}>{change.user} {change.action} a {change.type}</li>
     })
 
     return <div className="Changes">
