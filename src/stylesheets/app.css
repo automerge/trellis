@@ -148,6 +148,12 @@ h2 {
   font-size: 12px;
   position: relative;
 }
+
+.Peers .clock {
+  max-width: 150px;
+  overflow-x: scroll;
+}
+
 .Peers .networkSwitch {
   position: absolute;
   top: 16px;
