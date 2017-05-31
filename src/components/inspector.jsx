@@ -36,6 +36,7 @@ export default class Inspector extends React.Component {
           <td className="Inspector__cards__listId">{this.formatUUID(card.listId)}… </td>
           <td>{card.title}</td>
           <td className="Inspector__cards__assigned">{this.formatAssigned(card.assigned)}</td>
+          <td>{card.order}</td>
         </tr>
       })
     }
@@ -67,7 +68,7 @@ export default class Inspector extends React.Component {
           <h3>Cards</h3>
           <table>
             <thead>
-              <tr><th>id</th><th>listId</th><th>title</th><th>assignments</th></tr>
+              <tr><th>id</th><th>listId</th><th>title</th><th>assignments</th><th>order</th></tr>
             </thead>
             <tbody>{ listCardsPartial }</tbody>
           </table>
