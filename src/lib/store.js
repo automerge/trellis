@@ -14,11 +14,11 @@ export default class Store extends EventEmitter {
     this.redux = createStore((state = tesseract, action) => {
       let newState;
       console.log("ACTION: ", action.type)
-       
+
       switch(action.type) {
         case "CREATE_CARD":
           newState = this.createCard(state, action)
-          break; 
+          break;
         case "MOVE_CARD":
           newState = this.moveCard(state, action)
           break;
@@ -36,7 +36,7 @@ export default class Store extends EventEmitter {
           break;
         case "DELETE_LIST":
           newState = this.deleteList(state, action)
-          break;          
+          break;
         case "NEW_DOCUMENT":
           newState = this.newDocument(state, action)
           break;
@@ -198,9 +198,26 @@ export default class Store extends EventEmitter {
   }
 
   findCardsByList(listId) {
-    return this._filter(this.getState().cards, (card) => {
+    let filtered = this._filter(this.getState().cards, (card) => {
       return card.listId === listId
     })
+
+    let sorted = this._sort(filtered, (a, b) => {
+      let orderA = a.order || 0
+      let orderB = b.order || 0
+
+      return orderA - orderB
+    })
+
+    return sorted
+  }
+
+  _sort(cards, compare) {
+    let array  = this._map(cards, (card) => { return { id: card.id, order: card.order } })
+    let sorted = array.sort(compare)
+    let output = sorted.map((card) => this.findCard(card.id))
+
+    return output
   }
 
   findList(listId) {
