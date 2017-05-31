@@ -44,7 +44,7 @@ export default class Network extends EventEmitter {
 
         peer.on('connect', () => {
           this.peers[peer.id].connected = true
-          this.peers[peer.id].lastActivity = true
+          this.peers[peer.id].lastActivity = Date.now()
           this.emit('peer')
           if (peer.self == false) {
             peer.send({vectorClock: Tesseract.getVClock(this.store.getState())})
@@ -82,7 +82,7 @@ export default class Network extends EventEmitter {
             this.clocks[peer.id] = m.vectorClock
             this.updatePeer(peer,this.store.getState(), m.vectorClock)
           }
-          this.peers[peer.id].lastActivity = true
+          this.peers[peer.id].lastActivity = Date.now()
           this.emit('peer')
         })
 
