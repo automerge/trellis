@@ -3,7 +3,8 @@ import React from 'react'
 export default class Peers extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { 'peers': {} }
+    this.state = { 'peers': {}, 'connected': false }
+    this.toggleNetwork = this.toggleNetwork.bind(this)
   }
 
   // The constructor is not necessarily called on
@@ -15,6 +16,10 @@ export default class Peers extends React.Component {
     nextProps.network.on('peer',() => {
       this.setState({ peers: Object.assign({},nextProps.network.peers) })
     })
+  }
+
+  toggleNetwork() {
+    this.setState({ peers: this.state.peers, connected: !this.state.connected })
   }
 
   render() {
@@ -40,7 +45,7 @@ export default class Peers extends React.Component {
           </tr>
     })
 
-    let connected = this.props.network && this.props.network.connected() ? "on" : "off"
+    let connected = this.state.connected ? "on" : "off"
     let switchPath = "assets/images/switch-" + connected + ".svg"
 
     let docIdPartial = '';
@@ -53,7 +58,7 @@ export default class Peers extends React.Component {
 
     return <div className="Peers">
       <h2>Peers <img src="assets/images/peers.svg" /></h2>
-      <img className="networkSwitch" src={switchPath} />
+      <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
       
       <table><tbody>{ peersPartial }</tbody></table>
 
