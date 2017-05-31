@@ -72,8 +72,8 @@ export default class App extends React.Component {
   }
 
   open(path) {
-    if(this.state.network)
-      this.state.network.stop()
+    //    if(this.state.network)
+    //      this.state.network.disconnect()
 
     if(path) {
       let file = fs.readFileSync(path)
