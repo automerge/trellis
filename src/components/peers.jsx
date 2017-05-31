@@ -17,10 +17,6 @@ export default class Peers extends React.Component {
     })
   }
 
-  formatUUID(uuid) {
-    return uuid.toUpperCase().substring(0,4)
-  }
-
   render() {
     let peers = this.state.peers
     let peersPartial = Object.keys(peers).map((id) => {
@@ -35,10 +31,9 @@ export default class Peers extends React.Component {
         activity = t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + "." + t.getMilliseconds()
       }
 
+      let key = "peer-" + peer
 
-            //<td className="user">{this.formatUUID(id)}…</td>
-
-      return <tr>
+      return <tr key={key}>
             <td className="LED"><img src={ledPath} /></td>
             <td className="user">{name}</td>
             <td className="activity">{activity}</td>
