@@ -13,11 +13,17 @@ export default class Network extends EventEmitter {
     this.store  = config.store
     this.webrtc = webrtc
     this.peers  = {}
+    this.clocks = {}
     window.PEERS = []
+
+    this.store.on('change', (state) => {
+      window.PEERS.forEach((peer) => {
+        this.updatePeer(peer, state, this.clocks[peer.id])
+      })
+    })
 
     if (this.token && this.doc_id) {
       let bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token })
-
 
       webrtc.on('peer', (peer) => {
         window.PEERS.push(peer)
@@ -32,7 +38,6 @@ export default class Network extends EventEmitter {
           this.emit('peer')
         })
 
-          console.log("Setting up connect handler")
         peer.on('connect', () => {
           this.peers[peer.id].connected = true
           this.peers[peer.id].lastActivity = true
@@ -46,33 +51,33 @@ export default class Network extends EventEmitter {
           let store = this.store
 
           if (m.deltas && m.deltas.length > 0) {
+/*
             console.log("BEFORE DISPATCH")
             console.log("m.deltas", m.deltas)
             console.log("m.vectorClock", m.vectorClock)
             console.log("Tesseract.getVClock(store.getState()", Tesseract.getVClock(store.getState()))
             console.log("Tesseract.getDeltasAfter(store.getState(), m.vectorClock", Tesseract.getDeltasAfter(store.getState(), m.vectorClock))
+*/
 
             this.store.dispatch({
               type: "APPLY_DELTAS",
               deltas: m.deltas
             })
 
+/*
             console.log("AFTER DISPATCH")
             console.log("m.deltas", m.deltas)
             console.log("m.vectorClock", m.vectorClock)
             console.log("Tesseract.getVClock(store.getState()", Tesseract.getVClock(store.getState()))
             console.log("Tesseract.getDeltasAfter(store.getState(), m.vectorClock", Tesseract.getDeltasAfter(store.getState(), m.vectorClock))
-
+*/
+            peer.send({vectorClock: Tesseract.getVClock(this.store.getState())})
           }
 
           if (m.vectorClock) {
-            let deltas = Tesseract.getDeltasAfter(this.store.getState(), m.vectorClock)
-            let reply = {
-              vectorClock: Tesseract.getVClock(this.store.getState()),
-              deltas: deltas.slice(0, 5) // just send up to five deltas at a time
-            }
-
-            peer.send(reply)
+            console.log("GOT VECTOR CLOCK")
+            this.clocks[peer.id] = m.vectorClock
+            this.updatePeer(peer,this.store.getState(), m.vectorClock)
           }
           this.peers[peer.id].lastActivity = true
           this.emit('peer')
@@ -85,6 +90,16 @@ export default class Network extends EventEmitter {
       console.log("Network disabled")
       console.log("TRELLIS_DOC_ID:", this.doc_id)
       console.log("SLACK_BOT_TOKEN:", this.token)
+    }
+  }
+
+  updatePeer(peer, state, clock) {
+    if (peer == undefined) return
+    if (clock == undefined) return
+    let deltas = Tesseract.getDeltasAfter(state, clock)
+    if (deltas.length > 0) {
+      console.log("SENDING DELTAS:", deltas.length)
+      peer.send({deltas: deltas})
     }
   }
 

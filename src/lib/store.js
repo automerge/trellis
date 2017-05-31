@@ -3,9 +3,12 @@ import { createStore } from 'redux'
 import fs from 'fs'
 import uuid from './uuid'
 import seedData from './seed_data'
+import EventEmitter from 'events'
 
-export default class Store {
+
+export default class Store extends EventEmitter {
   constructor() {
+    super()
     let tesseract = new Tesseract.init()
 
     this.redux = createStore((state = tesseract, action) => {
@@ -52,16 +55,7 @@ export default class Store {
       }
 
       if (action.type != "APPLY_DELTAS") {
-        console.log("BROADCASTING")
-        window.PEERS.forEach( (peer) => {
-          try {
-            let data = Tesseract.save(newState)
-            console.log("sending state ("+data.length+" bytes) through peer: " + peer)
-            peer.send({data: data})
-          } catch (e) {
-            console.log("Exception during save.", e)
-          }
-        })
+        this.emit('change', newState)
       }
 
       return newState;

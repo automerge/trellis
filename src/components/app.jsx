@@ -14,7 +14,6 @@ export default class App extends React.Component {
     super(props)
 
     window.app   = this
-    window.PEERS = []
 
     this.autoSave = this.autoSave.bind(this)
 
