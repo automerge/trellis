@@ -30,8 +30,9 @@ function Peer(id, name, send_signal) {
   this.send_signal      = send_signal
 
   this.close    = () => {
-    if (this.webrtc) {
+    try {
       this.webrtc.close()
+    } catch (err) {
     }
   }
 
