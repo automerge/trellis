@@ -90,26 +90,6 @@ function create_webrtc(peer) {
   peer.webrtc = webrtc
 }
 
-/*
-function is_connected() {
-  let self = this;
-
-  switch (self.webrtc.iceConnectionState) {
-    case 'new':
-    case 'checking':
-    case 'disconnected':
-    case 'failed':
-      return false
-    case 'connected':
-    case 'completed':
-      return true
-    default:
-      console.log("ICE STATE UNKNOWN: " + self.webrtc.iceConnectionState)
-      return false
-  }
-}
-*/
-
 function beginHandshake(id, name, handler) {
   delete Handshakes[id]
   let peer = new Peer(id,name,handler)

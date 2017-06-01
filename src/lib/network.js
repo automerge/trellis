@@ -1,5 +1,5 @@
-import ss from '../slack-signaler'
-import webrtc from '../webrtc'
+import ss from './networking/slack-signaler'
+import webrtc from './networking/webrtc'
 import Tesseract from 'tesseract'
 import EventEmitter from 'events'
 
