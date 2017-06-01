@@ -35,11 +35,13 @@ export default class Peers extends React.Component {
   }
 
   formatVectorClock(clock) {
-    let heads = Object.keys(clock).map( (peer_id) => {
-        return <th className="peerID"> { this.formatUUID(peer_id) } </th>
+    let heads = Object.keys(clock).map( (peer_id, index) => {
+      let key = "peer-vclock-th-" + index + "-" + peer_id
+      return <th className="peerID" key={key}> { this.formatUUID(peer_id) } </th>
     })
-    let tails = Object.keys(clock).map( (peer_id) => {
-        return <td className="clockPosition"> { clock[peer_id] } </td>
+    let tails = Object.keys(clock).map( (peer_id, index) => {
+      let key = "peer-vclock-td-" + index + "-" + peer_id
+      return <td className="clockPosition" key={key}> { clock[peer_id] } </td>
     })
     return <div >
       <table className="vectorClock">
