@@ -47,14 +47,15 @@ function Peer(id, name, send_signal) {
 
   Peers[this.id] = this
 
+  // XXXX ????
   if (!this.self) {
-    create_webrtc(this)
+    initialize_peerconnection(this)
   }
 
   dispatch("peer", this)
 }
 
-function create_webrtc(peer) {
+function initialize_peerconnection(peer) {
   var webrtc = new RTCPeerConnection(WebRTCConfig)
 
   webrtc.onicecandidate = function(event) {
@@ -113,23 +114,22 @@ function beginHandshake(id, name, handler) {
   }, e => console.log("error with createOffer",e));
 }
 
-function processHello(msg, handler) {
-  let id = msg.session
-  let name = msg.name
-  let begin = () => { beginHandshake(id,name,handler) }
-  if (id in Peers) {
-    Handshakes[id] = begin
-  } else {
-    begin()
-  }
-}
-
-function processMessage(msg, signal, handler) {
+function processSignal(msg, signal, handler) {
   let id = msg.session
   let name = msg.name
   let peer = Peers[id] || (new Peer(id, name, handler))
 
   var callback = function() { };
+  
+  if (msg.action == "hello") {
+    let begin = () => { beginHandshake(id,name,handler) }
+    if (id in Peers) {
+      Handshakes[id] = begin
+    } else {
+      begin()
+    }
+  }
+  
   if (signal.type == "offer") callback = function() {
     peer.webrtc.createAnswer(function(answer) {
       peer.webrtc.setLocalDescription(answer,function() {
@@ -169,9 +169,9 @@ function close() {
 
 function join(signaler) {
   Signaler = signaler
-  signaler.on('hello', processHello)
-  signaler.on('offer', processMessage)
-  signaler.on('reply', processMessage)
+  signaler.on('hello', processSignal)
+  signaler.on('offer', processSignal)
+  signaler.on('reply', processSignal)
   signaler.on('error', (message,e) => {
     console.log("ERROR-MESSAGE",message)
     console.log("ERROR",e)

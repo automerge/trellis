@@ -63,8 +63,8 @@ function init(config) {
       let msg = JSON.parse(message.text)
       if (msg.session != SESSION) {
         if (msg.doc_id == DOC_ID) {
-          if (msg.action == "hello") {
-            HANDLERS['hello'](msg, (reply) => {
+          if (msg.action == "hello") { // "hello" doesn't have a msg.body, so pass undefined
+            HANDLERS['hello'](msg, undefined, (reply) => {
                 let msgJSON = JSON.stringify({ action: "offer", name: NAME, session:SESSION, doc_id:DOC_ID, to:msg.session, body:reply})
                 rtm.sendMessage(msgJSON, CHANNEL);
             })
