@@ -12,6 +12,8 @@ export default class DropTarget extends React.Component {
   }
  
   onDrop(event) {
+    event.target.classList.remove("drag-entered")
+
     let cardId = event.dataTransfer.getData("text")
 
     this.props.store.dispatch({
@@ -22,10 +24,22 @@ export default class DropTarget extends React.Component {
     })
   }
 
+  onDragEnter(event) {
+    event.target.classList.add("drag-entered")
+  }
 
- render() {
-   // Chrome has a drag-and-drop bug that requires onDragOver to not propogate its event
-   return <div className="DropTarget" onDrop={ this.onDrop } onDragOver={ this.preventDefault } >
-   </div>
- }
+  onDragLeave(event) {
+    event.target.classList.remove("drag-entered")
+  }
+
+  render() {
+    // Chrome has a drag-and-drop bug that requires onDragOver to not propogate its event
+    return <div 
+      className="DropTarget" 
+      onDrop={ this.onDrop } 
+      onDragOver={ this.preventDefault }
+      onDragEnter={ this.onDragEnter }
+      onDragLeave={ this.onDragLeave } >
+    </div>
+  }
 }

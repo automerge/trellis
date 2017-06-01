@@ -266,6 +266,9 @@ h2 {
 }
 
 .DropTarget {
-  background: black;
   height: 20px;
+}
+
+.DropTarget.drag-entered {
+  border: 1px dashed #666;
 }
