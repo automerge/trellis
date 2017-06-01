@@ -7,7 +7,7 @@ import Store from '../lib/store'
 import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import Path from 'path'
-import Network from '../lib/network'
+import aMPLNet from '../lib/amplnet'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -88,7 +88,7 @@ export default class App extends React.Component {
       remote.getCurrentWindow().setTitle("Untitled")
     }
 
-    let network = new Network()
+    let network = new aMPLNet()
     network.connect({
       peerId: this.state.store.getState().peerId,
       docId: this.state.store.getState().docId,

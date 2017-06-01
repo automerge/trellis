@@ -1,10 +1,10 @@
-import ss from './networking/slack-signaler'
-import peergroup from './networking/peergroup'
+import ss from './amplnet/slack-signaler'
+import peergroup from './amplnet/peergroup'
 import Tesseract from 'tesseract'
 import EventEmitter from 'events'
 
 
-export default class Network extends EventEmitter {
+export default class aMPLNet extends EventEmitter {
   constructor() {
     super()
 

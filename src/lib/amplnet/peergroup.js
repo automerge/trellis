@@ -47,7 +47,6 @@ function Peer(id, name, send_signal) {
 
   Peers[this.id] = this
 
-  // XXXX ????
   if (!this.self) {
     initialize_peerconnection(this)
   }

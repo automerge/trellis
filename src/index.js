@@ -28,6 +28,7 @@ const createWindow = async () => {
     }
   });
 
+  globalShortcut.register("CommandOrControl+R", () => mainWindow.webContents.reload() )
   globalShortcut.register("CommandOrControl+Option+I", async () => {
     await installExtension(REACT_DEVELOPER_TOOLS)
     mainWindow.webContents.openDevTools()
