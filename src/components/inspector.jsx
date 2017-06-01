@@ -1,5 +1,4 @@
 import React from 'react'
-import TesseractInfo from './tesseract_info'
 
 export default class Inspector extends React.Component {
   constructor(props) {

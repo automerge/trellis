@@ -1,6 +1,5 @@
 import React from 'react'
-import Board from './board'
-import Changes from './changes'
+import Main from './main'
 import Inspector from './inspector'
 import Peers from './peers'
 import Store from '../lib/store'
@@ -80,12 +79,12 @@ export default class App extends React.Component {
       let name = Path.parse(path).name
 
       this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
-      remote.getCurrentWindow().setTitle(name)
+      remote.getCurrentWindow().setTitle("Trellis - " + name)
       localStorage.setItem("lastFileOpened", path)
     }
     else {
       this.state.store.dispatch({ type: "NEW_DOCUMENT" })
-      remote.getCurrentWindow().setTitle("Untitled")
+      remote.getCurrentWindow().setTitle("Trellis - Untitled")
     }
 
     let network = new aMPLNet()
@@ -108,8 +107,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Board store={ this.state.store } />
-        <Changes store ={ this.state.store } />
+        <Main store={ this.state.store } />
         <Inspector store={ this.state.store } />
         <Peers network={ this.state.network } />
       </div>
