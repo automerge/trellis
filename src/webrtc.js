@@ -39,6 +39,7 @@ function Peer(id, name, send_signal) {
 
   this.send    = (message) => {
     if (this.self) return; // dont send messages to ourselves
+    if (!("data_channel" in this)) return; // dont send messages to disconnected peers
     var buffer = new Buffer(JSON.stringify(message), 'utf8')
     var compressed = lz4.encode(buffer);
     this.data_channel.send(compressed)

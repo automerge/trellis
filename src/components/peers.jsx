@@ -65,11 +65,11 @@ export default class Peers extends React.Component {
       let clock = this.props.network.clocks[id];
 
       return <tr key={key}>
-            <td className="LED"><img src={ledPath} /></td>
-            <td className="user">{name}</td>
-            <td className="activity">{index > 0 ? peer.messagesSent : ""}</td>
-            <td className="activity">{index > 0 ? peer.messagesReceived : ""}</td>
-            <td className="clock">{clock ? this.formatVectorClock(clock) : "no clock"}</td>
+            <td key="1" className="LED"><img src={ledPath} /></td>
+            <td key="2" className="user">{name}</td>
+            <td key="3" className="activity">{index > 0 ? peer.messagesSent : ""}</td>
+            <td key="4" className="activity">{index > 0 ? peer.messagesReceived : ""}</td>
+            <td key="5" className="clock">{clock ? this.formatVectorClock(clock) : "no clock"}</td>
           </tr>
     })
 
