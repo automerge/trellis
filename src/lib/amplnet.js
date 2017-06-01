@@ -83,26 +83,12 @@ export default class aMPLNet extends EventEmitter {
 
           if (m.deltas && m.deltas.length > 0) {
             console.log("GOT DELTAS",m.deltas)
-/*
-            console.log("BEFORE DISPATCH")
-            console.log("m.deltas", m.deltas)
-            console.log("m.vectorClock", m.vectorClock)
-            console.log("Tesseract.getVClock(store.getState()", Tesseract.getVClock(store.getState()))
-            console.log("Tesseract.getDeltasAfter(store.getState(), m.vectorClock", Tesseract.getDeltasAfter(store.getState(), m.vectorClock))
-*/
 
             this.store.dispatch({
               type: "APPLY_DELTAS",
               deltas: m.deltas
             })
 
-/*
-            console.log("AFTER DISPATCH")
-            console.log("m.deltas", m.deltas)
-            console.log("m.vectorClock", m.vectorClock)
-            console.log("Tesseract.getVClock(store.getState()", Tesseract.getVClock(store.getState()))
-            console.log("Tesseract.getDeltasAfter(store.getState(), m.vectorClock", Tesseract.getDeltasAfter(store.getState(), m.vectorClock))
-*/
           }
 
           if (m.vectorClock && m.seq == this.seqs[peer.id]) { // ignore acks for all but the last send

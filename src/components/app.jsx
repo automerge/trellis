@@ -16,9 +16,11 @@ export default class App extends React.Component {
 
     this.autoSave = this.autoSave.bind(this)
 
-    this.state = { savePath: null, store: new Store() }
-    this.state.store.subscribe(this.autoSave)
+    this.store = new Store()
+    this.store.subscribe(this.autoSave)
 
+    this.state = { savePath: null, network: false }
+    
     ipcRenderer.on("new", (event) => {
       this.setState({ savePath: null }, () => {
         this.open()
@@ -40,7 +42,7 @@ export default class App extends React.Component {
       if(files && files.length > 0) {
         let file = fs.readFileSync(files[0])
 
-        this.state.store.dispatch({
+        this.store.dispatch({
           type: "MERGE_DOCUMENT",
           file: file
         })
@@ -78,20 +80,20 @@ export default class App extends React.Component {
       let file = fs.readFileSync(path)
       let name = Path.parse(path).name
 
-      this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+      this.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
       remote.getCurrentWindow().setTitle("Trellis - " + name)
       localStorage.setItem("lastFileOpened", path)
     }
     else {
-      this.state.store.dispatch({ type: "NEW_DOCUMENT" })
+      this.store.dispatch({ type: "NEW_DOCUMENT" })
       remote.getCurrentWindow().setTitle("Trellis - Untitled")
     }
 
     let network = new aMPLNet()
     network.connect({
-      peerId: this.state.store.getState().peerId,
-      docId: this.state.store.getState().docId,
-      store: this.state.store
+      peerId: this.store.getState().peerId,
+      docId: this.store.getState().docId,
+      store: this.store
     })
     this.setState({ network: network })
   }
@@ -99,7 +101,7 @@ export default class App extends React.Component {
   autoSave() {
     if(this.state.savePath) {
       console.log("Auto saving…")
-      let exportFile = this.state.store.save()
+      let exportFile = this.store.save()
       fs.writeFileSync(this.state.savePath, exportFile)
     }
   }
@@ -107,8 +109,8 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Main store={ this.state.store } />
-        <Inspector store={ this.state.store } />
+        <Main store={ this.store } />
+        <Inspector store={ this.store } />
         <Peers network={ this.state.network } />
       </div>
     )

@@ -18,6 +18,15 @@ export default class Store extends EventEmitter {
           newState = this.toggleButton(state, action)
           break; 
         // I wonder if we can do away with this or move it to aMPLNet?
+        case "NEW_DOCUMENT":
+          newState = this.newDocument(state, action)
+          break;
+        case "OPEN_DOCUMENT":
+          newState = this.openDocument(state, action)
+          break;
+        case "MERGE_DOCUMENT":
+          newState = this.mergeDocument(state, action)
+          break;
         case "APPLY_DELTAS":
           newState = this.applyDeltas(state, action)
           break;
@@ -41,8 +50,8 @@ export default class Store extends EventEmitter {
   }
 
   toggleButton(state, action) {
-    let buttonState = this._findIndex(state.cards, (c) => c.id === action.cardId)
-    return Tesseract.set(state.cards[cardIndex], "title", action.newTitle)
+    let newButtonState = action.button
+    return Tesseract.set(state, "button", newButtonState)
   }
 
   openDocument(state, action) {
