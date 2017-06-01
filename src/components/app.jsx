@@ -90,6 +90,7 @@ export default class App extends React.Component {
 
     let network = new Network()
     network.connect({
+      peerId: this.state.store.getState().peerId,
       docId: this.state.store.getState().docId,
       store: this.state.store
     })

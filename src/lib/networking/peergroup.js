@@ -117,7 +117,6 @@ function beginHandshake(id, name, handler) {
 function processSignal(msg, signal, handler) {
   let id = msg.session
   let name = msg.name
-  let peer = Peers[id] || (new Peer(id, name, handler))
 
   var callback = function() { };
   
@@ -128,7 +127,10 @@ function processSignal(msg, signal, handler) {
     } else {
       begin()
     }
+    return;
   }
+  
+  let peer = Peers[id] || (new Peer(id, name, handler))
   
   if (signal.type == "offer") callback = function() {
     peer.webrtc.createAnswer(function(answer) {

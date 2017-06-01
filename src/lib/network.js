@@ -23,6 +23,7 @@ export default class Network extends EventEmitter {
     this.seqs = {}
     window.PEERS = []
 
+    this.peer_id = this.config.peerId
     this.doc_id = this.config.docId
     this.store  = this.config.store
 
@@ -44,7 +45,7 @@ export default class Network extends EventEmitter {
     })
 
     if (this.token && this.doc_id) {
-      let bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token })
+      let bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token, session: this.peer_id })
 
       peergroup.on('peer', (peer) => {
         window.PEERS.push(peer)

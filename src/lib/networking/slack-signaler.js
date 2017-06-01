@@ -25,7 +25,7 @@ var UUID = (function() {
 function init(config) {
   let HANDLERS = { hello: () => {}, reply: () => {}, offer: () => {}, error: () => {} }
   let CHANNEL;
-  let SESSION = UUID.generate()
+  let SESSION = config.session || UUID.generate()
   let NAME = config.name || "unknown"
   let DOC_ID;
   let last_ts
