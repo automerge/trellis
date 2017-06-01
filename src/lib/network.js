@@ -29,15 +29,18 @@ export default class Network extends EventEmitter {
     this.connected = true
 
     this.store.on('change', (action,state) => {
-      window.PEERS.forEach((peer) => {
-        if (action == "APPLY_DELTAS") {
-          peer.send({vectorClock: Tesseract.getVClock(state), docId: this.doc_id})
+      if (action == "APPLY_DELTAS") {
+        let clock = Tesseract.getVClock(state)
+        window.PEERS.forEach((peer) => {
+          peer.send({vectorClock: clock, docId: this.doc_id})
           this.peers[peer.id].messagesSent += 1
           this.emit('peer')
-        } else {
+        })
+      } else {
+        window.PEERS.forEach((peer) => {
           this.updatePeer(peer, state, this.clocks[peer.id])
-        }
-      })
+        })
+      }
     })
 
     if (this.token && this.doc_id) {
