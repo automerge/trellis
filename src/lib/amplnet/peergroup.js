@@ -65,7 +65,7 @@ function initialize_peerconnection(peer) {
 
   webrtc.oniceconnectionstatechange = function(event) {
     console.log("notice:statechange",peer.id,webrtc.iceConnectionState, event)
-    if (webrtc.iceConnectionState == "failed") {
+    if (webrtc.iceConnectionState == "failed" || webrtc.iceConnectionState == "closed") {
       delete Peers[peer.id]
       peer.dispatch('disconnect')
       if (Handshakes[peer.id]) {
