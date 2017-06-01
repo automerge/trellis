@@ -1,5 +1,5 @@
 import ss from './networking/slack-signaler'
-import webrtc from './networking/webrtc'
+import peergroup from './networking/peergroup'
 import Tesseract from 'tesseract'
 import EventEmitter from 'events'
 
@@ -10,7 +10,7 @@ export default class Network extends EventEmitter {
 
     this.token  = process.env.SLACK_BOT_TOKEN
     this.name   = process.env.NAME
-    this.webrtc = webrtc
+    this.peergroup = peergroup
     this.connected = false
   }
 
@@ -46,7 +46,7 @@ export default class Network extends EventEmitter {
     if (this.token && this.doc_id) {
       let bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token })
 
-      webrtc.on('peer', (peer) => {
+      peergroup.on('peer', (peer) => {
         window.PEERS.push(peer)
         this.seqs[peer.id] = 0
         if (peer.self == true) { this.SELF = peer } 
@@ -115,7 +115,7 @@ export default class Network extends EventEmitter {
 
       })
 
-      webrtc.join(bot)
+      peergroup.join(bot)
     } else {
       console.log("Network disabled")
       console.log("TRELLIS_DOC_ID:", this.doc_id)
@@ -150,7 +150,7 @@ export default class Network extends EventEmitter {
     console.log("NETWORK DISCONNECT")
     this.store.removeAllListeners('change')
     delete this.store
-    webrtc.close()
+    peergroup.close()
     this.connected = false
   }
 }
