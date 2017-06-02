@@ -34,7 +34,7 @@ export default class Peers extends React.Component {
     return uuid.toLowerCase().substring(0,4)
   }
 
-  formatVectorClock(clock) {
+  formatVectorClock(id, clock) {
     let heads = Object.keys(clock).map( (peer_id, index) => {
       let key = "peer-vclock-th-" + index + "-" + peer_id
       return <th className="peerID" key={key}> { this.formatUUID(peer_id) } </th>
@@ -46,10 +46,10 @@ export default class Peers extends React.Component {
     return <div >
       <table className="vectorClock">
       <thead>
-          <tr>{heads}</tr>
+          <tr><th></th>{heads}</tr>
       </thead>
       <tbody>
-        <tr>{tails}</tr>
+        <tr><th>{this.formatUUID(id)}</th>{tails}</tr>
       </tbody>
     </table>
     </div>
@@ -64,16 +64,18 @@ export default class Peers extends React.Component {
       let ledPath = "assets/images/LED-" + ledColor + ".svg"
       let key = "peer-" + id
       
-      let clock = this.props.network.clocks[id];
-
       return <tr key={key}>
             <td className="led"><img src={ledPath} /></td>
             <td className="user">{name}</td>
             <td className="id">{this.formatUUID(id)}</td>
             <td className="sent">{index > 0 ? peer.messagesSent : ""}</td>
             <td className="received">{index > 0 ? peer.messagesReceived : ""}</td>
-            <td className="clock">{clock ? this.formatVectorClock(clock) : ""}</td>
           </tr>
+    })
+
+    let clocksPartial = Object.keys(peers).map((id, index) => {
+      let clock = this.props.network.clocks[id]
+      return clock ? this.formatVectorClock(id, this.props.network.clocks[id]) : ""
     })
 
     let connected = this.state.connected ? "on" : "off"
@@ -93,6 +95,11 @@ export default class Peers extends React.Component {
       <div className="docID">
         <span className="label">DocID</span>
         <span className="ID">{ docId }</span>
+      </div>
+
+      <div className="Clocks">
+        <h2>Clocks <img src="assets/images/clock.svg" /></h2>
+        {clocksPartial}
       </div>
     </div>
   }
