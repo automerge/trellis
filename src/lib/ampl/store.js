@@ -2,7 +2,7 @@ import Tesseract from 'tesseract'
 import { createStore } from 'redux'
 import fs from 'fs'
 import uuid from './uuid'
-import aMPLNet from '../lib/amplnet'
+import aMPLNet from './amplnet'
 
 export default class Store {
   constructor(reducer) {

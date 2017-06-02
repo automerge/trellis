@@ -3,7 +3,6 @@ import peergroup from './amplnet/peergroup'
 import Tesseract from 'tesseract'
 import EventEmitter from 'events'
 
-
 export default class aMPLNet extends EventEmitter {
   constructor() {
     super()

@@ -2,10 +2,11 @@ import React from 'react'
 import Main from './main'
 import Inspector from './inspector'
 import Peers from './peers'
-import Store from '../lib/store'
 import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import Path from 'path'
+
+import aMPL from '../lib/ampl'
 import Tesseract from 'tesseract'
 
 export default class App extends React.Component {
@@ -16,7 +17,7 @@ export default class App extends React.Component {
 
     this.autoSave = this.autoSave.bind(this)
 
-    this.store = new Store((state, action) => {
+    this.store = new aMPL.Store((state, action) => {
       switch(action.type) {
         case "TOGGLE_BUTTON":
           return this.toggleButton(state, action)
