@@ -6,7 +6,6 @@ import Store from '../lib/store'
 import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import Path from 'path'
-import aMPLNet from '../lib/amplnet'
 import Tesseract from 'tesseract'
 
 export default class App extends React.Component {
@@ -28,7 +27,7 @@ export default class App extends React.Component {
 
     this.store.subscribe(this.autoSave)
 
-    this.state = { savePath: null, network: false }
+    this.state = { savePath: null }
     
     ipcRenderer.on("new", (event) => {
       this.open()
@@ -75,7 +74,6 @@ export default class App extends React.Component {
   }
 
   open(path) {
-    console.log("APP OPEN", path)
     if(this.state.network)
        this.state.network.disconnect()
 
@@ -95,14 +93,6 @@ export default class App extends React.Component {
         remote.getCurrentWindow().setTitle("Trellis - Untitled")
       })
     }
-
-    let network = new aMPLNet()
-    network.connect({
-      peerId: this.store.getState().peerId,
-      docId: this.store.getState().docId,
-      store: this.store
-    })
-    this.setState({ network: network })
   }
 
   toggleButton(state, action) {

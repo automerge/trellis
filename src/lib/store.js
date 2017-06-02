@@ -3,6 +3,7 @@ import { createStore } from 'redux'
 import fs from 'fs'
 import uuid from './uuid'
 import EventEmitter from 'events'
+import aMPLNet from '../lib/amplnet'
 
 export default class Store extends EventEmitter {
   constructor(reducer) {
@@ -11,6 +12,7 @@ export default class Store extends EventEmitter {
     this.reducer   = reducer
     this.state     = new Tesseract.init()
     this.listeners = []
+    this.network   = null 
   }
 
   dispatch(action) {
@@ -32,6 +34,18 @@ export default class Store extends EventEmitter {
         break;
       default:
         newState = this.reducer(state, action)
+    }
+
+    if(action.type === "NEW_DOCUMENT") {
+      let network = new aMPLNet()
+      network.connect({
+        peerId: this.state.peerId,
+        docId: this.state.docId,
+        store: this
+      })
+
+      if(this.network) this.network.disconnect()
+      this.network = network
     }
 
     this.state = newState
@@ -68,6 +82,7 @@ export default class Store extends EventEmitter {
   newDocument(state, action) {
     let tesseract = new Tesseract.init()
     tesseract = Tesseract.set(tesseract, "docId", uuid())
+
     return tesseract
   }
 }
