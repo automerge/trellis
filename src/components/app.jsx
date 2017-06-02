@@ -21,19 +21,15 @@ export default class App extends React.Component {
     this.state.store.subscribe(this.autoSave)
 
     ipcRenderer.on("new", (event) => {
-      this.setState({ savePath: null }, () => {
-        this.open()
-      })
+      this.open()
     })
 
     ipcRenderer.on("open", (event, files) => {
       if(files && files.length > 0) {
         let openPath  = files[0]
 
-        this.setState({ savePath: openPath }, () => {
-          this.open(openPath)
-          this.autoSave()
-        })
+        this.open(openPath)
+        this.autoSave()
       }
     })
 
@@ -76,16 +72,20 @@ export default class App extends React.Component {
        this.state.network.disconnect()
 
     if(path) {
-      let file = fs.readFileSync(path)
-      let name = Path.parse(path).name
+      this.setState({ savePath: path }, () => {
+        let file = fs.readFileSync(path)
+        let name = Path.parse(path).name
 
-      this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
-      remote.getCurrentWindow().setTitle(name)
-      localStorage.setItem("lastFileOpened", path)
+        this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+        remote.getCurrentWindow().setTitle(name)
+        localStorage.setItem("lastFileOpened", path)
+      })
     }
     else {
-      this.state.store.dispatch({ type: "NEW_DOCUMENT" })
-      remote.getCurrentWindow().setTitle("Untitled")
+      this.setState({ savePath: null }, () => {
+        this.state.store.dispatch({ type: "NEW_DOCUMENT" })
+        remote.getCurrentWindow().setTitle("Untitled")
+      })
     }
 
     let network = new aMPLNet()
@@ -94,6 +94,7 @@ export default class App extends React.Component {
       docId: this.state.store.getState().docId,
       store: this.state.store
     })
+
     this.setState({ network: network })
   }
 
