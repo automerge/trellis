@@ -1,7 +1,7 @@
 {
-  "name": "Trellis",
-  "productName": "Trellis",
-  "version": "0.0.4",
+  "name": "Toggler",
+  "productName": "Toggler",
+  "version": "0.0.1",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
@@ -9,11 +9,10 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "lint": "echo \"No linting configured\"",
-    "publish": "electron-forge publish",
-    "test": "mocha --compilers js:babel-core/register test"
+    "publish": "electron-forge publish"
   },
   "keywords": [],
-  "author": "Choxi",
+  "author": "",
   "license": "MIT",
   "config": {
     "forge": {
@@ -38,11 +37,6 @@
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
-      "github_repository": {
-        "owner": "inkandswitch",
-        "name": "trellis",
-        "draft": false
-      },
       "windowsStoreConfig": {
         "packageName": "",
         "name": "trellis"
@@ -50,7 +44,6 @@
     }
   },
   "dependencies": {
-    "assert": "1.4.1",
     "dotenv": "4.0.0",
     "electron-compile": "6.4.0",
     "electron-devtools-installer": "2.2.0",
@@ -69,9 +62,7 @@
     "babel-plugin-transform-es2015-classes": "6.24.1",
     "babel-preset-env": "1.4.0",
     "babel-preset-react": "6.24.1",
-    "electron-prebuilt-compile": "1.6.2",
-    "mocha": "3.4.1",
-    "spectron": "3.6.4"
+    "electron-prebuilt-compile": "1.6.2"
   },
   "babel": {
     "presets": [
