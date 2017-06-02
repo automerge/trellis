@@ -22,19 +22,13 @@ export default class App extends React.Component {
     this.state = { savePath: null, network: false }
     
     ipcRenderer.on("new", (event) => {
-      this.setState({ savePath: null }, () => {
-        this.open()
-      })
+      this.open()
     })
 
     ipcRenderer.on("open", (event, files) => {
       if(files && files.length > 0) {
-        let openPath  = files[0]
-
-        this.setState({ savePath: openPath }, () => {
-          this.open(openPath)
-          this.autoSave()
-        })
+        this.open(files[0])
+        this.autoSave()
       }
     })
 
@@ -72,21 +66,25 @@ export default class App extends React.Component {
   }
 
   open(path) {
-    console.log("APP OPEN",path)
+    console.log("APP OPEN", path)
     if(this.state.network)
        this.state.network.disconnect()
 
     if(path) {
-      let file = fs.readFileSync(path)
-      let name = Path.parse(path).name
+      this.setState({ savePath: path }, () => {
+        let file = fs.readFileSync(path)
+        let name = Path.parse(path).name
 
-      this.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
-      remote.getCurrentWindow().setTitle("Trellis - " + name)
-      localStorage.setItem("lastFileOpened", path)
+        this.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+        remote.getCurrentWindow().setTitle("Trellis - " + name)
+        localStorage.setItem("lastFileOpened", path)
+      })
     }
     else {
-      this.store.dispatch({ type: "NEW_DOCUMENT" })
-      remote.getCurrentWindow().setTitle("Trellis - Untitled")
+      this.setState({ savePath: null }, () => {
+        this.store.dispatch({ type: "NEW_DOCUMENT" })
+        remote.getCurrentWindow().setTitle("Trellis - Untitled")
+      })
     }
 
     let network = new aMPLNet()

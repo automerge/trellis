@@ -13,42 +13,10 @@ html, body, #App {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-.Changes img,
 .Inspector img,
 .Peers img {
   height: 20px;
   padding-left: 4px;
-}
-
-.Changes {
-  grid-row: 1 / 4;
-  grid-column: 4;
-  padding: 10pt 14pt;
-  background-color: #f8f8f8;
-  border-left: 1px solid #aaa;
-}
-.Changes ul {
-  list-style-type: none;
-  padding: 0;
-  font-size: 12px;
-}
-.Changes li {
-  position: relative;
-  height: 22px;
-  padding-left: 24px;
-}
-.Changes img.changeNode {
-  position: absolute;
-  width: 11px;
-  height: 11px;
-  left: 0;
-  top: 1px;
-}
-.Changes img.changeEdge {
-  position: absolute;
-  height: 11px;
-  left: 5.5px;
-  top: 12px;
 }
 
 .Inspector {
@@ -59,40 +27,6 @@ html, body, #App {
   padding: 10pt 14pt;
   border-top: 1px solid #aaa;
   overflow: scroll;
-}
-
-.Inspector__container {
-  display: flex;
-}
-
-.Inspector table {
-  border-collapse: collapse;
-  margin-right: 40px;
-}
-
-.Inspector table th {
-  background: #CCC;
-}
-
-.Inspector table th, .Inspector table td {
-  padding: 5px 10px;
-  border: 1px solid #AAA;
-  text-align: left;
-}
-
-.Inspector__cards__cardId, .Inspector__cards__listId,
-.Inspector__cards__assigned, .Inspector__lists__listId {
-  font-family: Monaco, monospace;
-}
-
-.Inspector input[type="text"] {
-  border: 1px solid #aaa;
-}
-.Inspector input[type="text"].number {
-  width: 12pt;
-}
-.Inspector input[type="text"].string {
-  width: 140pt;
 }
 
 .Peers {
