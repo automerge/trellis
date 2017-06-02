@@ -1,7 +1,5 @@
 import { app, BrowserWindow, Menu, ipcMain, dialog, globalShortcut } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
-import { autoUpdater } from 'electron'
-import update from './lib/update'
 import fs from 'fs'
 
 // Load environment variables from .env file
@@ -113,6 +111,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// Check for app updates
-if(!isDevMode) update({ dialog: dialog, updater: autoUpdater })
