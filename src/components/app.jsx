@@ -7,7 +7,6 @@ import fs from 'fs'
 import Path from 'path'
 
 import aMPL from '../lib/ampl'
-import Tesseract from 'tesseract'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -96,7 +95,7 @@ export default class App extends React.Component {
 
   toggleButton(state, action) {
     let newButtonState = action.button
-    return Tesseract.set(state, "button", newButtonState)
+    return aMPL.Tesseract.set(state, "button", newButtonState)
   }
 
   autoSave() {
