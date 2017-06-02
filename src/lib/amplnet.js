@@ -29,21 +29,6 @@ export default class aMPLNet extends EventEmitter {
 
     this.connected = true
 
-    this.store.on('change', (action,state) => {
-      if (action == "APPLY_DELTAS") {
-        let clock = Tesseract.getVClock(state)
-        window.PEERS.forEach((peer) => {
-          peer.send({vectorClock: clock, docId: this.doc_id})
-          this.peers[peer.id].messagesSent += 1
-          this.emit('peer')
-        })
-      } else {
-        window.PEERS.forEach((peer) => {
-          this.updatePeer(peer, state, this.clocks[peer.id])
-        })
-      }
-    })
-
     if (this.token && this.doc_id) {
       let bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token, session: this.peer_id })
 
@@ -109,6 +94,22 @@ export default class aMPLNet extends EventEmitter {
       console.log("SLACK_BOT_TOKEN:", this.token)
     }
   }
+
+  broadcast(state, action) {
+    if (action == "APPLY_DELTAS") {
+      let clock = Tesseract.getVClock(state)
+      window.PEERS.forEach((peer) => {
+        peer.send({vectorClock: clock, docId: this.doc_id})
+        this.peers[peer.id].messagesSent += 1
+        this.emit('peer')
+      })
+    } else {
+      window.PEERS.forEach((peer) => {
+        this.updatePeer(peer, state, this.clocks[peer.id])
+      })
+    }
+  }
+
 
   updatePeer(peer, state, clock) {
     if (peer == undefined) return
