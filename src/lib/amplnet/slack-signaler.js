@@ -23,7 +23,7 @@ var UUID = (function() {
 })();
 
 function init(config) {
-  let HANDLERS = { hello: () => {}, reply: () => {}, offer: () => {}, error: () => {} }
+  let HANDLERS = { hello: () => {}, reply: () => {}, offer: () => {}, error: () => {}, connect: () => {}, disconnect: () => {} }
   let CHANNEL;
   let SESSION = config.session || UUID.generate()
   let NAME = config.name || "unknown"
@@ -34,14 +34,16 @@ function init(config) {
     console.log("GET SLACK CONNECT HANDLER")
     onConnectHandler = h
   }
+  let opts = { retryConfig: { forever: true, maxTimeout: 30 * 1000 }};
 
-  rtm = new RtmClient(config.bot_token);
+  rtm = new RtmClient(config.bot_token,opts);
   DOC_ID = config.doc_id
 
   // The client will emit an RTM.AUTHENTICATED event on successful connection, with the `rtm.start` payload
   rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
     console.log("CALL SLACK CONNECT HANDLER")
     onConnectHandler()
+    HANDLERS['connect']()
     for (const c of rtmStartData.channels) {
       if (c.is_member && c.name ==='signals') { CHANNEL = c.id }
     }
@@ -53,6 +55,23 @@ function init(config) {
     let msg = JSON.stringify({ action: "hello", name:NAME, session:SESSION, doc_id:DOC_ID })
     rtm.sendMessage(msg, CHANNEL);
   });
+
+  rtm.on(CLIENT_EVENTS.RTM.WS_ERROR, function() {
+    console.log("slack-signal: ws error")
+  })
+
+  rtm.on(CLIENT_EVENTS.RTM.WS_CLOSED, function() {
+    console.log("slack-signal: ws closed")
+  })
+
+  rtm.on(CLIENT_EVENTS.RTM.WS_OPENED, function() {
+    console.log("slack-signal: ws opened")
+  })
+
+  rtm.on(CLIENT_EVENTS.RTM.ATTEMPTING_RECONNECT, function() {
+    console.log("slack-signal: attempting reconnect")
+    HANDLERS['disconnect']()
+  })
 
   //rtm.on(CLIENT_EVENTS.RTM.MESSAGE, function handleRtmMessage(message) {
   rtm.on(RTM_EVENTS.MESSAGE, function handleRtmMessage(message) {
@@ -92,15 +111,14 @@ function init(config) {
     console.log("Done processing message")
   });
   return { 
+    session: SESSION,
+    name: NAME,
     on: (type,handler) => { HANDLERS[type] = handler },
-    start: (handler) => {
-      rtm.start()
-      if (handler) {
-        console.log("SELF HANDLER")
-        handler(SESSION, NAME, CONNECT_DISPATCH)
-      }
-    },
-    stop: () => { rtm.disconnect() }
+    start: () => { rtm.start() },
+    stop: () => {
+      rtm.disconnect()
+      HANDLERS['disconnect']()
+    }
   }
 }
 

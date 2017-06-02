@@ -17,7 +17,7 @@ var notice = (peer,desc) => (event) => console.log("notice:" + peer.id + ": " + 
 function Peer(id, name, send_signal) {
   this.id             = id
   this.name           = name
-  this.handlers       = { connect: [], disconnect: [], message: [] }
+  this.handlers       = { connect: [], closed:[], disconnect: [], message: [] }
   this.self           = (send_signal == undefined)
 
   this.on = (type,handler) => {
@@ -34,6 +34,7 @@ function Peer(id, name, send_signal) {
     try {
       this.webrtc.close()
     } catch (err) {
+      // nope
     }
   }
 
@@ -65,9 +66,12 @@ function initialize_peerconnection(peer) {
 
   webrtc.oniceconnectionstatechange = function(event) {
     console.log("notice:statechange",peer.id,webrtc.iceConnectionState, event)
+    if (webrtc.iceConnectionState == "disconnected") {
+      peer.dispatch('disconnect')
+    }
     if (webrtc.iceConnectionState == "failed" || webrtc.iceConnectionState == "closed") {
       delete Peers[peer.id]
-      peer.dispatch('disconnect')
+      peer.dispatch('closed')
       if (Handshakes[peer.id]) {
         Handshakes[peer.id]()
       }
@@ -177,14 +181,14 @@ function join(signaler) {
     console.log("ERROR-MESSAGE",message)
     console.log("ERROR",e)
   })
-  signaler.start((id,name,onConnect) => {
-    console.log("MAKE SELF PEER")
-    let me = new Peer(id,name)
-    onConnect(() => {
-      console.log("CONNECT SELF PEER")
-      me.dispatch('connect')
-    })
+  let me = new Peer(signaler.session,signaler.name)
+  signaler.on('connect', () => {
+    me.dispatch('connect')
   })
+  signaler.on('disconnect', () => {
+    me.dispatch('disconnect')
+  })
+  signaler.start()
 }
 
 function process_message(peer, msg) {

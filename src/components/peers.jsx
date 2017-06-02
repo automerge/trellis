@@ -3,7 +3,7 @@ import React from 'react'
 export default class Peers extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { 'peers': {}, 'connected': false }
+    this.state = { 'peers': {}, 'connected': true }
     this.toggleNetwork = this.toggleNetwork.bind(this)
   }
 

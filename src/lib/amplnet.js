@@ -68,6 +68,12 @@ export default class aMPLNet extends EventEmitter {
           this.emit('peer')
         })
 
+        peer.on('closed', () => {
+          console.log("PEER: closed",peer.id)
+          delete this.peers[peer.id]
+          this.emit('peer')
+        })
+
         peer.on('connect', () => {
           this.peers[peer.id].connected = true
           this.peers[peer.id].lastActivity = Date.now()
@@ -153,5 +159,6 @@ export default class aMPLNet extends EventEmitter {
     delete this.store
     peergroup.close()
     this.connected = false
+    this.emit('peer')
   }
 }
