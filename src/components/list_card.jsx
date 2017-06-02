@@ -9,6 +9,7 @@ export default class ListCard extends React.Component {
     this.delete        = this.delete.bind(this)
     this.editTitle     = this.editTitle.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleBlur    = this.handleBlur.bind(this)
 
     this.state = { editMode: false }
   }
@@ -48,13 +49,19 @@ export default class ListCard extends React.Component {
     }
   }
 
+  handleBlur(event) {
+    this.setState({ editMode: false })
+  }
+
   render() {
     let title = ""
 
     if(this.state.editMode) {
-      title = <textarea 
+      title = <textarea
         ref= { (input) => this.titleInput = input }
-        defaultValue={ this.card().title } onKeyDown={ this.handleKeyDown } />
+        defaultValue={ this.card().title }
+        onBlur={ this.handleBlur }
+        onKeyDown={ this.handleKeyDown } />
     } else {
       title = <div onClick={ this.editTitle } > { this.card().title }</div>
     }
