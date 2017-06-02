@@ -5,53 +5,50 @@ import uuid from './uuid'
 import EventEmitter from 'events'
 
 export default class Store extends EventEmitter {
-  constructor() {
+  constructor(reducer) {
     super()
-    let tesseract = new Tesseract.init()
 
-    this.redux = createStore((state = tesseract, action) => {
-      let newState;
-      console.log("ACTION: ", action.type)
-       
-      switch(action.type) {
-        case "TOGGLE_BUTTON":
-          newState = this.toggleButton(state, action)
-          break; 
-        // I wonder if we can do away with this or move it to aMPLNet?
-        case "NEW_DOCUMENT":
-          newState = this.newDocument(state, action)
-          break;
-        case "OPEN_DOCUMENT":
-          newState = this.openDocument(state, action)
-          break;
-        case "MERGE_DOCUMENT":
-          newState = this.mergeDocument(state, action)
-          break;
-        case "APPLY_DELTAS":
-          newState = this.applyDeltas(state, action)
-          break;
-        default:
-          newState = state
+    this.reducer   = reducer
+    this.state     = new Tesseract.init()
+    this.listeners = []
+  }
 
-      }
+  dispatch(action) {
+    let state = this.state
+    let newState
 
-      this.emit('change', action.type, newState)
+    switch(action.type) {
+      case "NEW_DOCUMENT":
+        newState = this.newDocument(state, action)
+        break;
+      case "OPEN_DOCUMENT":
+        newState = this.openDocument(state, action)
+        break;
+      case "MERGE_DOCUMENT":
+        newState = this.mergeDocument(state, action)
+        break;
+      case "APPLY_DELTAS":
+        newState = this.applyDeltas(state, action)
+        break;
+      default:
+        newState = this.reducer(state, action)
+    }
 
-      return newState;
-    })
+    this.state = newState
+    this.emit('change', action.type, newState)
+    this.listeners.forEach((listener) => listener())
+  }
 
-    this.subscribe = this.redux.subscribe
-    this.getState  = this.redux.getState
-    this.dispatch  = this.redux.dispatch
+  subscribe(listener) {
+    this.listeners.push(listener)
+  }
+
+  getState() {
+    return this.state
   }
 
   save() {
     return Tesseract.save(this.getState())
-  }
-
-  toggleButton(state, action) {
-    let newButtonState = action.button
-    return Tesseract.set(state, "button", newButtonState)
   }
 
   openDocument(state, action) {

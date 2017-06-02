@@ -7,16 +7,25 @@ import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import Path from 'path'
 import aMPLNet from '../lib/amplnet'
+import Tesseract from 'tesseract'
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
 
-    window.app   = this
+    window.app = this
 
     this.autoSave = this.autoSave.bind(this)
 
-    this.store = new Store()
+    this.store = new Store((state, action) => {
+      switch(action.type) {
+        case "TOGGLE_BUTTON":
+          return this.toggleButton(state, action)
+        default:
+          return state
+      }
+    })
+
     this.store.subscribe(this.autoSave)
 
     this.state = { savePath: null, network: false }
@@ -94,6 +103,11 @@ export default class App extends React.Component {
       store: this.store
     })
     this.setState({ network: network })
+  }
+
+  toggleButton(state, action) {
+    let newButtonState = action.button
+    return Tesseract.set(state, "button", newButtonState)
   }
 
   autoSave() {
