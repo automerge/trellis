@@ -46,7 +46,7 @@ html, body, #App {
   margin: 0;
   flex-grow: 0;
   flex-shrink: 0;
-  color: #1D779C;
+  color: rgb(29,119,156);
 }
 
 h2 {

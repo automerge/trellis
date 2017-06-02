@@ -60,7 +60,7 @@ export default class AddCard extends React.Component {
             onChange={ this.updateTitle }
             onKeyDown={ this.handleKeyDown } />
           <button onClick={ this.createCard }>Add</button>
-          <a onClick={ this.clearForm } href="#">X</a>
+          <a onClick={ this.clearForm } href="#">✕</a>
         </div>
       )
     } else {
