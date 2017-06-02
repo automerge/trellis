@@ -48,14 +48,12 @@
     "electron-compile": "6.4.0",
     "electron-devtools-installer": "2.2.0",
     "electron-log": "2.2.6",
-    "lz4": "0.5.3",
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "react-hot-loader": "3.0.0-beta.6",
     "react-redux": "5.0.4",
     "redux": "3.6.0",
-    "slack-signaler": "git+ssh://git@github.com/inkandswitch/slack-signaler.git",
-    "tesseract": "git+ssh://git@github.com/inkandswitch/tesseract.git"
+    "ampl": "git+ssh://git@github.com/inkandswitch/ampl.git"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "6.24.1",

@@ -6,7 +6,7 @@ import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import Path from 'path'
 
-import aMPL from '../lib/ampl'
+import aMPL from 'ampl'
 
 export default class App extends React.Component {
   constructor(props) {
