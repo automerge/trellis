@@ -10,9 +10,9 @@ export default class Store extends EventEmitter {
     super()
 
     this.reducer   = reducer
-    this.state     = new Tesseract.init()
+    this.state     = this.tesseractInit()
     this.listeners = []
-    this.network   = null 
+    this.network   = null
   }
 
   dispatch(action) {
@@ -36,10 +36,12 @@ export default class Store extends EventEmitter {
         newState = this.reducer(state, action)
     }
 
-    if(action.type === "NEW_DOCUMENT") {
+    this.state = newState
+
+    if(action.type === "NEW_DOCUMENT" || action.type === "OPEN_DOCUMENT") {
       let network = new aMPLNet()
       network.connect({
-        peerId: this.state.peerId,
+        peerId: this.state._state.get("_id"),
         docId: this.state.docId,
         store: this
       })
@@ -48,7 +50,6 @@ export default class Store extends EventEmitter {
       this.network = network
     }
 
-    this.state = newState
     this.emit('change', action.type, newState)
     this.listeners.forEach((listener) => listener())
   }
@@ -80,6 +81,10 @@ export default class Store extends EventEmitter {
   }
 
   newDocument(state, action) {
+    return this.tesseractInit()
+  }
+
+  tesseractInit() {
     let tesseract = new Tesseract.init()
     tesseract = Tesseract.set(tesseract, "docId", uuid())
 

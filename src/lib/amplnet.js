@@ -50,7 +50,7 @@ export default class aMPLNet extends EventEmitter {
       peergroup.on('peer', (peer) => {
         window.PEERS.push(peer)
         this.seqs[peer.id] = 0
-        if (peer.self == true) { this.SELF = peer } 
+        if (peer.self == true) { this.SELF = peer }
         console.log("NEW PEER:", peer.id, peer.name)
         this.peers[peer.id] = {
           connected: false,

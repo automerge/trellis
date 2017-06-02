@@ -26,6 +26,7 @@ export default class App extends React.Component {
     })
 
     this.store.subscribe(this.autoSave)
+    this.store.subscribe(() => this.setState({}))
 
     this.state = { savePath: null }
     
@@ -74,9 +75,6 @@ export default class App extends React.Component {
   }
 
   open(path) {
-    if(this.state.network)
-       this.state.network.disconnect()
-
     if(path) {
       this.setState({ savePath: path }, () => {
         let file = fs.readFileSync(path)
@@ -113,7 +111,7 @@ export default class App extends React.Component {
       <div className="App">
         <Main store={ this.store } />
         <Inspector store={ this.store } />
-        <Peers network={ this.state.network } />
+        <Peers network={ this.store.network } />
       </div>
     )
   }
