@@ -56,47 +56,15 @@ h2 {
   padding: 0;
   margin-bottom: 10px;
 }
-.Changes img,
 .Inspector img,
 .Peers img {
   height: 20px;
   padding-left: 4px;
 }
 
-.Changes {
-  grid-row: 1 / 4;
-  grid-column: 4;
-  padding: 10pt 14pt;
-  background-color: #f8f8f8;
-  border-left: 1px solid #aaa;
-}
-.Changes ul {
-  list-style-type: none;
-  padding: 0;
-  font-size: 12px;
-}
-.Changes li {
-  position: relative;
-  height: 22px;
-  padding-left: 24px;
-}
-.Changes img.changeNode {
-  position: absolute;
-  width: 11px;
-  height: 11px;
-  left: 0;
-  top: 1px;
-}
-.Changes img.changeEdge {
-  position: absolute;
-  height: 11px;
-  left: 5.5px;
-  top: 12px;
-}
-
 .Inspector {
   grid-row: 4;
-  grid-column: 1 / 4;
+  grid-column: 1 / 5;
   background-color: #f8f8f8;
   font-size: 8pt;
   padding: 10pt 14pt;
@@ -139,7 +107,7 @@ h2 {
 }
 
 .Peers {
-  grid-row: 4;
+  grid-row: 1 / 4;
   grid-column: 4;
   padding: 10pt 14pt;
   background-color: #f8f8f8;

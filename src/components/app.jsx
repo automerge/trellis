@@ -1,6 +1,5 @@
 import React from 'react'
 import Board from './board'
-import Changes from './changes'
 import Inspector from './inspector'
 import Peers from './peers'
 import Store from '../lib/store'
@@ -110,7 +109,6 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Board store={ this.state.store } />
-        <Changes store ={ this.state.store } />
         <Inspector store={ this.state.store } />
         <Peers network={ this.state.network } />
       </div>
