@@ -4,10 +4,11 @@ export default class AddCard extends React.Component {
   constructor() {
     super()
 
-    this.showForm    = this.showForm.bind(this)
-    this.clearForm   = this.clearForm.bind(this)
-    this.createCard  = this.createCard.bind(this)
-    this.updateTitle = this.updateTitle.bind(this)
+    this.showForm      = this.showForm.bind(this)
+    this.clearForm     = this.clearForm.bind(this)
+    this.createCard    = this.createCard.bind(this)
+    this.updateTitle   = this.updateTitle.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
 
     this.state = {
       title: "",
@@ -39,6 +40,16 @@ export default class AddCard extends React.Component {
     this.setState({ title: event.target.value })
   }
 
+  handleKeyDown(event) {
+    if (event.key === "Enter")
+      this.createCard()
+
+    // Exit edit mode if "Esc" pressed
+    if (event.keyCode === 27) {
+      this.clearForm()
+    }
+  }
+
   render() {
     let addCard
     if(this.state.showForm) {
@@ -46,7 +57,8 @@ export default class AddCard extends React.Component {
         <div>
           <textarea
             ref={ (input) => this.titleInput = input }
-            onChange= { this.updateTitle } />
+            onChange={ this.updateTitle }
+            onKeyDown={ this.handleKeyDown } />
           <button onClick={ this.createCard }>Add</button>
           <a onClick={ this.clearForm } href="#">X</a>
         </div>
