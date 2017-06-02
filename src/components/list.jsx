@@ -23,14 +23,17 @@ export default class List extends React.Component {
   render() {
     let listCards    = this.props.store.findCardsByList(this.props.listId)
     let listCardsPartial = listCards.map((card) => {
-      return <ListCard store={ this.props.store } cardId={ card.id } key={ card.id } />
+      return <DropTarget key={ card.id } listId={ this.props.listId } store={ this.props.store } afterCardId={ card.id }>
+        <ListCard store={ this.props.store } cardId={ card.id } key={ card.id } />
+      </DropTarget>
     })
 
     return (
       <div className="List">
         <a className="List__delete" onClick={ this.delete }>✕</a>
-        <div className="List__title">{ this.list().title }</div>
-        <DropTarget listId={ this.props.listId } store={ this.props.store } />
+        <DropTarget listId={ this.props.listId } store={ this.props.store } >
+          <div className="List__title">{ this.list().title }</div>
+        </DropTarget>
         { listCardsPartial }
         <AddCard listId={ this.props.listId } store={ this.props.store }/>
       </div>
