@@ -133,20 +133,17 @@ h2 {
   font-size: 9px;
   text-align: left;
   color: #aaa;
+  padding-bottom: 4px;
 }
 .Peers td {
   padding: 0;
   padding-bottom: 8px;
   padding-right: 6px;
 }
-.Peers td.LED img {
+.Peers td.led img {
   width: 10px;
   height: 10px;
   margin-left: -7px;
-}
-.Peers td.ip,
-.Peers td.lastChange {
-  font-size: 10px;
 }
 .Peers .docID {
   position: absolute;

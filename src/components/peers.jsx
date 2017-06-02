@@ -31,7 +31,7 @@ export default class Peers extends React.Component {
   }
 
   formatUUID(uuid) {
-    return uuid.toUpperCase().substring(0,2) + "…"
+    return uuid.toLowerCase().substring(0,4)
   }
 
   formatVectorClock(clock) {
@@ -67,11 +67,12 @@ export default class Peers extends React.Component {
       let clock = this.props.network.clocks[id];
 
       return <tr key={key}>
-            <td className="LED"><img src={ledPath} /></td>
+            <td className="led"><img src={ledPath} /></td>
             <td className="user">{name}</td>
-            <td className="activity">{index > 0 ? peer.messagesSent : ""}</td>
-            <td className="activity">{index > 0 ? peer.messagesReceived : ""}</td>
-            <td className="clock">{clock ? this.formatVectorClock(clock) : "no clock"}</td>
+            <td className="id">{this.formatUUID(id)}</td>
+            <td className="sent">{index > 0 ? peer.messagesSent : ""}</td>
+            <td className="received">{index > 0 ? peer.messagesReceived : ""}</td>
+            <td className="clock">{clock ? this.formatVectorClock(clock) : ""}</td>
           </tr>
     })
 
@@ -85,7 +86,7 @@ export default class Peers extends React.Component {
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
       
       <table>
-        <thead><tr><th></th><th>Name</th><th>Sent</th><th>Received</th></tr></thead>
+        <thead><tr><th></th><th>Name</th><th>ID</th><th>Sent</th><th>Received</th></tr></thead>
         <tbody>{ peersPartial }</tbody>
       </table>
 
