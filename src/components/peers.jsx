@@ -3,7 +3,7 @@ import React from 'react'
 export default class Peers extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { 'peers': {}, 'connected': true }
+    this.state = { 'peers': {}, 'connected': true, 'clocks': {} }
     this.toggleNetwork = this.toggleNetwork.bind(this)
   }
 
@@ -12,16 +12,23 @@ export default class Peers extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(!nextProps.network) return
 
-    this.setState({ peers: Object.assign({},nextProps.network.peers) })
+    this.setState({
+      peers: Object.assign({},nextProps.network.peers),
+      clocks: Object.assign({},nextProps.network.clocks)
+    })
+
     nextProps.network.on('peer',() => {
-      this.setState({ peers: Object.assign({},nextProps.network.peers) })
+      this.setState({
+        peers: Object.assign({},nextProps.network.peers),
+        clocks: Object.assign({},nextProps.network.clocks)
+      })
     })
   }
 
   toggleNetwork() {
     let newConnected = !this.state.connected
 
-    this.setState({ peers: this.state.peers, connected: newConnected })
+    this.setState({ peers: this.state.peers, connected: newConnected, clocks: this.state.clocks })
 
     if (this.props.network)
       if (newConnected)
@@ -34,25 +41,17 @@ export default class Peers extends React.Component {
     return uuid.toLowerCase().substring(0,4)
   }
 
-  formatVectorClock(id, clock) {
-    let heads = Object.keys(clock).map( (peer_id, index) => {
-      let key = "peer-vclock-th-" + index + "-" + peer_id
-      return <th className="peerID" key={key}> { this.formatUUID(peer_id) } </th>
-    })
-    let tails = Object.keys(clock).map( (peer_id, index) => {
+  formatVectorClock(id, clock, allKnownWriters) {
+    let key = "vclock-" + id
+
+    if (!clock)
+      return <tr key={key}></tr>
+
+    let tails = allKnownWriters.map( (peer_id, index) => {
       let key = "peer-vclock-td-" + index + "-" + peer_id
       return <td className="clockPosition" key={key}> { clock[peer_id] } </td>
     })
-    return <div >
-      <table className="vectorClock">
-      <thead>
-          <tr><th></th>{heads}</tr>
-      </thead>
-      <tbody>
-        <tr><th>{this.formatUUID(id)}</th>{tails}</tr>
-      </tbody>
-    </table>
-    </div>
+    return <tr key={key}><th>{this.formatUUID(id)}</th>{tails}</tr>
   }
 
   render() {
@@ -73,9 +72,23 @@ export default class Peers extends React.Component {
           </tr>
     })
 
-    let clocksPartial = Object.keys(peers).map((id, index) => {
-      let clock = this.props.network.clocks[id]
-      return clock ? this.formatVectorClock(id, this.props.network.clocks[id]) : ""
+    let allKnownWriters = []
+    Object.keys(peers).forEach((peerId) => {
+      let clock = this.state.clocks[peerId]
+      if (clock) {
+        let thisPeerWriters = Object.keys(clock)
+        allKnownWriters = allKnownWriters.concat(thisPeerWriters)
+      }
+    })
+    allKnownWriters = Array.from(new Set(allKnownWriters))
+
+    let clockHeaders = allKnownWriters.map((peerId, index) => {
+      let key = "peer-vclock-th-" + index + "-" + peerId
+      return <th className="peerID" key={key}>{ this.formatUUID(peerId) }</th>
+    })
+
+    let clockRows = Object.keys(peers).map((id, index) => {
+      return this.formatVectorClock(id, this.state.clocks[id], allKnownWriters)
     })
 
     let connected = this.state.connected ? "on" : "off"
@@ -99,7 +112,10 @@ export default class Peers extends React.Component {
 
       <div className="Clocks">
         <h2>Clocks <img src="assets/images/clock.svg" /></h2>
-        {clocksPartial}
+        <table>
+          <thead><tr><th></th>{clockHeaders}</tr></thead>
+          <tbody>{clockRows}</tbody>
+        </table>
       </div>
     </div>
   }
