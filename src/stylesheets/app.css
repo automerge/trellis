@@ -107,15 +107,18 @@ h2 {
   width: 140pt;
 }
 
-.Peers {
+.sidebar {
   grid-row: 1 / 4;
   grid-column: 4;
-  padding: 14pt 14pt;
   background-color: #f8f8f8;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
-  font-size: 12px;
+  padding: 14pt 14pt;
   position: relative;
+  font-size: 12px;
+}
+
+.Peers {
 }
 .Peers .networkSwitch {
   position: absolute;
@@ -123,14 +126,16 @@ h2 {
   right: 16px;
   width: 32px;
 }
-.Peers th {
+.Peers th,
+.Clocks th {
   font-weight: normal;
   font-size: 9px;
   text-align: left;
   color: #aaa;
   padding-bottom: 4px;
 }
-.Peers td {
+.Peers td,
+.Clocks td {
   padding: 0;
   padding-bottom: 8px;
   padding-right: 6px;
@@ -140,18 +145,19 @@ h2 {
   height: 10px;
   margin-left: -7px;
 }
-.Peers .docID {
+
+.sidebar .docID {
   position: absolute;
   bottom: 12px;
   left: 16px;
 }
-.Peers .docID .label {
+.sidebar .docID .label {
   color: #aaa;
   font-size: 10px;
   font-weight: 500;
   padding-right: 4px;
 }
-.Peers .docID .ID {
+.sidebar .docID .ID {
   font-family: Monaco, monospace;
   color: #777;
   font-size: 10px;

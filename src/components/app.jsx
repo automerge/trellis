@@ -2,6 +2,7 @@ import React from 'react'
 import Board from './board'
 import Inspector from './inspector'
 import Peers from './peers'
+import Clocks from './clocks'
 import Store from '../lib/store'
 import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
@@ -115,7 +116,10 @@ export default class App extends React.Component {
       <div className="App">
         <Board store={ this.state.store } />
         <Inspector store={ this.state.store } />
-        <Peers network={ this.state.network } />
+        <div className="sidebar">
+          <Peers network={ this.state.network } />
+          <Clocks network={ this.state.network } />
+        </div>
       </div>
     )
   }

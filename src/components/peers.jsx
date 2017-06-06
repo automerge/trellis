@@ -1,5 +1,4 @@
 import React from 'react'
-import Clocks from './clocks'
 
 export default class Peers extends React.Component {
   constructor(props) {
@@ -76,8 +75,6 @@ export default class Peers extends React.Component {
         <span className="label">DocID</span>
         <span className="ID">{ docId }</span>
       </div>
-
-      <Clocks network={ this.props.network } />
     </div>
   }
 }
