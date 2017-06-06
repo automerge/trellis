@@ -18,8 +18,7 @@ export default class App extends React.Component {
     this.store    = new Store()
 
     this.store.subscribe(() => {
-      // Force component to re-render
-      this.setState({})
+      this.setState({}) // Force component to re-render
       this.autoSave()
     })
 
@@ -29,10 +28,7 @@ export default class App extends React.Component {
 
     ipcRenderer.on("open", (event, files) => {
       if(files && files.length > 0) {
-        let openPath  = files[0]
-
-        this.open(openPath)
-        this.autoSave()
+        this.open(files[0])
       }
     })
 
@@ -41,8 +37,7 @@ export default class App extends React.Component {
         let file = fs.readFileSync(files[0])
 
         this.store.dispatch({
-          type: "MERGE_DOCUMENT",
-          file: file
+          type: "MERGE_DOCUMENT", file: file
         })
       }
     })
@@ -90,9 +85,11 @@ export default class App extends React.Component {
 
   autoSave() {
     if(this.state.savePath) {
-      console.log("Auto saving…")
-      let exportFile = this.store.save()
-      fs.writeFileSync(this.state.savePath, exportFile)
+      process.nextTick(() => {
+        console.log("Auto saving…")
+        let exportFile = this.store.save()
+        fs.writeFileSync(this.state.savePath, exportFile)
+      })
     }
   }
 
