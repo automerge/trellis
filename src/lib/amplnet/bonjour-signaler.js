@@ -49,11 +49,15 @@ function init(config) {
           console.log("The service we found was our own all along...")
           return
         }
+        if (meta.docId != DOC_ID) {
+          console.log("Heard folks talking about "+meta.docId+" but we only want to talk about " + DOC_ID+".")
+          return
+        }
         hearHello(service)
     })
     
     // text is encoded into a k/v object by bonjour.
-    let text = {session:SESSION, name: NAME}
+    let text = {session:SESSION, name: NAME, docId: DOC_ID}
     console.log("text is :", text)
     bonjour.publish({ name: 'ampl-'+SESSION, type: 'ampl', port: PORT, txt: text })
   }
