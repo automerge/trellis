@@ -168,6 +168,12 @@ h2 {
   max-width: 200px;
   overflow: scroll;
 }
+.Clocks td.clockPosition {
+  text-align: right;
+}
+.Clocks td.clockPosition.canonical {
+  font-weight: bold;
+}
 
 .Tesseract__info {
   margin-top: 30pt;
