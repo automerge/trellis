@@ -7,11 +7,7 @@ export default class ListCard extends React.Component {
     super()
     this.onDragStart   = this.onDragStart.bind(this)
     this.delete        = this.delete.bind(this)
-    this.editTitle     = this.editTitle.bind(this)
-    this.handleKeyDown = this.handleKeyDown.bind(this)
-    this.handleBlur    = this.handleBlur.bind(this)
-
-    this.state = { editMode: false }
+    this.show          = this.show.bind(this)
   }
 
   onDragStart(event) {
@@ -29,51 +25,20 @@ export default class ListCard extends React.Component {
     })
   }
 
-  editTitle() {
-    this.setState({ editMode: true }, () => this.titleInput.focus())
-  }
-
-  handleKeyDown(event) {
-    if (event.key === "Enter") {
-      let newTitle = event.target.value
-      this.props.store.dispatch({
-        type: "UPDATE_CARD_TITLE",
-        cardId: this.card().id,
-        newTitle: newTitle
-      })
-    }
-
-    // Exit edit mode if "Enter" or "Esc" are pressed
-    if (event.key === "Enter" || event.keyCode === 27) {
-      this.setState({ editMode: false })
-    }
-  }
-
-  handleBlur(event) {
-    this.setState({ editMode: false })
+  show() {
+    this.props.showModal(this.card())
   }
 
   render() {
-    let title = ""
-
-    if(this.state.editMode) {
-      title = <textarea
-        ref= { (input) => this.titleInput = input }
-        defaultValue={ this.card().title }
-        onBlur={ this.handleBlur }
-        onKeyDown={ this.handleKeyDown } />
-    } else {
-      title = <div onClick={ this.editTitle } > { this.card().title }</div>
-    }
-
     return (
       <div>
         <div
           className="ListCard"
           draggable="true"
-          onDragStart={ this.onDragStart } >
+          onDragStart={ this.onDragStart }
+          onClick={ this.show } >
           <div className="ListCard__delete" onClick={ this.delete }>✕</div>
-          <div className="ListCard__title"> { title } </div>
+          <div className="ListCard__title"> { this.card().title } </div>
           <div style={{ clear: "both" }} />
 
           <Assignments cardId={ this.props.cardId } store={ this.props.store } />

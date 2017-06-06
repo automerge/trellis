@@ -1,4 +1,5 @@
 .Card {
   margin-top: 40px;
   background: #AAA;
+  position: absolute;
 }
