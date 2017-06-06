@@ -78,15 +78,20 @@ export default class App extends React.Component {
         this.state.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
         remote.getCurrentWindow().setTitle(name)
         localStorage.setItem("lastFileOpened", path)
+        this.initNetwork()
       })
     }
     else {
       this.setState({ savePath: null }, () => {
         this.state.store.dispatch({ type: "NEW_DOCUMENT" })
         remote.getCurrentWindow().setTitle("Untitled")
+        this.initNetwork()
       })
     }
 
+  }
+
+  initNetwork() {
     let network = new aMPLNet()
     network.connect({
       peerId: this.state.store.getState()._store_id, // TODO will change to _actor_id

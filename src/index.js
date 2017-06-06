@@ -28,12 +28,6 @@ const createWindow = async () => {
     }
   });
 
-  globalShortcut.register("CommandOrControl+R", () => mainWindow.webContents.reload() )
-  globalShortcut.register("CommandOrControl+Option+I", async () => {
-    await installExtension(REACT_DEVELOPER_TOOLS)
-    mainWindow.webContents.openDevTools()
-  })
-
   // Menubar template
   const template = [
     {
@@ -60,7 +54,17 @@ const createWindow = async () => {
           dialog.showOpenDialog(dialogPreferences, (files) => {
             mainWindow.webContents.send("merge", files)
           })
-        }}
+        }},
+        {
+          label: "Refresh", accelerator: 'CmdOrCtrl+R', click: (item, focusedWindow) => {
+            focusedWindow.webContents.reload()
+          }
+        },
+        {
+          label: "Open Inspector", accelerator: 'CmdOrCtrl+Option+I', click: (item, focusedWindow) => {
+            mainWindow.webContents.toggleDevTools()
+          }
+        }
       ]
     }
   ]
