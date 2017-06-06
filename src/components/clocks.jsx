@@ -28,13 +28,13 @@ export default class Clocks extends React.Component {
     return uuid.toLowerCase().substring(0,4)
   }
 
-  formatVectorClock(id, clock, allKnownWriters) {
+  formatVectorClock(id, clock, allKnownActors) {
     let key = "vclock-" + id
 
     if (!clock)
       return <tr key={key}></tr>
 
-    let tails = allKnownWriters.map( (peer_id, index) => {
+    let tails = allKnownActors.map( (peer_id, index) => {
       let key = "peer-vclock-td-" + index + "-" + peer_id
       return <td className="clockPosition" key={key}> { clock[peer_id] } </td>
     })
@@ -43,24 +43,30 @@ export default class Clocks extends React.Component {
 
   render() {
     let peers = this.state.peers
+    let peerIds = Object.keys(peers)
 
-    let allKnownWriters = []
-    Object.keys(peers).forEach((peerId) => {
+    let allKnownActors = []
+    peerIds.forEach((peerId) => {
       let clock = this.state.clocks[peerId]
       if (clock) {
-        let thisPeerWriters = Object.keys(clock)
-        allKnownWriters = allKnownWriters.concat(thisPeerWriters)
+        let thisPeerActors = Object.keys(clock)
+        allKnownActors = allKnownActors.concat(thisPeerActors)
       }
     })
-    allKnownWriters = Array.from(new Set(allKnownWriters))
+    allKnownActors = Array.from(new Set(allKnownActors))
 
-    let clockHeaders = allKnownWriters.map((peerId, index) => {
+    let allKnownActorsExceptPeers = allKnownActors.filter((actorId) => !peerIds.includes(actorId))
+
+    // connected peers first
+    allKnownActors = peerIds.concat(allKnownActorsExceptPeers)
+
+    let clockHeaders = allKnownActors.map((peerId, index) => {
       let key = "peer-vclock-th-" + index + "-" + peerId
       return <th className="peerID" key={key}>{ this.formatUUID(peerId) }</th>
     })
 
     let clockRows = Object.keys(peers).map((id, index) => {
-      return this.formatVectorClock(id, this.state.clocks[id], allKnownWriters)
+      return this.formatVectorClock(id, this.state.clocks[id], allKnownActors)
     })
 
     return <div className="Clocks">
