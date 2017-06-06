@@ -6,6 +6,19 @@ import Tesseract from 'tesseract'
 import EventEmitter from 'events'
 
 
+function clockMax(c1,c2) {
+  let keys = Object.keys(c1).concat(Object.keys(c2))
+  let maxclock = {}
+  for (let i in keys) {
+    let key = keys[i]
+    maxclock[key] = Math.max(c1[key] || 0, c2[key] || 0)
+  }
+  console.log("C1",c1)
+  console.log("C2",c2)
+  console.log("max",maxclock)
+  return maxclock
+}
+
 export default class aMPLNet extends EventEmitter {
   constructor() {
     super()
@@ -32,18 +45,19 @@ export default class aMPLNet extends EventEmitter {
     this.connected = true
 
     this.store.on('change', (action,state) => {
+      let clock = Tesseract.getVClock(state)
+      this.clocks[this.SELF.id] = clock
       if (action == "APPLY_DELTAS") {
-        let clock = Tesseract.getVClock(state)
         window.PEERS.forEach((peer) => {
-          peer.send({vectorClock: clock, docId: this.doc_id})
+          peer.send({vectorClock: clock })
           this.peers[peer.id].messagesSent += 1
-          this.emit('peer')
         })
       } else {
         window.PEERS.forEach((peer) => {
           this.updatePeer(peer, state, this.clocks[peer.id])
         })
       }
+      this.emit('peer')
     })
 
     if (this.doc_id) {
@@ -92,29 +106,14 @@ export default class aMPLNet extends EventEmitter {
 
           if (m.deltas && m.deltas.length > 0) {
             console.log("GOT DELTAS",m.deltas)
-/*
-            console.log("BEFORE DISPATCH")
-            console.log("m.deltas", m.deltas)
-            console.log("m.vectorClock", m.vectorClock)
-            console.log("Tesseract.getVClock(store.getState()", Tesseract.getVClock(store.getState()))
-            console.log("Tesseract.getDeltasAfter(store.getState(), m.vectorClock", Tesseract.getDeltasAfter(store.getState(), m.vectorClock))
-*/
 
             this.store.dispatch({
               type: "APPLY_DELTAS",
               deltas: m.deltas
             })
-
-/*
-            console.log("AFTER DISPATCH")
-            console.log("m.deltas", m.deltas)
-            console.log("m.vectorClock", m.vectorClock)
-            console.log("Tesseract.getVClock(store.getState()", Tesseract.getVClock(store.getState()))
-            console.log("Tesseract.getDeltasAfter(store.getState(), m.vectorClock", Tesseract.getDeltasAfter(store.getState(), m.vectorClock))
-*/
           }
 
-          if (m.vectorClock && m.seq == this.seqs[peer.id]) { // ignore acks for all but the last send
+          if (m.vectorClock && (m.deltas || m.seq == this.seqs[peer.id])) { // ignore acks for all but the last send
             console.log("GOT VECTOR CLOCK",m.vectorClock)
             this.updatePeer(peer,this.store.getState(), m.vectorClock)
           }
@@ -138,15 +137,13 @@ export default class aMPLNet extends EventEmitter {
     if (clock == undefined) return
     console.log("Checking to send deltas vs clock",clock)
     let myClock = Tesseract.getVClock(state)
-    this.clocks[peer.id] = myClock
-    this.clocks[this.SELF.id] = myClock
+    this.clocks[peer.id] = clockMax(myClock,clock)
     this.seqs[peer.id] += 1
     let deltas = Tesseract.getDeltasAfter(state, clock)
     if (deltas.length > 0) {
       console.log("SENDING DELTAS:", deltas.length)
-      peer.send({deltas: deltas, seq: this.seqs[peer.id]})
+      peer.send({deltas: deltas, seq: this.seqs[peer.id], vectorClock: myClock})
       this.peers[peer.id].messagesSent += 1
-      this.emit('peer')
     }
   }
 
