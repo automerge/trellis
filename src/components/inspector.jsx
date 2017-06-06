@@ -4,11 +4,7 @@ import TesseractInfo from './tesseract_info'
 export default class Inspector extends React.Component {
   constructor(props) {
     super(props)
-
     this.store = this.props.store
-
-    this.state = this.store.getState()
-    this.store.subscribe((x) => { this.setState(this.store.getState()) })
   }
 
   formatUUID(uuid) {

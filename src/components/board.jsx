@@ -3,15 +3,6 @@ import List from './list'
 import AddList from './add_list'
 
 export default class Board extends React.Component {
-  constructor(props) {
-    super(props)
-
-    let store  = this.props.store
-    this.state = store.getState()
-    store.subscribe(() => { this.setState(store.getState()) })
-  }
-
-
   render() {
     let lists
     let state = this.props.store.getState()
