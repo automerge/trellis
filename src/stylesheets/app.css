@@ -3,6 +3,16 @@
   src: url("../assets/fonts/Pacifico.ttf")
 }
 
+@font-face {
+  font-family: Nunito;
+  src: url("../assets/fonts/Nunito-Regular.ttf")
+}
+
+@font-face {
+  font-family: Open Sans;
+  src: url("../assets/fonts/OpenSans-ExtraBold.ttf")
+}
+
 html, body, #App {
   height: 100%;
   margin: 0;
