@@ -1,71 +1,44 @@
-import Tesseract from 'tesseract'
-import { createStore } from 'redux'
 import fs from 'fs'
 import uuid from './uuid'
 import seedData from './seed_data'
-import EventEmitter from 'events'
+import aMPL from 'ampl'
 
+const Tesseract = aMPL.Tesseract
 
-export default class Store extends EventEmitter {
+export default class Store extends aMPL.Store {
   constructor() {
-    super()
-    let tesseract = new Tesseract.init()
-
-    this.redux = createStore((state = tesseract, action) => {
-      let newState;
-      console.log("ACTION: ", action.type)
-
+    super((state, action) => {
       switch(action.type) {
         case "CREATE_CARD":
-          newState = this.createCard(state, action)
-          break;
+          return this.createCard(state, action)
         case "MOVE_CARD":
-          newState = this.moveCard(state, action)
-          break;
+          return this.moveCard(state, action)
         case "UPDATE_CARD_TITLE":
-          newState = this.updateCardTitle(state, action)
-          break;
+          return this.updateCardTitle(state, action)
         case "DELETE_CARD":
-          newState = this.deleteCard(state, action)
-          break;
+          return this.deleteCard(state, action)
         case "UPDATE_ASSIGNMENTS":
-          newState = this.updateAssignments(state, action)
-          break;
+          return this.updateAssignments(state, action)
         case "CREATE_LIST":
-          newState = this.createList(state, action)
-          break;
+          return this.createList(state, action)
         case "DELETE_LIST":
-          newState = this.deleteList(state, action)
-          break;
-        case "NEW_DOCUMENT":
-          newState = this.newDocument(state, action)
-          break;
-        case "OPEN_DOCUMENT":
-          newState = this.openDocument(state, action)
-          break;
-        case "MERGE_DOCUMENT":
-          newState = this.mergeDocument(state, action)
-          break;
-        case "APPLY_DELTAS":
-          newState = this.applyDeltas(state, action)
-          break;
+          return this.deleteList(state, action)
         default:
-          newState = state
-
+          return state
       }
-
-      this.emit('change', action.type, newState)
-
-      return newState;
     })
-
-    this.subscribe = this.redux.subscribe
-    this.getState  = this.redux.getState
-    this.dispatch  = this.redux.dispatch
   }
 
-  save() {
-    return Tesseract.save(this.getState())
+  // Overwriting aMPL.Store#newDocument to load our own seed data
+  newDocument(state, action) {
+    let newState = Tesseract.init()
+    let data     = seedData()
+
+    newState = Tesseract.set(newState, "cards", data.cards)
+    newState = Tesseract.set(newState, "lists", data.lists)
+    newState = Tesseract.set(newState, "docId", uuid())
+
+    return newState
   }
 
   createList(state, action) {
@@ -96,31 +69,6 @@ export default class Store extends EventEmitter {
     let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
 
     return Tesseract.set(state.cards[cardIndex].assigned, action.person, action.isAssigned)
-  }
-
-  openDocument(state, action) {
-    let tesseract = Tesseract.load(action.file)
-    return tesseract
-  }
-
-  mergeDocument(state, action) {
-    let otherTesseract = Tesseract.load(action.file)
-    return Tesseract.merge(state, otherTesseract)
-  }
-
-  applyDeltas(state, action) {
-    return Tesseract.applyDeltas(state, action.deltas)
-  }
-
-  newDocument(state, action) {
-    let data      = seedData()
-    let tesseract = new Tesseract.init()
-
-    tesseract = Tesseract.set(tesseract, "docId", uuid())
-    tesseract = Tesseract.set(tesseract, "cards", data.cards)
-    tesseract = Tesseract.set(tesseract, "lists", data.lists)
-
-    return tesseract
   }
 
   deleteCard(state, action) {
@@ -183,10 +131,6 @@ export default class Store extends EventEmitter {
 
     let card = Object.assign({}, action.attributes, { order: order, id: uuid(), assigned: {} })
     return Tesseract.insert(state.cards, state.cards.length, card)
-  }
-
-  link(store) {
-    this.tesseract.link(store.tesseract)
   }
 
   findCard(cardId) {
