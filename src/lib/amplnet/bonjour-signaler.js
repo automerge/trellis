@@ -84,8 +84,11 @@ function init(config) {
     console.log("Sending post request to peer server:", opts)
     request(opts,
         (error ,response, body) => {
-          // XXX: I'm so sorry to whoever finds this.
-          if (error) return;
+          if (error) {
+            // We should probably be smarter about this.
+            console.log(error)
+            return;
+          }
 
           console.log("Reply received: ")
           console.log(body)
