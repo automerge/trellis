@@ -42,10 +42,11 @@ function init(config) {
   function initializeBonjour() {
     let browser = bonjour.find({ type: 'ampl' }, 
       (service) => {
+        console.log("Detected a new service. (This should be once per service.)")
         console.log(service)
         let meta = service.txt
         if (meta.session == SESSION) {
-          console.log("it us.")
+          console.log("The service we found was our own all along...")
           return
         }
         hearHello(service)
@@ -59,27 +60,33 @@ function init(config) {
 
   // initiated by .start()
   function sendHello() {
+    console.log("sendHello()")
     prepareSignalServer();
     initializeBonjour();
   }
 
   // initiated by comes from bonjour `find()`.
   function hearHello(service) {
+    console.log("hearHello()")
     let meta = {name: service.txt.name, session: service.txt.session, action: 'hello'}
     HANDLERS['hello'](meta, undefined, (offer) => sendOffer(service, offer))
   }
 
   // initiated by hearHello()
   function sendOffer(service, offer) {
+    console.log("sendOffer()", service, offer)
     let msg = {name: NAME, session: SESSION, action: 'offer'}
     msg.body = offer;
 
     let opts = {method: 'POST', 
       url: "http://"+service.host+":"+service.port+"/", 
       json: msg};
-    console.log("Posting offer:", opts)
+    console.log("Sending post request to peer server:", opts)
     request(opts,
         (error ,response, body) => {
+          // XXX: I'm so sorry to whoever finds this.
+          if (error) return;
+
           console.log("Reply received: ")
           console.log(body)
           hearReply(body)
@@ -88,7 +95,7 @@ function init(config) {
 
   // express calls this in response to a post on "/"
   function hearOffer(req, res) {
-    console.log("Got offer:", req.body)
+    console.log("hearOffer:", req, res)
     let meta = {name: req.body.name, session: req.body.session, action: 'offer'}
     HANDLERS['offer'](meta, req.body.body, (reply) => {
       let msg = {name: NAME, session: SESSION, body: reply, action: 'reply'}
@@ -98,11 +105,14 @@ function init(config) {
 
   // this gets sent over the wire by express.
   function sendReply(res, reply) {
+    console.log("sendReply()", res, reply)
+    res.set("Connection", "close");
     res.json(reply)
   }
 
   // request receives this in response to the above.
   function hearReply(reply) {
+    console.log("hearReply()", reply)
     HANDLERS['reply'](reply, reply.body, null)
   }
 
