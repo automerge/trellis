@@ -44,7 +44,8 @@ export default class Clocks extends React.Component {
 
     let tails = allKnownActors.map( (peer_id, index) => {
       let key = "peer-vclock-td-" + index + "-" + peer_id
-      return <td className="clockPosition" key={key}> { clock[peer_id] } </td>
+      let value = clock[peer_id]
+      return <td className="clockPosition" key={key}>{ value ? value : "-" }</td>
     })
     return <tr key={key}><th>{this.renderPeerNameOrId(id)}</th>{tails}</tr>
   }
