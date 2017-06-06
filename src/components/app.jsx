@@ -89,7 +89,7 @@ export default class App extends React.Component {
 
     let network = new aMPLNet()
     network.connect({
-      peerId: this.state.store.getState().peerId,
+      peerId: this.state.store.getState()._store_id, // TODO will change to _actor_id
       docId: this.state.store.getState().docId,
       store: this.state.store
     })
