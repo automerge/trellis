@@ -28,6 +28,14 @@ export default class Clocks extends React.Component {
     return uuid.toLowerCase().substring(0,4)
   }
 
+  renderPeerNameOrId(peerId) {
+    let peer = this.state.peers[peerId]
+    if (peer && peer.name)
+      return peer.name
+
+    return this.formatUUID(peerId)
+  }
+
   formatVectorClock(id, clock, allKnownActors) {
     let key = "vclock-" + id
 
@@ -38,7 +46,7 @@ export default class Clocks extends React.Component {
       let key = "peer-vclock-td-" + index + "-" + peer_id
       return <td className="clockPosition" key={key}> { clock[peer_id] } </td>
     })
-    return <tr key={key}><th>{this.formatUUID(id)}</th>{tails}</tr>
+    return <tr key={key}><th>{this.renderPeerNameOrId(id)}</th>{tails}</tr>
   }
 
   render() {
@@ -62,10 +70,10 @@ export default class Clocks extends React.Component {
 
     let clockHeaders = allKnownActors.map((peerId, index) => {
       let key = "peer-vclock-th-" + index + "-" + peerId
-      return <th className="peerID" key={key}>{ this.formatUUID(peerId) }</th>
+      return <th className="peerID" key={key}>{ this.renderPeerNameOrId(peerId) }</th>
     })
 
-    let clockRows = Object.keys(peers).map((id, index) => {
+    let clockRows = peerIds.map((id) => {
       return this.formatVectorClock(id, this.state.clocks[id], allKnownActors)
     })
 
