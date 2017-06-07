@@ -61,11 +61,12 @@ export default class aMPLNet extends EventEmitter {
     })
 
     if (this.doc_id) {
+      let bot;
       if (process.env.SLACK_BOT_TOKEN) {
-        let bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token, session: this.peer_id })
+        bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token, session: this.peer_id })
       }
       else {
-        let bot = bs.init({doc_id: this.doc_id, name: this.name, session: this.peer_id })
+        bot = bs.init({doc_id: this.doc_id, name: this.name, session: this.peer_id })
       }
 
       peergroup.on('peer', (peer) => {
