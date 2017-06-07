@@ -60,8 +60,6 @@ export default class Peers extends React.Component {
     let connected = this.state.connected ? "on" : "off"
     let switchPath = "assets/images/switch-" + connected + ".svg"
 
-    let docId = (this.props.network && this.props.network.doc_id) ? this.props.network.doc_id : "-"
-
     return <div className="Peers">
       <h2>Peers <img src="assets/images/peers.svg" /></h2>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
@@ -70,11 +68,6 @@ export default class Peers extends React.Component {
         <thead><tr><th></th><th>Name</th><th>ID</th><th>Sent</th><th>Received</th></tr></thead>
         <tbody>{ peersPartial }</tbody>
       </table>
-
-      <div className="docID">
-        <span className="label">DocID</span>
-        <span className="ID">{ docId }</span>
-      </div>
     </div>
   }
 }

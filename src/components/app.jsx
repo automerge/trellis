@@ -94,11 +94,17 @@ export default class App extends React.Component {
   }
 
   render() {
+    let docId = (this.store.network && this.store.network.doc_id) ? this.store.network.doc_id : "-"
+
     return (
       <div className="App">
         <Board store={ this.store } />
         <Inspector store={ this.store } />
         <div className="sidebar">
+          <div className="docID">
+            <span className="label">DocID</span>
+            <span className="ID">{ docId }</span>
+          </div>
           <Peers network={ this.store.network } />
           <Clocks network={ this.store.network } />
         </div>
