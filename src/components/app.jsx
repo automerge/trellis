@@ -101,7 +101,7 @@ export default class App extends React.Component {
         <Board store={ this.store } />
         <Inspector store={ this.store } />
         <div className="sidebar">
-          <div className="docID">
+          <div className="DocID">
             <span className="label">DocID</span>
             <span className="ID">{ docId }</span>
           </div>
