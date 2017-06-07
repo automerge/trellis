@@ -84,7 +84,7 @@ function init(config) {
     msg.body = offer;
 
     let opts = {method: 'POST', 
-      url: "http://"+service.addresses[0]+":"+service.port+"/", 
+      url: "http://"+service.host+".local:"+service.port+"/", 
       json: msg};
     console.log("Sending post request to peer server:", opts)
     request(opts,
