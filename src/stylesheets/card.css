@@ -5,18 +5,19 @@
   background: rgba(0,0,0,0.75);
   top: 0;
   left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .Card {
   background: #FFF;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 6px 0px rgba(0,0,0,0.2);
   color: #555;
+  width: 50%;
+  height: 50%;
 }
 
 .Card__close {
@@ -32,17 +33,24 @@
   width: 30px;
 }
 
-.Card__title h3, .Card textarea {
+.InlineInput div, .InlineInput textarea {
+  cursor: pointer;
   border: none;
   outline: none;
   padding: 0;
   font-size: 18px;
   color: #555;
   font-family: "Nunito";
-  width: 80%;
-  font-weight: bold;
-  margin-top: 16px;
-  margin-bottom: 0;
-  height: 40px;
-  box-sizing: border-box;
+  font-weight: normal;
+  min-height: 60px;
+  width: 90%;
+  word-wrap: break-word;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.InlineInput label {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-family: "Open Sans";
 }

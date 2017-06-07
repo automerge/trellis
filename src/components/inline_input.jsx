@@ -6,6 +6,7 @@ export default class InlineInput extends React.Component {
     super(props)
 
     this.handleKeyDown  = this.handleKeyDown.bind(this)
+    this.handleBlur     = this.handleBlur.bind(this)
     this.edit           = this.edit.bind(this)
     this.state          = { editMode: false }
   }
@@ -23,20 +24,29 @@ export default class InlineInput extends React.Component {
       this.setState({ editMode: false })
   }
 
+  handleBlur() {
+    this.setState({ editMode: false })
+  }
+
   render() { 
-    let children
+    let children, label
 
     if(this.state.editMode) {
       children = <textarea
         ref={ (input) => this.input = input }
         onKeyDown={ this.handleKeyDown }
-        defaultValue={ this.props.children }
+        onBlur={ this.handleBlur }
+        defaultValue={ this.props.defaultValue }
       />
     } else {
       children = <div onClick={ this.edit }>{ this.props.children }</div>
     }
 
+    if(this.props.label) 
+      label = <label>{ this.props.label }</label>
+
     return <div className="InlineInput" >
+      { label }
       { children }
     </div>
   }

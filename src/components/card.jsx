@@ -30,10 +30,14 @@ export default class Card extends React.Component {
       <div className="Card" onClick={ (e) => e.stopPropagation() } >
         <a className="Card__close" onClick={ this.props.close }>✕</a>
         <InlineInput
+          label="Title"
           onSubmit={ this.submitTitle }
+          defaultValue={ this.card().title }
           className="Card__title">{ this.card().title }</InlineInput>
         <InlineInput
+          label="Description"
           onSubmit={ this.submitDescription }
+          defaultValue={ this.card().description }
           className="Card__description">{ this.card().description || "Add Description" }</InlineInput>
         <Assignments cardId={ this.props.cardId } store={ this.props.store } />
       </div>
