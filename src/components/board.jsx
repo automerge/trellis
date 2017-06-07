@@ -39,7 +39,9 @@ export default class Board extends React.Component { constructor(props) {
     }
 
     if(this.state.showModal) {
-      modal = <Card store={ this.props.store } cardId={ this.state.card.id } close={ this.closeModal } />
+      modal = <div className="Modal" onClick={ this.closeModal }>
+        <Card store={ this.props.store } cardId={ this.state.card.id } close={ this.closeModal } />
+      </div>
     }
 
     return (
@@ -48,8 +50,8 @@ export default class Board extends React.Component { constructor(props) {
         <div className="Board__lists">
           { lists }
           <AddList store={ this.props.store } />
-          { modal }
         </div>
+        { modal }
       </div>
     )
   }

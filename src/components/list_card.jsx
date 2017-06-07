@@ -18,10 +18,11 @@ export default class ListCard extends React.Component {
     return this.props.store.findCard(this.props.cardId)
   }
 
-  delete() {
+  delete(event) {
+    event.stopPropagation()
+
     this.props.store.dispatch({
-      type: "DELETE_CARD",
-      cardId: this.card().id
+      type: "DELETE_CARD", cardId: this.card().id
     })
   }
 

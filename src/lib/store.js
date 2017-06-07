@@ -15,6 +15,8 @@ export default class Store extends aMPL.Store {
           return this.moveCard(state, action)
         case "UPDATE_CARD_TITLE":
           return this.updateCardTitle(state, action)
+        case "UPDATE_CARD_DESCRIPTION":
+          return this.updateCardDescription(state, action)
         case "DELETE_CARD":
           return this.deleteCard(state, action)
         case "UPDATE_ASSIGNMENTS":
@@ -63,6 +65,11 @@ export default class Store extends aMPL.Store {
   updateCardTitle(state, action) {
     let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
     return Tesseract.set(state.cards[cardIndex], "title", action.newTitle)
+  }
+
+  updateCardDescription(state, action) {
+    let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
+    return Tesseract.set(state.cards[cardIndex], "description", action.newDescription)
   }
 
   updateAssignments(state, action) {

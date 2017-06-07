@@ -36,6 +36,7 @@ html, body, #App {
   flex-direction: column;
   background-color: #5BCFFF;
   font-family: "Nunito";
+  position: relative;
 }
 
 .Board textarea, .Board input[type="text"] {

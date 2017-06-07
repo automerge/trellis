@@ -16,6 +16,8 @@ export default class Assignments extends React.Component {
   }
 
   toggle(event) {
+    event.stopPropagation()
+
     let person     = event.target.name
     let isAssigned = !this.assigned()[person]
 
