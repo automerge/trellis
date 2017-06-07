@@ -50,7 +50,7 @@
     }
   },
   "dependencies": {
-    "aMPL": "git+ssh://git@github.com/inkandswitch/ampl.git",
+    "aMPL": "git+ssh://git@github.com/inkandswitch/ampl.git#v0.0.3",
     "assert": "1.4.1",
     "body-parser": "^1.17.2",
     "bonjour": "^3.5.0",
@@ -65,9 +65,7 @@
     "react-hot-loader": "3.0.0-beta.6",
     "react-redux": "5.0.4",
     "redux": "3.6.0",
-    "request": "^2.81.0",
-    "slack-signaler": "git+ssh://git@github.com/inkandswitch/slack-signaler.git",
-    "tesseract": "git+ssh://git@github.com/inkandswitch/tesseract.git"
+    "request": "^2.81.0"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "6.24.1",
