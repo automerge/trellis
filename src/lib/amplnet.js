@@ -1,4 +1,6 @@
 import ss from './amplnet/slack-signaler'
+import bs from './amplnet/bonjour-signaler'
+
 import peergroup from './amplnet/peergroup'
 import Tesseract from 'tesseract'
 import EventEmitter from 'events'
@@ -58,8 +60,14 @@ export default class aMPLNet extends EventEmitter {
       this.emit('peer')
     })
 
-    if (this.token && this.doc_id) {
-      let bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token, session: this.peer_id })
+    if (this.doc_id) {
+      let bot;
+      if (process.env.SLACK_BOT_TOKEN) {
+        bot = ss.init({doc_id: this.doc_id, name: this.name, bot_token: this.token, session: this.peer_id })
+      }
+      else {
+        bot = bs.init({doc_id: this.doc_id, name: this.name, session: this.peer_id })
+      }
 
       peergroup.on('peer', (peer) => {
         window.PEERS.push(peer)
@@ -125,7 +133,7 @@ export default class aMPLNet extends EventEmitter {
     } else {
       console.log("Network disabled")
       console.log("TRELLIS_DOC_ID:", this.doc_id)
-      console.log("SLACK_BOT_TOKEN:", this.token)
+      //console.log("SLACK_BOT_TOKEN:", this.token)
     }
   }
 
