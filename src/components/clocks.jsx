@@ -72,6 +72,8 @@ export default class Clocks extends React.Component {
     // connected peers first
     allKnownActors = peerIds.concat(allKnownActorsExceptPeers)
 
+    allKnownActors = allKnownActors.slice(0, 6)  // avoid making it too wide
+
     let clockHeaders = allKnownActors.map((peerId, index) => {
       let key = "peer-vclock-th-" + index + "-" + peerId
       return <th className="peerID" key={key}>{ this.renderPeerNameOrId(peerId) }</th>

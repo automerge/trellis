@@ -175,8 +175,6 @@ h2 {
 
 .Clocks {
   margin-top: 16px;
-  max-width: 200px;
-  overflow: scroll;
 }
 .Clocks td.clockPosition {
   text-align: right;
