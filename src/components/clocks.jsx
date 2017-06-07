@@ -74,21 +74,27 @@ export default class Clocks extends React.Component {
 
     allKnownActors = allKnownActors.slice(0, 6)  // avoid making it too wide
 
-    let clockHeaders = allKnownActors.map((peerId, index) => {
-      let key = "peer-vclock-th-" + index + "-" + peerId
-      return <th className="peerID" key={key}>{ this.renderPeerNameOrId(peerId) }</th>
-    })
+    let clocksTable = <div></div>
 
-    let clockRows = peerIds.map((id) => {
-      return this.formatVectorClock(id, this.state.clocks[id], allKnownActors)
-    })
+    if (allKnownActors.length > 1) {
+      let clockHeaders = allKnownActors.map((peerId, index) => {
+        let key = "peer-vclock-th-" + index + "-" + peerId
+        return <th className="peerID" key={key}>{ this.renderPeerNameOrId(peerId) }</th>
+      })
+
+      let clockRows = peerIds.map((id) => {
+        return this.formatVectorClock(id, this.state.clocks[id], allKnownActors)
+      })
+
+      let clocksTable = <table>
+          <thead><tr><th></th>{clockHeaders}</tr></thead>
+          <tbody>{clockRows}</tbody>
+        </table>
+    }
 
     return <div className="Clocks">
       <h2>Clocks <img src="assets/images/clock.svg" /></h2>
-      <table>
-        <thead><tr><th></th>{clockHeaders}</tr></thead>
-        <tbody>{clockRows}</tbody>
-      </table>
+      {clocksTable}
     </div>
   }
 }
