@@ -86,7 +86,7 @@ export default class Clocks extends React.Component {
         return this.formatVectorClock(id, this.state.clocks[id], allKnownActors)
       })
 
-      let clocksTable = <table>
+      clocksTable = <table>
           <thead><tr><th></th>{clockHeaders}</tr></thead>
           <tbody>{clockRows}</tbody>
         </table>
