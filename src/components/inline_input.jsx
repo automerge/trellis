@@ -16,11 +16,12 @@ export default class InlineInput extends React.Component {
   }
 
   handleKeyDown(event) {
-    if (event.key === "Enter" && this.props.onSubmit)
+    let shiftEnter = event.shiftKey && event.key === "Enter"
+    if (shiftEnter && this.props.onSubmit)
       this.props.onSubmit(event.target.value)
 
     // Exit edit mode if "Enter" or "Esc" are pressed
-    if (event.key === "Enter" || event.keyCode === 27)
+    if (shiftEnter || event.keyCode === 27)
       this.setState({ editMode: false })
   }
 
@@ -28,7 +29,7 @@ export default class InlineInput extends React.Component {
     this.setState({ editMode: false })
   }
 
-  render() { 
+  render() {
     let children, label
 
     if(this.state.editMode) {
@@ -42,7 +43,7 @@ export default class InlineInput extends React.Component {
       children = <div onClick={ this.edit }>{ this.props.children }</div>
     }
 
-    if(this.props.label) 
+    if(this.props.label)
       label = <label>{ this.props.label }</label>
 
     return <div className="InlineInput" >

@@ -17,7 +17,7 @@
   box-shadow: 0 2px 6px 0px rgba(0,0,0,0.2);
   color: #555;
   width: 50%;
-  height: 50%;
+  min-height: 50%;
 }
 
 .Card__close {
@@ -47,6 +47,7 @@
   word-wrap: break-word;
   margin-bottom: 20px;
   display: block;
+  white-space: pre-wrap;
 }
 
 .InlineInput label {
