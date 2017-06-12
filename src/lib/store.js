@@ -64,13 +64,17 @@ export default class Store extends aMPL.Store {
   }
 
   updateCardTitle(state, action) {
-    let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
-    return Tesseract.set(state.cards[cardIndex], "title", action.newTitle)
+    return Tesseract.changeset(state, (doc) => {
+      let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
+      doc.cards[cardIndex].title = action.newTitle
+    })
   }
 
   updateCardDescription(state, action) {
-    let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
-    return Tesseract.set(state.cards[cardIndex], "description", action.newDescription)
+    return Tesseract.changeset(state, (doc) => {
+      let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
+      doc.cards[cardIndex].description = action.newDescription
+    })
   }
 
   updateAssignments(state, action) {
