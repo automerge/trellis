@@ -45,22 +45,25 @@ export default class Store extends aMPL.Store {
   }
 
   createList(state, action) {
-    let attributes = Object.assign({}, action.attributes, { id: uuid() })
-    return Tesseract.insert(state.lists, state.lists.length, attributes)
+    return Tesseract.changeset(state, (doc) => {
+      let attributes = Object.assign({}, action.attributes, { id: uuid() })
+      doc.lists.push(attributes)
+    })
   }
 
   deleteList(state, action) {
-    let listIndex = this._findIndex(state.lists, (l) => l.id === action.listId)
-    let listCards = this.findCardsByList(action.listId)
-    let listCardIndexes = this._map(listCards, (lc) => {
-      return this._findIndex(state.cards, (c) => c.id === lc.id)
-    })
+    return Tesseract.changeset(state, (doc) => {
+      let listIndex = this._findIndex(state.lists, (l) => l.id === action.listId)
+      let listCards = this.findCardsByList(action.listId)
 
-    listCardIndexes.forEach((index) => {
-      state = Tesseract.remove(state.cards, index)
-    })
+      Object.keys(listCards).forEach((key) => {
+        let card = listCards[key]
+        let index = this._findIndex(doc.cards, (c) => c.id === card.id)
+        delete doc.cards[index]
+      })
 
-    return Tesseract.remove(state.lists, listIndex)
+      delete doc.lists[listIndex]
+    })
   }
 
   updateCardTitle(state, action) {
@@ -78,16 +81,19 @@ export default class Store extends aMPL.Store {
   }
 
   updateAssignments(state, action) {
-    let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
-
-    return Tesseract.set(state.cards[cardIndex].assigned, action.person, action.isAssigned)
+    return Tesseract.changeset(state, (doc) => {
+      let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
+      doc.cards[cardIndex].assigned[action.person] = action.isAssigned
+    })
   }
 
   deleteCard(state, action) {
-    let cards     = state.cards
-    let cardIndex = this._findIndex(cards, (c) => c.id === action.cardId)
+    return Tesseract.changeset(state, (doc) => {
+      let cards     = state.cards
+      let cardIndex = this._findIndex(cards, (c) => c.id === action.cardId)
 
-    return Tesseract.remove(cards, cardIndex)
+      delete doc.cards[cardIndex]
+    })
   }
 
   moveCard(state, action) {
