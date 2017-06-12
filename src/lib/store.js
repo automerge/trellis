@@ -97,45 +97,46 @@ export default class Store extends aMPL.Store {
   }
 
   moveCard(state, action) {
-    // Move card to next list
-    let cards     = state.cards
-    let cardId    = action.cardId
-    let cardIndex = this._findIndex(cards, (card) => card.id === cardId)
-    let nextState = Tesseract.set(cards[cardIndex], "listId", action.listId)
+    return Tesseract.changeset(state, (doc) => {
+      // Move card to next list
+      let cards     = state.cards
+      let cardId    = action.cardId
+      let cardIndex = this._findIndex(cards, (card) => card.id === cardId)
 
-    // Update order of every following card
-    if(action.afterCardId) {
-      let listCards   = this.findCardsByList(action.listId)
-      let insertIndex = this._findIndex(listCards, (card) => card.id === action.afterCardId)
-      let order       = (listCards[insertIndex].order || 0) + 1
+      doc.cards[cardIndex].listId = action.listId
 
-      nextState = Tesseract.set(nextState.cards[cardIndex], "order", order)
+      // Update order of every following card
+      if(action.afterCardId) {
+        let listCards   = this.findCardsByList(action.listId)
+        let insertIndex = this._findIndex(listCards, (card) => card.id === action.afterCardId)
+        let order       = (listCards[insertIndex].order || 0) + 1
 
-      for(let index = insertIndex + 1; index <= listCards.length - 1; index++) {
-        let globalIndex = this._findIndex(state.cards, (card) => card.id === listCards[index].id)
+        doc.cards[cardIndex].order = order
 
-        if(globalIndex != cardIndex) {
-          order = order + 1
-          nextState = Tesseract.set(nextState.cards[globalIndex], "order", order)
+        for(let index = insertIndex + 1; index <= listCards.length - 1; index++) {
+          let globalIndex = this._findIndex(state.cards, (card) => card.id === listCards[index].id)
+
+          if(globalIndex != cardIndex) {
+            order = order + 1
+            doc.cards[globalIndex].order = order
+          }
+        }
+      } else {
+        let listCards = this.findCardsByList(action.listId)
+        let order     = 0
+
+        doc.cards[cardIndex].order = order
+
+        for(let index = 0; index < listCards.length; index++) {
+          let globalIndex = this._findIndex(state.cards, (card) => card.id === listCards[index].id)
+
+          if(globalIndex != cardIndex) {
+            order = order + 1
+            doc.cards[globalIndex].order = order
+          }
         }
       }
-    } else {
-      let listCards = this.findCardsByList(action.listId)
-      let order     = 0
-
-      nextState = Tesseract.set(nextState.cards[cardIndex], "order", order)
-
-      for(let index = 0; index < listCards.length; index++) {
-        let globalIndex = this._findIndex(state.cards, (card) => card.id === listCards[index].id)
-
-        if(globalIndex != cardIndex) {
-          order = order + 1
-          nextState = Tesseract.set(nextState.cards[globalIndex], "order", order)
-        }
-      }
-    }
-
-    return nextState
+    })
   }
 
   createCard(state, action) {
