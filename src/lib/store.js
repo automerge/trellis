@@ -34,13 +34,14 @@ export default class Store extends aMPL.Store {
   // Overwriting aMPL.Store#newDocument to load our own seed data
   newDocument(state, action) {
     let newState = Tesseract.init()
-    let data     = seedData()
 
-    newState = Tesseract.set(newState, "cards", data.cards)
-    newState = Tesseract.set(newState, "lists", data.lists)
-    newState = Tesseract.set(newState, "docId", uuid())
+    return Tesseract.changeset(newState, (doc) => {
+      let data = seedData()
 
-    return newState
+      doc.cards = data.cards
+      doc.lists = data.lists
+      doc.docId = uuid()
+    })
   }
 
   createList(state, action) {
@@ -128,16 +129,18 @@ export default class Store extends aMPL.Store {
   }
 
   createCard(state, action) {
-    let listCards = this.findCardsByList(action.attributes.listId)
-    let order
+    return Tesseract.changeset(state, (doc) => {
+      let listCards = this.findCardsByList(action.attributes.listId)
+      let order
 
-    if(listCards.length > 0)
-      order = (listCards[listCards.length - 1].order || 0) + 1
-    else
-      order = 0
+      if(listCards.length > 0)
+        order = (listCards[listCards.length - 1].order || 0) + 1
+      else
+        order = 0
 
-    let card = Object.assign({}, action.attributes, { order: order, id: uuid(), assigned: {} })
-    return Tesseract.insert(state.cards, state.cards.length, card)
+      let card = Object.assign({}, action.attributes, { order: order, id: uuid(), assigned: {} })
+      doc.cards.push(card)
+    })
   }
 
   findCard(cardId) {
