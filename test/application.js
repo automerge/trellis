@@ -36,7 +36,7 @@ describe('application', function () {
     .then(() => this.app.client.getText(".ListCard__title"))
     .then((cardTitles) => {
       assert.deepEqual(cardTitles.splice(0, 3), [
-        "Trellis MVP core featureset",
+        "Trellis MVP Core featureset",
         "Team Summit",
         "Omniview design sketch"
       ])
@@ -61,7 +61,7 @@ describe('application', function () {
     })
     .then(() => this.app.client.getText(".ListCard__title"))
     .then((cardTitles) => {
-      assert.equal(cardTitles[1], "Card B")
+      assert.equal(cardTitles[2], "Card B")
     })
     .then(() => {
       fs.unlinkSync(forkAPath)
@@ -76,7 +76,7 @@ describe('application', function () {
     .then(() => this.app.client.getText(".ListCard__title"))
     .then((cardTitles) => {
       assert.deepEqual(cardTitles.splice(0, 3), [
-        "Trellis MVP core featureset",
+        "Trellis MVP Core featureset",
         "Team Summit",
         "Omniview design sketch"
       ])
