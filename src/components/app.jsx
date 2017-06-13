@@ -62,6 +62,9 @@ export default class App extends React.Component {
       else
         dialog.showErrorBox("Invalid DocID", "Your clipboard contains:\n\n" + docId)
     })
+
+    ipcRenderer.on("shareToClipboard", (event) => {
+    })
   }
 
   componentDidMount() {

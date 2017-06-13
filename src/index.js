@@ -77,7 +77,8 @@ const createWindow = async () => {
         }},
         {
           label: 'Share to Clipboard', accelerator: 'CmdOrCtrl+H', click: (item, focusedWindow) => {
-            mainWindow.webContents.send("shareToClipboard")
+            mainWindow.webContents.sendSync("shareToClipboard")
+            //clipboard.writeText()
         }},
       ]
     }
