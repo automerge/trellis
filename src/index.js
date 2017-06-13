@@ -65,6 +65,23 @@ const createWindow = async () => {
           }
         }
       ]
+    },
+    {
+      label: 'DocID',
+      submenu: [
+        {
+          label: 'Open from Clipboard', accelerator: 'CmdOrCtrl+Shift+O', click: (item, focusedWindow) => {
+          dialog.showOpenDialog(dialogPreferences, (files) => {
+            mainWindow.webContents.send("openFromClipboard", files)
+          })
+        }},
+        {
+          label: 'Share to Clipboard', accelerator: 'CmdOrCtrl+H', click: (item, focusedWindow) => {
+          dialog.showSaveDialog({ defaultPath: ".trellis" }, (savePath) => {
+            mainWindow.webContents.send("shareToClipboard", savePath)
+          })
+        }},
+      ]
     }
   ]
 
