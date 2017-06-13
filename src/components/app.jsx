@@ -95,10 +95,6 @@ export default class App extends React.Component {
         <Board store={ this.store } />
         <Inspector store={ this.store } />
         <div className="sidebar">
-          <div className="DocID">
-            <span className="label">Document</span>
-            <span className="ID">{ this.getDocUrl() }</span>
-          </div>
           <Peers network={ this.store.network } />
           <Clocks network={ this.store.network } />
         </div>

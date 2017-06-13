@@ -128,13 +128,12 @@ h2 {
 }
 
 .Peers {
-  position: relative;
   padding: 16px 16px;
-  padding-top: 4px;
+  padding-top: 20px;
 }
 .Peers .networkSwitch {
   position: absolute;
-  top: 8px;
+  top: 20px;
   right: 16px;
   width: 32px;
 }
@@ -156,24 +155,6 @@ h2 {
   width: 10px;
   height: 10px;
   margin-left: -7px;
-}
-
-.DocID {
-  padding: 4px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid #aaa;
-  text-align: center;
-}
-.DocID .label {
-  color: #aaa;
-  font-size: 9px;
-  font-weight: 500;
-  padding-right: 4px;
-}
-.DocID .ID {
-  font-family: Monaco, monospace;
-  color: #777;
-  font-size: 9px;
 }
 
 .Clocks {
