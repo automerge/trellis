@@ -32,30 +32,28 @@ const createWindow = async () => {
   // Menubar template
   const template = [
     {
-      label: 'File',
+      label: 'Document',
       submenu: [
         {
           label: 'New', accelerator: 'CmdOrCtrl+N', click: (item, focusedWindow) => {
-          mainWindow.webContents.send("new")
+            mainWindow.webContents.send("new")
         }},
         {
-          label: 'Open', accelerator: 'CmdOrCtrl+O', click: (item, focusedWindow) => {
-          dialog.showOpenDialog(dialogPreferences, (files) => {
-            mainWindow.webContents.send("open", files)
-          })
+          label: 'Open from Clipboard', accelerator: 'CmdOrCtrl+O', click: (item, focusedWindow) => {
+            mainWindow.webContents.send("openFromClipboard", clipboard.readText())
         }},
         {
-          label: 'Save As', accelerator: 'CmdOrCtrl+S', click: (item, focusedWindow) => {
-          dialog.showSaveDialog({ defaultPath: ".trellis" }, (savePath) => {
-            mainWindow.webContents.send("save", savePath)
-          })
+          label: 'Share to Clipboard', accelerator: 'CmdOrCtrl+H', click: (item, focusedWindow) => {
+            mainWindow.webContents.send("shareToClipboard")
+            // results will arrive as an async message shareToClipboardResult, see below
         }},
         {
-          label: 'Merge', accelerator: 'CmdOrCtrl+M', click: (item, focusedWindow) => {
-          dialog.showOpenDialog(dialogPreferences, (files) => {
-            mainWindow.webContents.send("merge", files)
-          })
+          label: 'Fork', accelerator: 'CmdOrCtrl+Y', click: (item, focusedWindow) => {
+            console.log("TODO: implement fork")
         }},
+        {
+          type: "separator"
+        },
         {
           label: "Refresh", accelerator: 'CmdOrCtrl+R', click: (item, focusedWindow) => {
             focusedWindow.webContents.reload()
@@ -66,20 +64,6 @@ const createWindow = async () => {
             mainWindow.webContents.toggleDevTools()
           }
         }
-      ]
-    },
-    {
-      label: 'DocID',
-      submenu: [
-        {
-          label: 'Open from Clipboard', accelerator: 'CmdOrCtrl+Shift+O', click: (item, focusedWindow) => {
-            mainWindow.webContents.send("openFromClipboard", clipboard.readText())
-        }},
-        {
-          label: 'Share to Clipboard', accelerator: 'CmdOrCtrl+H', click: (item, focusedWindow) => {
-            mainWindow.webContents.send("shareToClipboard")
-            // results will arrive as an async message shareToClipboardResult, see below
-        }},
       ]
     }
   ]
