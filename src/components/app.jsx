@@ -30,7 +30,7 @@ export default class App extends React.Component {
     ipcRenderer.on("new", (event) => { this.open() })
 
     ipcRenderer.on("openFromClipboard", (event, docUrl) => {
-      let m = docUrl.match(/^trellis:\/\/([a-z0-9-]+)/)
+      let m = docUrl.match(/trellis:\/\/([a-z0-9-]+)/)
       if (m)
         this.open(m[1])
       else
