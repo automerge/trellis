@@ -27,41 +27,11 @@ export default class App extends React.Component {
       this.autoSave()
     })
 
-    ipcRenderer.on("new", (event) => {
-      this.open()
-    })
-
-    ipcRenderer.on("open", (event, files) => {
-      if(files && files.length > 0) {
-        this.open(files[0])
-      }
-    })
-
-    ipcRenderer.on("merge", (event, files) => {
-      if(files && files.length > 0) {
-        let file = fs.readFileSync(files[0])
-
-        this.store.dispatch({
-          type: "MERGE_DOCUMENT", file: file
-        })
-      }
-    })
-
-    ipcRenderer.on("save", (event, savePath) => {
-      if(savePath) {
-        let name = Path.parse(savePath).name
-
-        this.setState({ savePath: savePath }, () => {
-          this.setWindowTitle()
-          localStorage.setItem("lastFileOpened", savePath)
-          this.autoSave()
-        })
-      }
-    })
+    ipcRenderer.on("new", (event) => { this.open() })
 
     ipcRenderer.on("openFromClipboard", (event, docId) => {
       if (this.isValidDocId(docId))
-        this.openDocId(docId)
+        this.open(docId)
       else
         dialog.showErrorBox("Invalid DocID", "Your clipboard contains:\n\n" + docId)
     })
@@ -72,10 +42,10 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    let lastFileOpened = localStorage.getItem("lastFileOpened")
+    let lastDocOpened = localStorage.getItem("lastDocOpened")
 
-    if(lastFileOpened && fs.existsSync(lastFileOpened))
-      this.open(lastFileOpened)
+    if(lastDocOpened)
+      this.open(lastDocOpened)
     else
       this.open()
   }
@@ -88,39 +58,21 @@ export default class App extends React.Component {
     remote.getCurrentWindow().setTitle(this.getDocId())
   }
 
-  open(path) {
-    if(path) {
-      this.setState({ savePath: path }, () => {
-        let file = fs.readFileSync(path)
-        let name = Path.parse(path).name
-
-        this.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
-        this.setWindowTitle()
-        remote.getCurrentWindow().setTitle(name)
-        localStorage.setItem("lastFileOpened", path)
-      })
-    }
-    else {
-      this.setState({ savePath: null }, () => {
-        this.store.dispatch({ type: "NEW_DOCUMENT" })
-        this.setWindowTitle()
-      })
-    }
-  }
-
-  openDocId(docId) {
+  open(docId) {
     let fileName = docId + ".trellis"
     let savePath = Path.join(SAVE_DIRECTORY, fileName)
 
-    if(fs.existsSync(savePath)) {
+    if(!docId) {
+      this.store.dispatch({ type: "NEW_DOCUMENT" })
+    } else if(fs.existsSync(savePath)) {
       let file = fs.readFileSync(savePath)
       this.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
     } else {
       this.store.dispatch({ type: "OPEN_DOCUMENT", docId: docId })
     }
 
-    localStorage.setItem("lastFileOpened", savePath)
-    remote.getCurrentWindow().setTitle(docId)
+    localStorage.setItem("lastDocOpened", this.getDocId())
+    this.setWindowTitle()
   }
 
   isValidDocId(docId) {
