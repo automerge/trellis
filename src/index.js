@@ -77,12 +77,18 @@ const createWindow = async () => {
         }},
         {
           label: 'Share to Clipboard', accelerator: 'CmdOrCtrl+H', click: (item, focusedWindow) => {
-            mainWindow.webContents.sendSync("shareToClipboard")
-            //clipboard.writeText()
+            mainWindow.webContents.send("shareToClipboard")
+            // results will arrive as an async message shareToClipboardResult, see below
         }},
       ]
     }
   ]
+
+  // callback which fetches docID from the app
+  ipcMain.on('shareToClipboardResult', (event, docId) => {
+    console.log("adding DocID to clipboard", docId)
+    clipboard.writeText(docId)
+  })
 
   // macOS requires first menu item be name of the app
   if (process.platform === 'darwin') {

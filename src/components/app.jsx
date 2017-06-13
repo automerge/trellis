@@ -64,6 +64,9 @@ export default class App extends React.Component {
     })
 
     ipcRenderer.on("shareToClipboard", (event) => {
+      let docId = this.store.getState().docId
+      console.log("sending docid", docId)
+      ipcRenderer.send("shareToClipboardResult", docId)
     })
   }
 
