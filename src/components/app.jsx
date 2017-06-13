@@ -29,15 +29,16 @@ export default class App extends React.Component {
 
     ipcRenderer.on("new", (event) => { this.open() })
 
-    ipcRenderer.on("openFromClipboard", (event, docId) => {
-      if (this.isValidDocId(docId))
-        this.open(docId)
+    ipcRenderer.on("openFromClipboard", (event, docUrl) => {
+      let m = docUrl.match(/^trellis:\/\/([a-z0-9-]+)/)
+      if (m)
+        this.open(m[1])
       else
-        dialog.showErrorBox("Invalid DocID", "Your clipboard contains:\n\n" + docId)
+        dialog.showErrorBox("Invalid document URL", "Should be trellis:// but your clipboard contains:\n\n" + docUrl)
     })
 
     ipcRenderer.on("shareToClipboard", (event) => {
-      ipcRenderer.send("shareToClipboardResult", this.getDocId())
+      ipcRenderer.send("shareToClipboardResult", this.getDocUrl())
     })
   }
 
@@ -54,8 +55,12 @@ export default class App extends React.Component {
     return this.store.getState().docId
   }
 
+  getDocUrl() {
+    return "trellis://" + this.getDocId()
+  }
+
   setWindowTitle() {
-    remote.getCurrentWindow().setTitle(this.getDocId())
+    remote.getCurrentWindow().setTitle(this.getDocUrl())
   }
 
   open(docId) {
@@ -75,10 +80,6 @@ export default class App extends React.Component {
     this.setWindowTitle()
   }
 
-  isValidDocId(docId) {
-    return (docId.match(/^[0-9a-fA-F-]+$/) && docId.length > 4)
-  }
-
   autoSave() {
     let exportFile = this.store.save()
     let fileName   = this.store.getState().docId + ".trellis"
@@ -95,8 +96,8 @@ export default class App extends React.Component {
         <Inspector store={ this.store } />
         <div className="sidebar">
           <div className="DocID">
-            <span className="label">DocID</span>
-            <span className="ID">{ this.getDocId() }</span>
+            <span className="label">Document</span>
+            <span className="ID">{ this.getDocUrl() }</span>
           </div>
           <Peers network={ this.store.network } />
           <Clocks network={ this.store.network } />

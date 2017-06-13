@@ -31,6 +31,11 @@ export default class Store extends aMPL.Store {
     })
   }
 
+  generateDocId() {
+    let id = "gentle-blossom-" + Math.round(Math.random()*100)
+    return id
+  }
+
   // Overwriting aMPL.Store#newDocument to load our own seed data
   newDocument(state, action) {
     let newState = Tesseract.init()
@@ -40,7 +45,7 @@ export default class Store extends aMPL.Store {
 
       doc.cards = data.cards
       doc.lists = data.lists
-      doc.docId = uuid()
+      doc.docId = this.generateDocId()
     })
   }
 
