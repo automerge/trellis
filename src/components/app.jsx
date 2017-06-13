@@ -8,6 +8,9 @@ import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import Path from 'path'
 
+const SAVE_DIRECTORY = Path.join(remote.app.getPath('documents'), "Trellis")
+if(!fs.existsSync(SAVE_DIRECTORY)) fs.mkdirSync(SAVE_DIRECTORY)
+
 const {dialog} = require('electron').remote
 
 export default class App extends React.Component {
@@ -106,7 +109,18 @@ export default class App extends React.Component {
   }
 
   openDocId(docId) {
-    dialog.showErrorBox("TODO: write the function to open by docid", "Your clipboard contains:\n\n" + docId)
+    let fileName = docId + ".trellis"
+    let savePath = Path.join(SAVE_DIRECTORY, fileName)
+
+    if(fs.existsSync(savePath)) {
+      let file = fs.readFileSync(savePath)
+      this.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+    } else {
+      this.store.dispatch({ type: "OPEN_DOCUMENT", docId: docId })
+    }
+
+    localStorage.setItem("lastFileOpened", savePath)
+    remote.getCurrentWindow().setTitle(docId)
   }
 
   isValidDocId(docId) {
@@ -114,14 +128,11 @@ export default class App extends React.Component {
   }
 
   autoSave() {
+    let exportFile = this.store.save()
+    let fileName   = this.store.getState().docId + ".trellis"
+    let savePath   = Path.join(SAVE_DIRECTORY, fileName)
+
     console.log("Auto saving…")
-    let exportFile    = this.store.save()
-    let saveDirectory = Path.join(remote.app.getPath('documents'), "Trellis")
-    let fileName      = this.store.getState().docId + ".trellis"
-
-    if(!fs.existsSync(saveDirectory)) fs.mkdirSync(saveDirectory)
-
-    let savePath = Path.join(saveDirectory, fileName)
     fs.writeFileSync(savePath, exportFile)
   }
 
