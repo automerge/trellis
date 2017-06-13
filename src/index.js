@@ -23,7 +23,7 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 800,
-    title: "Untitled",
+    title: "-",
     webPreferences: {
       experimentalFeatures: true
     }

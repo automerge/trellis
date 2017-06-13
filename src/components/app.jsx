@@ -49,7 +49,7 @@ export default class App extends React.Component {
         let name = Path.parse(savePath).name
 
         this.setState({ savePath: savePath }, () => {
-          remote.getCurrentWindow().setTitle(name)
+          this.setWindowTitle()
           localStorage.setItem("lastFileOpened", savePath)
           this.autoSave()
         })
@@ -64,8 +64,7 @@ export default class App extends React.Component {
     })
 
     ipcRenderer.on("shareToClipboard", (event) => {
-      let docId = this.store.getState().docId
-      ipcRenderer.send("shareToClipboardResult", docId)
+      ipcRenderer.send("shareToClipboardResult", this.getDocId())
     })
   }
 
@@ -78,6 +77,14 @@ export default class App extends React.Component {
       this.open()
   }
 
+  getDocId() {
+    return this.store.getState().docId
+  }
+
+  setWindowTitle() {
+    remote.getCurrentWindow().setTitle(this.getDocId())
+  }
+
   open(path) {
     if(path) {
       this.setState({ savePath: path }, () => {
@@ -85,6 +92,7 @@ export default class App extends React.Component {
         let name = Path.parse(path).name
 
         this.store.dispatch({ type: "OPEN_DOCUMENT", file: file })
+        this.setWindowTitle()
         remote.getCurrentWindow().setTitle(name)
         localStorage.setItem("lastFileOpened", path)
       })
@@ -92,7 +100,7 @@ export default class App extends React.Component {
     else {
       this.setState({ savePath: null }, () => {
         this.store.dispatch({ type: "NEW_DOCUMENT" })
-        remote.getCurrentWindow().setTitle("Untitled")
+        this.setWindowTitle()
       })
     }
   }
