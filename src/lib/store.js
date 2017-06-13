@@ -31,9 +31,19 @@ export default class Store extends aMPL.Store {
     })
   }
 
+  randRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   generateDocId() {
-    let id = "gentle-blossom-" + Math.round(Math.random()*100)
-    return id
+    const colors = [ 'cobalt', 'emerald', 'burgundy', 'gray', 'orange', 'violet', 'silver', 'saffron', 'crimson', 'cyan' ]
+    const cities = [ 'shanghai', 'karachi', 'bejing', 'delhi', 'lagos', 'tianjin', 'istanbul', 'tokyo', 'guangzhou', 'mumbai', 'moscow', 'shenzhen', 'jakarta', 'cairo' ]
+
+    let color = colors[this.randRange(0, colors.length-1)]
+    let city = cities[this.randRange(0, cities.length-1)]
+    let number = Math.round(Math.random()*100)
+
+    return color + "-" + city + "-" + number
   }
 
   // Overwriting aMPL.Store#newDocument to load our own seed data
