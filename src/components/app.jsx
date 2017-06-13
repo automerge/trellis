@@ -8,6 +8,8 @@ import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import Path from 'path'
 
+const {dialog} = require('electron').remote
+
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -53,6 +55,13 @@ export default class App extends React.Component {
         })
       }
     })
+
+    ipcRenderer.on("openFromClipboard", (event, docId) => {
+      if (this.isValidDocId(docId))
+        this.openDocId(docId)
+      else
+        dialog.showErrorBox("Invalid DocID", "Your clipboard contains:\n\n" + docId)
+    })
   }
 
   componentDidMount() {
@@ -81,6 +90,14 @@ export default class App extends React.Component {
         remote.getCurrentWindow().setTitle("Untitled")
       })
     }
+  }
+
+  openDocId(docId) {
+    dialog.showErrorBox("TODO: write the function to open by docid", "Your clipboard contains:\n\n" + docId)
+  }
+
+  isValidDocId(docId) {
+    return (docId.match(/^[0-9a-fA-F-]+$/) && docId.length > 4)
   }
 
   autoSave() {

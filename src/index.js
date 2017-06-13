@@ -3,6 +3,8 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-insta
 import { autoUpdater } from 'electron'
 import fs from 'fs'
 
+const {clipboard} = require('electron')
+
 // Load environment variables from .env file
 require("dotenv").config()
 
@@ -71,15 +73,11 @@ const createWindow = async () => {
       submenu: [
         {
           label: 'Open from Clipboard', accelerator: 'CmdOrCtrl+Shift+O', click: (item, focusedWindow) => {
-          dialog.showOpenDialog(dialogPreferences, (files) => {
-            mainWindow.webContents.send("openFromClipboard", files)
-          })
+            mainWindow.webContents.send("openFromClipboard", clipboard.readText())
         }},
         {
           label: 'Share to Clipboard', accelerator: 'CmdOrCtrl+H', click: (item, focusedWindow) => {
-          dialog.showSaveDialog({ defaultPath: ".trellis" }, (savePath) => {
-            mainWindow.webContents.send("shareToClipboard", savePath)
-          })
+            mainWindow.webContents.send("shareToClipboard")
         }},
       ]
     }
