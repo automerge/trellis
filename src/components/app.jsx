@@ -107,13 +107,15 @@ export default class App extends React.Component {
   }
 
   autoSave() {
-    if(this.state.savePath) {
-      process.nextTick(() => {
-        console.log("Auto saving…")
-        let exportFile = this.store.save()
-        fs.writeFileSync(this.state.savePath, exportFile)
-      })
-    }
+    console.log("Auto saving…")
+    let exportFile    = this.store.save()
+    let saveDirectory = Path.join(remote.app.getPath('documents'), "Trellis")
+    let fileName      = this.store.getState().docId + ".trellis"
+
+    if(!fs.existsSync(saveDirectory)) fs.mkdirSync(saveDirectory)
+
+    let savePath = Path.join(saveDirectory, fileName)
+    fs.writeFileSync(savePath, exportFile)
   }
 
   render() {
