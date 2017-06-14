@@ -32,7 +32,7 @@ export default class Store extends aMPL.Store {
   }
 
   displayChange(meta) {
-    if (!meta.author || !meta.action) return ""
+    if (!meta || !meta.author || !meta.action) return ""
 
     switch(meta.action.type) {
       case "CREATE_CARD":
