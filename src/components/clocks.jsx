@@ -4,6 +4,7 @@ export default class Clocks extends React.Component {
   constructor(props) {
     super(props)
     this.state = { 'peers': {}, 'clocks': {} }
+    this.peerHandler = this.peerHandler.bind(this)
   }
 
   // The constructor is not necessarily called on
@@ -11,16 +12,20 @@ export default class Clocks extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(!nextProps.network) return
 
+    this.props.network.removeListener('peer', this.peerHandler)
+
     this.setState({
       peers: Object.assign({},nextProps.network.peers),
       clocks: Object.assign({},nextProps.network.clocks)
     })
 
-    nextProps.network.on('peer',() => {
-      this.setState({
-        peers: Object.assign({},nextProps.network.peers),
-        clocks: Object.assign({},nextProps.network.clocks)
-      })
+    nextProps.network.on('peer', this.peerHandler)
+  }
+
+  peerHandler() {
+    this.setState({
+      peers: Object.assign({}, this.props.network.peers),
+      clocks: Object.assign({}, this.props.network.clocks)
     })
   }
 

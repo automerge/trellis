@@ -5,6 +5,7 @@ export default class Peers extends React.Component {
     super(props)
     this.state = { 'peers': {}, 'connected': true }
     this.toggleNetwork = this.toggleNetwork.bind(this)
+    this.peerHandler = this.peerHandler.bind(this)
   }
 
   // The constructor is not necessarily called on
@@ -12,14 +13,18 @@ export default class Peers extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(!nextProps.network) return
 
+    this.props.network.removeListener('peer', this.peerHandler)
+
     this.setState({
-      peers: Object.assign({},nextProps.network.peers)
+      peers: Object.assign({}, nextProps.network.peers)
     })
 
-    nextProps.network.on('peer',() => {
-      this.setState({
-        peers: Object.assign({},nextProps.network.peers)
-      })
+    nextProps.network.on('peer', this.peerHandler)
+  }
+
+  peerHandler() {
+    this.setState({
+      peers: Object.assign({}, this.props.network.peers)
     })
   }
 
