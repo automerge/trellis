@@ -126,6 +126,7 @@ h2 {
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
   font-size: 12px;
+  overflow: hidden;
 }
 
 .Peers {
