@@ -32,6 +32,7 @@ export default class Board extends React.Component { constructor(props) {
           key={ list.id }
           store={ this.props.store }
           showModal={ this.showModal }
+          highlightOptions={ this.props.highlightOptions }
         />
       })
     } else {
