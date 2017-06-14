@@ -173,6 +173,29 @@ h2 {
   padding: 16px 16px;
   padding-top: 0;
 }
+.Changes ul {
+  list-style-type: none;
+  padding: 0;
+  font-size: 12px;
+}
+.Changes li {
+  position: relative;
+  height: 22px;
+  padding-left: 24px;
+}
+.Changes img.changeNode {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  left: 0;
+  top: 1px;
+}
+.Changes img.changeEdge {
+  position: absolute;
+  height: 11px;
+  left: 5.5px;
+  top: 12px;
+}
 
 .Tesseract__info {
   margin-top: 30pt;
