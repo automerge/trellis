@@ -49,7 +49,7 @@ const createWindow = async () => {
         }},
         {
           label: 'Fork', accelerator: 'CmdOrCtrl+Y', click: (item, focusedWindow) => {
-            console.log("TODO: implement fork")
+            mainWindow.webContents.send("forkDocument")
         }},
         {
           type: "separator"

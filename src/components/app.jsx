@@ -29,6 +29,11 @@ export default class App extends React.Component {
 
     ipcRenderer.on("new", (event) => { this.open() })
 
+    ipcRenderer.on("forkDocument", () => {
+      this.store.dispatch({ type: "FORK_DOCUMENT" })
+      this.setWindowTitle()
+    })
+
     ipcRenderer.on("openFromClipboard", (event, docUrl) => {
       let m = docUrl.match(/trellis:\/\/([a-z0-9-]+)/)
       if (m)
