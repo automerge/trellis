@@ -30,11 +30,18 @@ export default class ListCard extends React.Component {
     this.props.showModal(this.card())
   }
 
+  isHighlighted() {
+    if(this.props.highlightOptions && this.props.highlightOptions.cardId === this.props.cardId)
+      return "ListCard highlighted"
+    else
+      return "ListCard"
+  }
+
   render() {
     return (
       <div>
         <div
-          className="ListCard"
+          className={ this.isHighlighted() }
           draggable="true"
           onDragStart={ this.onDragStart }
           onClick={ this.show } >
