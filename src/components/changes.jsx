@@ -19,15 +19,11 @@ export default class Changes extends React.Component {
       if (index < changes.length-1)
         edgeImg = <img className="changeEdge" src="assets/images/change-edge.svg" />
 
-      let changeInner = ""
-
-      let changeMetadata = change.changeset.message
-      if (changeMetadata && changeMetadata.author && changeMetadata.action)
-        changeInner = changeMetadata.author + " " + (changeMetadata.action ? changeMetadata.action.type : "unknown")
+      let changeMessage = this.store.displayChange(change.changeset.message)
 
       return <li key={key}>
         <img className="changeNode" src="assets/images/change-node.svg" />
-        {edgeImg}{changeInner}
+        {edgeImg}{changeMessage}
       </li>
     })
 
