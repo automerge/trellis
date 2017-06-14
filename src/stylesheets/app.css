@@ -69,7 +69,8 @@ h2 {
 }
 .Inspector img,
 .Peers img,
-.Clocks img {
+.Clocks img,
+.Changes img {
   height: 20px;
   padding-left: 4px;
 }
@@ -166,6 +167,11 @@ h2 {
 }
 .Clocks td.clockPosition.canonical {
   font-weight: bold;
+}
+
+.Changes {
+  padding: 16px 16px;
+  padding-top: 0;
 }
 
 .Tesseract__info {
