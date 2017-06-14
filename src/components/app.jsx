@@ -90,7 +90,6 @@ export default class App extends React.Component {
     let fileName   = this.store.getState().docId + ".trellis"
     let savePath   = Path.join(SAVE_DIRECTORY, fileName)
 
-    console.log("Auto saving…")
     fs.writeFileSync(savePath, exportFile)
   }
 
