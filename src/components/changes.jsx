@@ -10,13 +10,10 @@ export default class Changes extends React.Component {
   }
 
   render() {
-    let changes = [ // standin data, replace with Tesseract.getHistory()
-      { id: 1, user: "Adam", action: "moved a card" },
-      { id: 2, user: "Roshan", action: "deleted a list" }
-    ]
+    let changes = this.store.getHistory().slice(-15)
 
     let changesPartial = changes.map((change, index) => {
-      let key = "change-" + change.id
+      let key = "change-" + index
 
       let edgeImg = ""
       if (index < changes.length-1)
@@ -25,7 +22,7 @@ export default class Changes extends React.Component {
       return <li key={key}>
         <img className="changeNode" src="assets/images/change-node.svg" />
         {edgeImg}
-        {change.user} {change.action}
+        Someone changed something
       </li>
     })
 
