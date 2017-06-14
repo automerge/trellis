@@ -31,6 +31,13 @@ export default class Store extends aMPL.Store {
     })
   }
 
+  meta(action) {
+    return {
+      author: process.env.NAME,
+      action: action
+    }
+  }
+
   randRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -60,14 +67,14 @@ export default class Store extends aMPL.Store {
   }
 
   createList(state, action) {
-    return Tesseract.changeset(state, (doc) => {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
       let attributes = Object.assign({}, action.attributes, { id: uuid() })
       doc.lists.push(attributes)
     })
   }
 
   deleteList(state, action) {
-    return Tesseract.changeset(state, (doc) => {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
       let listIndex = this._findIndex(state.lists, (l) => l.id === action.listId)
       let listCards = this.findCardsByList(action.listId)
 
@@ -82,28 +89,28 @@ export default class Store extends aMPL.Store {
   }
 
   updateCardTitle(state, action) {
-    return Tesseract.changeset(state, (doc) => {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
       let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
       doc.cards[cardIndex].title = action.newTitle
     })
   }
 
   updateCardDescription(state, action) {
-    return Tesseract.changeset(state, (doc) => {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
       let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
       doc.cards[cardIndex].description = action.newDescription
     })
   }
 
   updateAssignments(state, action) {
-    return Tesseract.changeset(state, (doc) => {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
       let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
       doc.cards[cardIndex].assigned[action.person] = action.isAssigned
     })
   }
 
   deleteCard(state, action) {
-    return Tesseract.changeset(state, (doc) => {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
       let cards     = state.cards
       let cardIndex = this._findIndex(cards, (c) => c.id === action.cardId)
 
@@ -112,7 +119,7 @@ export default class Store extends aMPL.Store {
   }
 
   moveCard(state, action) {
-    return Tesseract.changeset(state, (doc) => {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
       // Move card to next list
       let cards     = state.cards
       let cardId    = action.cardId
@@ -155,7 +162,7 @@ export default class Store extends aMPL.Store {
   }
 
   createCard(state, action) {
-    return Tesseract.changeset(state, (doc) => {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
       let listCards = this.findCardsByList(action.attributes.listId)
       let order
 
