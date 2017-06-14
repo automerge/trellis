@@ -31,6 +31,31 @@ export default class Store extends aMPL.Store {
     })
   }
 
+  displayChange(meta) {
+    if (!meta.author || !meta.action) return ""
+
+    switch(meta.action.type) {
+      case "CREATE_CARD":
+        return meta.author + " created a card"
+      case "MOVE_CARD":
+        return meta.author + " moved a card"
+      case "UPDATE_CARD_TITLE":
+        return meta.author + " renamed a card"
+      case "UPDATE_CARD_DESCRIPTION":
+        return meta.author + " changed card description"
+      case "DELETE_CARD":
+        return meta.author + " deleted a card"
+      case "UPDATE_ASSIGNMENTS":
+        return meta.author + " assigned a card"
+      case "CREATE_LIST":
+        return meta.author + " created a list"
+      case "DELETE_LIST":
+        return meta.author + " deleted a list"
+      default:
+        return meta.author + " " + meta.action.type
+    }
+  }
+
   meta(action) {
     return {
       author: process.env.NAME,
