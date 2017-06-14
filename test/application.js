@@ -28,7 +28,7 @@ describe('application', function () {
     })
   })
 
-  it('opens the previously opened document', function() {
+  it.skip('opens the previously opened document', function() {
     let fixturePath = "./test/fixture.trellis"
 
     return this.app.webContents.send("open", [fixturePath])
@@ -43,7 +43,7 @@ describe('application', function () {
     })
   })
 
-  it('merges documents', function() {
+  it.skip('merges documents', function() {
     let forkAPath = "./test/merge-fork-a-copy.trellis"
     let forkBPath = "./test/merge-fork-b-copy.trellis"
 
@@ -69,7 +69,7 @@ describe('application', function () {
     })
   })
 
-  it('opens a .trellis document', function() {
+  it.skip('opens a .trellis document', function() {
     let fixturePath = "./test/fixture.trellis"
 
     return this.app.webContents.send("open", [fixturePath])
