@@ -105,11 +105,15 @@ export default class App extends React.Component {
   }
 
   autoSave() {
-    let exportFile = this.store.save()
-    let fileName   = this.store.getState().docId + ".trellis"
-    let savePath   = Path.join(SAVE_DIRECTORY, fileName)
+    try {
+      let exportFile = this.store.save()
+      let fileName   = this.store.getState().docId + ".trellis"
+      let savePath   = Path.join(SAVE_DIRECTORY, fileName)
 
-    fs.writeFileSync(savePath, exportFile)
+      fs.writeFileSync(savePath, exportFile)
+    } catch (e) {
+      console.log("Could not save: ", e)
+    }
   }
 
   render() {

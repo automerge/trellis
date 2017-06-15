@@ -25,10 +25,34 @@ export default class Store extends aMPL.Store {
           return this.createList(state, action)
         case "DELETE_LIST":
           return this.deleteList(state, action)
+        case "TIME_TRAVEL":
+          this.localState = action.state
+          return state
+        case "STOP_TIME_TRAVEL":
+          this.localState = undefined
+          return state
         default:
           return state
       }
     })
+
+    this.localState = undefined
+  }
+
+  dispatch(action) {
+    if(action.type != "STOP_TIME_TRAVEL" && action.type != "TIME_TRAVEL" && this.localState) {
+      console.log("Ignoring action because we are time traveling.")
+    } else {
+      aMPL.Store.prototype.dispatch.call(this, action)
+    }
+  }
+
+  getState() {
+    if(this.localState) {
+      return this.localState
+    } else {
+      return aMPL.Store.prototype.getState.call(this)
+    }
   }
 
   meta(action) {

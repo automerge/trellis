@@ -9,6 +9,13 @@ export default class Changes extends React.Component {
     this.store.subscribe((x) => { this.setState(this.store.getState()) })
   }
 
+  timeTravelTo(change) {
+    this.store.dispatch({
+      type: "TIME_TRAVEL",
+      state: change.snapshot
+    })
+  }
+
   displayChange(change, prevChange) {
     let meta = change.changeset.message
     if (!meta || !meta.author || !meta.action) return ""
@@ -76,7 +83,7 @@ export default class Changes extends React.Component {
 
       let iconPath = "assets/images/" + icon + ".svg"
 
-      return <li key={key} className={klass}>
+      return <li key={key} className={klass} onClick={ () => this.timeTravelTo(change) }>
         <img className="changeNode" src={iconPath} />
         {edgeImg}{changeMessage}
       </li>
@@ -85,6 +92,7 @@ export default class Changes extends React.Component {
     return <div className="Changes">
       <h2>Changes <img src="assets/images/delta.svg" /></h2>
       <ul>{changesPartial}</ul>
+      <a onClick={ () => this.store.dispatch({ type: "STOP_TIME_TRAVEL"}) }>Stop Time Travel</a>
     </div>
   }
 }
