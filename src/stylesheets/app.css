@@ -60,6 +60,11 @@ html, body, #App {
   color: rgb(29,119,156);
 }
 
+.ListCard.highlighted {
+  border: 1px solid #cc8;
+  background: #ffe;
+}
+
 h2 {
   font-size: 20px;
   font-weight: 500;

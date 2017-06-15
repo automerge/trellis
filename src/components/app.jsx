@@ -100,9 +100,19 @@ export default class App extends React.Component {
   }
 
   render() {
+    let highlightCard = undefined
+    let lastChange = this.store.getHistory().slice(-1)[0]
+    if (lastChange && lastChange.changeset) {
+      let message = lastChange.changeset.message
+      if (message && message.action)
+       highlightCard = message.action.cardId
+    }
+
+    console.log("I should highlight", highlightCard)
+
     return (
       <div className="App">
-        <Board highlightOptions={ this.state.highlightOptions } store={ this.store } />
+        <Board highlightOptions={ { cardId: highlightCard } } store={ this.store } />
         <Inspector store={ this.store } />
         <div className="sidebar">
           <Peers network={ this.store.network } />
