@@ -27,7 +27,11 @@ export default class Inspector extends React.Component {
 
     if(cards) {
       listCardsPartial = this.store._map(cards, (card, index) => {
-        return <tr key={index}>
+        let klass = ""
+        if (this.props.highlightCard == card.id)
+          klass = "highlight"
+
+        return <tr key={index} className={klass}>
           <td className="Inspector__cards__cardId">{this.formatUUID(card.id)}… </td>
           <td className="Inspector__cards__listId">{this.formatUUID(card.listId)}… </td>
           <td>{card.title}</td>
