@@ -4,6 +4,7 @@
   border-radius: 4px;
   margin-bottom: 10px;
   font-size: 14px;
+  border: 1px solid #ccc;
   box-shadow: 0 2px 10px 0px #59ADD0;
   color: #777;
 }
@@ -33,4 +34,9 @@
   outline: none;
   margin-top: -1px;
   margin-left: -2px;
+}
+
+.ListCard.highlighted {
+  border: 1px solid #ffa500;
+  background: #fffcd5;
 }

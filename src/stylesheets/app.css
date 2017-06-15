@@ -60,11 +60,6 @@ html, body, #App {
   color: rgb(29,119,156);
 }
 
-.ListCard.highlighted {
-  border: 1px solid #cc8;
-  background: #ffe;
-}
-
 h2 {
   font-size: 20px;
   font-weight: 500;
@@ -110,7 +105,7 @@ h2 {
 }
 
 .Inspector table tr.highlight {
-  background: #ffa;
+  background: #F4EE98;
 }
 
 .Inspector__cards__cardId, .Inspector__cards__listId,
