@@ -11,7 +11,9 @@ export default class Changes extends React.Component {
 
   render() {
     const changesToShow = 10
-    let changes = this.store.getHistory().slice(changesToShow * -1)
+    let changes = this.store.getHistory().slice((changesToShow+1) * -1)
+    let prevChange = changes[0]
+    changes = changes.slice(changesToShow * -1)
 
     let changesPartial = changes.map((change, index) => {
       let key = "change-" + index
@@ -20,7 +22,8 @@ export default class Changes extends React.Component {
       if (index < changes.length-1)
         edgeImg = <img className="changeEdge" src="assets/images/change-edge.svg" />
 
-      let changeMessage = this.store.displayChange(change.changeset.message)
+      let changeMessage = this.store.displayChange(change, prevChange)
+      prevChange = change
 
       let klass = ""
       let icon = "change-node"
