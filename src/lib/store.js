@@ -31,45 +31,6 @@ export default class Store extends aMPL.Store {
     })
   }
 
-  displayChange(change, prevChange) {
-    let meta = change.changeset.message
-    if (!meta || !meta.author || !meta.action) return ""
-
-    switch(meta.action.type) {
-      case "CREATE_CARD":
-        return meta.author + " created a card"
-      case "MOVE_CARD":
-        var prevCard = this.findCardFromState(meta.action.cardId, prevChange.snapshot)
-        var newCard = this.findCardFromState(meta.action.cardId, change.snapshot)
-        var prevList = this.findListFromState(prevCard.listId, prevChange.snapshot)
-        var newList = this.findListFromState(newCard.listId, change.snapshot)
-        return meta.author + " moved “" + newCard.title + "”" + " from “" + prevList.title + "”" + " to “" + newList.title + "”"
-      case "UPDATE_CARD_TITLE":
-        var newCard = this.findCardFromState(meta.action.cardId, change.snapshot)
-        return meta.author + " renamed card to “" + newCard.title + "”"
-      case "UPDATE_CARD_DESCRIPTION":
-        var newCard = this.findCardFromState(meta.action.cardId, change.snapshot)
-        return meta.author + " changed description of “" + newCard.title + "”"
-      case "DELETE_CARD":
-        var card = this.findCardFromState(meta.action.cardId, prevChange.snapshot)
-        return meta.author + " deleted “" + card.title + "”"
-      case "UPDATE_ASSIGNMENTS":
-        var prevCard = this.findCardFromState(meta.action.cardId, prevChange.snapshot)
-        var newCard = this.findCardFromState(meta.action.cardId, change.snapshot)
-        if (Object.keys(newCard.assigned) > Object.keys(prevCard.assigned))
-          return meta.author + " assigned “" + newCard.title + "”"
-        else
-          return meta.author + " unassigned “" + newCard.title + "”"
-      case "CREATE_LIST":
-        return meta.author + " created a list"
-      case "DELETE_LIST":
-        var list = this.findListFromState(meta.action.listId, prevChange.snapshot)
-        return meta.author + " deleted list “" + list.title + "”"
-      default:
-        return meta.author + " " + meta.action.type
-    }
-  }
-
   meta(action) {
     return {
       author: process.env.NAME,
@@ -216,11 +177,7 @@ export default class Store extends aMPL.Store {
   }
 
   findCard(cardId) {
-    let state = this.getState()
-
-    return this._find(state.cards, (card) => {
-      return cardId === card.id
-    })
+    return this.findCardFromState(cardId, this.getState())
   }
 
   findCardFromState(cardId, state) {
@@ -294,11 +251,7 @@ export default class Store extends aMPL.Store {
   }
 
   findList(listId) {
-    let state = this.getState()
-
-    return this._find(state.lists, (list) => {
-      return listId === list.id
-    })
+    return this.findListFromState(listId, this.getState())
   }
 
   findListFromState(listId, state) {
