@@ -15,7 +15,7 @@ export default class Changes extends React.Component {
 
     switch(meta.action.type) {
       case "CREATE_CARD":
-        return <div><span className="author">{meta.author}</span> created a card</div>
+        return <div><span className="author">{meta.author}</span> created card <span className="list">{meta.action.attributes.title}</span></div>
       case "MOVE_CARD":
         var prevCard = this.store.findCardFromState(meta.action.cardId, prevChange.snapshot)
         var newCard = this.store.findCardFromState(meta.action.cardId, change.snapshot)
@@ -42,7 +42,7 @@ export default class Changes extends React.Component {
         else
           return <div><span className="author">{meta.author}</span> unassigned <span className="card">{newCard.title}</span></div>
       case "CREATE_LIST":
-        return <div><span className="author">{meta.author}</span> created a list</div>
+        return <div><span className="author">{meta.author}</span> created list <span className="list">{meta.action.attributes.title}</span></div>
       case "DELETE_LIST":
         var list = this.store.findListFromState(meta.action.listId, prevChange.snapshot)
         return <div><span className="author">{meta.author}</span> deleted list <span className="list">{list.title}</span></div>
