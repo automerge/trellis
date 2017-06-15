@@ -185,8 +185,9 @@ h2 {
 }
 .Changes li {
   position: relative;
-  height: 22px;
+  min-height: 14px;
   padding-left: 24px;
+  padding-bottom: 8px;
 }
 .Changes img.changeNode {
   position: absolute;
