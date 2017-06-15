@@ -108,12 +108,10 @@ export default class App extends React.Component {
        highlightCard = message.action.cardId
     }
 
-    console.log("I should highlight", highlightCard)
-
     return (
       <div className="App">
         <Board highlightOptions={ { cardId: highlightCard } } store={ this.store } />
-        <Inspector store={ this.store } />
+        <Inspector store={ this.store } highlightCard={ highlightCard } />
         <div className="sidebar">
           <Peers network={ this.store.network } />
           <Clocks network={ this.store.network } />

@@ -109,6 +109,10 @@ h2 {
   text-align: left;
 }
 
+.Inspector table tr.highlight {
+  background: #ffa;
+}
+
 .Inspector__cards__cardId, .Inspector__cards__listId,
 .Inspector__cards__assigned, .Inspector__lists__listId {
   font-family: Monaco, monospace;
