@@ -20,7 +20,7 @@ export default class Changes extends React.Component {
 
       let edgeImg = ""
       if (index < changes.length-1)
-        edgeImg = <img className="changeEdge" src="assets/images/change-edge.svg" />
+        edgeImg = <div className="changeEdge" />
 
       let changeMessage = this.store.displayChange(change, prevChange)
       prevChange = change
