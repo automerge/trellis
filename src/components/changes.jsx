@@ -9,10 +9,9 @@ export default class Changes extends React.Component {
     this.store.subscribe((x) => { this.setState(this.store.getState()) })
   }
 
-  timeTravelTo(change) {
+  timeTravelTo(index, change) {
     this.store.dispatch({
-      type: "TIME_TRAVEL",
-      state: change.snapshot
+      type: "TIME_TRAVEL", index: index, change: change
     })
   }
 
@@ -76,23 +75,31 @@ export default class Changes extends React.Component {
 
       let klass = ""
       let icon = "change-node"
-      if (index == changes.length-1) {
+      if (this.store.localState.timeTravel && index === this.store.localState.timeTravel.index) {
+        klass = "highlight"
+        icon = "change-highlight"
+      } else if(!this.store.localState.timeTravel && index == changes.length - 1) {
         klass = "highlight"
         icon = "change-highlight"
       }
 
       let iconPath = "assets/images/" + icon + ".svg"
 
-      return <li key={key} className={klass} onClick={ () => this.timeTravelTo(change) }>
+      return <li key={key} className={klass} onClick={ () => this.timeTravelTo(index, change) }>
         <img className="changeNode" src={iconPath} />
         {edgeImg}{changeMessage}
       </li>
     })
 
+    let timeTravelPartial = ""
+    if(this.store.localState.timeTravel) {
+      timeTravelPartial = <a onClick={ () => this.store.dispatch({ type: "STOP_TIME_TRAVEL"}) }>Stop Time Travel</a>
+    }
+
     return <div className="Changes">
       <h2>Changes <img src="assets/images/delta.svg" /></h2>
       <ul>{changesPartial}</ul>
-      <a onClick={ () => this.store.dispatch({ type: "STOP_TIME_TRAVEL"}) }>Stop Time Travel</a>
+      { timeTravelPartial }
     </div>
   }
 }

@@ -26,21 +26,23 @@ export default class Store extends aMPL.Store {
         case "DELETE_LIST":
           return this.deleteList(state, action)
         case "TIME_TRAVEL":
-          this.localState = action.state
+          this.localState.timeTravel = { index: action.index, change: action.change }
           return state
         case "STOP_TIME_TRAVEL":
-          this.localState = undefined
+          this.localState.timeTravel = undefined
           return state
         default:
           return state
       }
     })
 
-    this.localState = undefined
+    this.localState = {} 
   }
 
   dispatch(action) {
-    if(action.type != "STOP_TIME_TRAVEL" && action.type != "TIME_TRAVEL" && this.localState) {
+    if(action.type != "STOP_TIME_TRAVEL" 
+        && action.type != "TIME_TRAVEL" 
+        && this.localState.timeTravel) {
       console.log("Ignoring action because we are time traveling.")
     } else {
       aMPL.Store.prototype.dispatch.call(this, action)
@@ -48,8 +50,8 @@ export default class Store extends aMPL.Store {
   }
 
   getState() {
-    if(this.localState) {
-      return this.localState
+    if(this.localState.timeTravel && this.localState.timeTravel.change) {
+      return this.localState.timeTravel.change.snapshot
     } else {
       return aMPL.Store.prototype.getState.call(this)
     }

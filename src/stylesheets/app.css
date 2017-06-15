@@ -19,6 +19,10 @@ html, body, #App {
   padding: 0;
 }
 
+a {
+  cursor: pointer;
+}
+
 .App {
   font-family: Helvetica Neue, Helvetica, Arial;
   color: #333;
@@ -203,6 +207,7 @@ h2 {
   height: 11px;
   left: 0;
   top: 1px;
+  cursor: pointer;
 }
 .Changes div.changeEdge {
   height: 100%;
