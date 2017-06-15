@@ -188,6 +188,7 @@ h2 {
   min-height: 14px;
   padding-left: 24px;
   padding-bottom: 8px;
+  color: #777;
 }
 .Changes img.changeNode {
   position: absolute;
@@ -206,7 +207,13 @@ h2 {
   top: 12px;
 }
 .Changes li.highlight {
-  color: #770;
+  color: #333;
+}
+.Changes span.card {
+  color: #353;
+}
+.Changes span.list {
+  color: #425;
 }
 
 .Tesseract__info {
