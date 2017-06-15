@@ -15,36 +15,39 @@ export default class Changes extends React.Component {
 
     switch(meta.action.type) {
       case "CREATE_CARD":
-        return meta.author + " created a card"
+        return <div><span className="author">{meta.author}</span> created a card</div>
       case "MOVE_CARD":
         var prevCard = this.store.findCardFromState(meta.action.cardId, prevChange.snapshot)
         var newCard = this.store.findCardFromState(meta.action.cardId, change.snapshot)
         var prevList = this.store.findListFromState(prevCard.listId, prevChange.snapshot)
         var newList = this.store.findListFromState(newCard.listId, change.snapshot)
-        return meta.author + " moved “" + newCard.title + "”" + " from “" + prevList.title + "”" + " to “" + newList.title + "”"
+        return <div>
+          <span className="author">{meta.author}</span> moved <span className="card">{newCard.title}</span> from&nbsp;
+          <span className="list">{prevList.title}</span> &rarr; <span className="list">{newList.title}</span>
+        </div>
       case "UPDATE_CARD_TITLE":
         var newCard = this.store.findCardFromState(meta.action.cardId, change.snapshot)
-        return meta.author + " renamed card to “" + newCard.title + "”"
+        return <div><span className="author">{meta.author}</span> renamed card to <span className="card">{newCard.title}</span></div>
       case "UPDATE_CARD_DESCRIPTION":
-        var newCard = this.store.findCardFromState(meta.action.cardId, change.snapshot)
-        return meta.author + " changed description of “" + newCard.title + "”"
+        var card = this.store.findCardFromState(meta.action.cardId, change.snapshot)
+        return <div><span className="author">{meta.author}</span> changed description of <span className="card">{card.title}</span></div>
       case "DELETE_CARD":
         var card = this.store.findCardFromState(meta.action.cardId, prevChange.snapshot)
-        return meta.author + " deleted “" + card.title + "”"
+        return <div><span className="author">{meta.author}</span> deleted <span className="card">{card.title}</span></div>
       case "UPDATE_ASSIGNMENTS":
         var prevCard = this.store.findCardFromState(meta.action.cardId, prevChange.snapshot)
         var newCard = this.store.findCardFromState(meta.action.cardId, change.snapshot)
         if (Object.keys(newCard.assigned) > Object.keys(prevCard.assigned))
-          return meta.author + " assigned “" + newCard.title + "”"
+          return <div><span className="author">{meta.author}</span> assigned <span className="card">{newCard.title}</span></div>
         else
-          return meta.author + " unassigned “" + newCard.title + "”"
+          return <div><span className="author">{meta.author}</span> unassigned <span className="card">{newCard.title}</span></div>
       case "CREATE_LIST":
-        return meta.author + " created a list"
+        return <div><span className="author">{meta.author}</span> created a list</div>
       case "DELETE_LIST":
         var list = this.store.findListFromState(meta.action.listId, prevChange.snapshot)
-        return meta.author + " deleted list “" + list.title + "”"
+        return <div><span className="author">{meta.author}</span> deleted list <span className="list">{list.title}</span></div>
       default:
-        return meta.author + " " + meta.action.type
+        return <div><span className="author">{meta.author}</span> {meta.action.type}</div>
     }
   }
 
