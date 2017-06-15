@@ -68,6 +68,25 @@ export default class App extends React.Component {
     remote.getCurrentWindow().setTitle(this.getDocUrl())
   }
 
+  // Clumsy diff to find the ID of the card created by CREATE_CARD
+  findCreatedCard(prevChange, currentChange) {
+    let oldCards = prevChange.snapshot.cards
+    let newCards = currentChange.snapshot.cards
+    if (!oldCards || !newCards) return
+
+    for (var i = 0; i < newCards.length; i++) {
+      var card1 = newCards[i]
+      var found = false
+      for (var j = 0; j < oldCards.length; j++) {
+        var card2 = oldCards[j]
+        if (card1.id == card2.id)
+          found = true
+      }
+      if (!found)
+        return card1.id
+    }
+  }
+
   open(docId) {
     let fileName = docId + ".trellis"
     let savePath = Path.join(SAVE_DIRECTORY, fileName)
@@ -95,11 +114,16 @@ export default class App extends React.Component {
 
   render() {
     let highlightCard = undefined
-    let lastChange = this.store.getHistory().slice(-1)[0]
-    if (lastChange && lastChange.changeset) {
-      let message = lastChange.changeset.message
+    let recentChanges = this.store.getHistory().slice(-2)
+    let prevChange = recentChanges[0]
+    let currentChange = recentChanges[1]
+    if (currentChange && currentChange.changeset) {
+      let message = currentChange.changeset.message
       if (message && message.action)
-       highlightCard = message.action.cardId
+        if (message.action.type == "CREATE_CARD")
+          highlightCard = this.findCreatedCard(prevChange, currentChange)
+        else
+          highlightCard = message.action.cardId
     }
 
     return (
