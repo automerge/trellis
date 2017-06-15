@@ -115,7 +115,7 @@ export default class App extends React.Component {
         <div className="sidebar">
           <Peers network={ this.store.network } />
           <Clocks network={ this.store.network } />
-          <Changes store={ this.store } highlight={ this.highlight } />
+          <Changes store={ this.store } />
         </div>
       </div>
     )
