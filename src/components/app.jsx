@@ -21,7 +21,6 @@ export default class App extends React.Component {
     window.app    = this
     this.autoSave = this.autoSave.bind(this)
     this.store    = new Store()
-    this.state    = { highlightOptions: null }
 
     this.store.subscribe(() => {
       this.setState({}) // Force component to re-render
@@ -46,11 +45,6 @@ export default class App extends React.Component {
     ipcRenderer.on("shareToClipboard", (event) => {
       ipcRenderer.send("shareToClipboardResult", this.getDocUrl())
     })
-  }
-
-  // Ex. this.highlight({ cardId: this.store.getState().cards[0].id })
-  highlight(options) {
-    this.setState({ highlightOptions: options })
   }
 
   componentDidMount() {
