@@ -36,7 +36,22 @@
   margin-left: -2px;
 }
 
+@keyframes highlight-card-fade-in-out {
+  from {
+    border: 1px solid #ccc;
+    background: #fff;
+  }
+  10% {
+    border: 1px solid #ffa500;
+    background: #fffcd5;
+  }
+  from {
+    border: 1px solid #ccc;
+    background: #fff;
+  }
+}
+
 .ListCard.highlighted {
-  border: 1px solid #ffa500;
-  background: #fffcd5;
+  animation-duration: 3s;
+  animation-name: highlight-card-fade-in-out
 }
