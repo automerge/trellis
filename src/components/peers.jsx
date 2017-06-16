@@ -6,6 +6,16 @@ export default class Peers extends React.Component {
     this.state = { 'peers': {}, 'connected': true }
     this.toggleNetwork = this.toggleNetwork.bind(this)
     this.peerHandler = this.peerHandler.bind(this)
+    this.doIntroduction = this.doIntroduction.bind(this)
+
+  }
+
+  doIntroduction() {
+    let introducer   = this.introductionInput.value
+    let [host, port] = introducer.split(':')
+
+    console.log("Introducer detected: ", host, port)
+    this.props.network.signaler.manualHello(host, port)
   }
 
   // The constructor is not necessarily called on
@@ -52,7 +62,7 @@ export default class Peers extends React.Component {
       let ledColor = peer.connected ? "green" : "yellow"
       let ledPath = "assets/images/LED-" + ledColor + ".svg"
       let key = "peer-" + id
-      
+
       return <tr key={key}>
             <td className="led"><img src={ledPath} /></td>
             <td className="user">{name}</td>
@@ -67,8 +77,12 @@ export default class Peers extends React.Component {
 
     return <div className="Peers">
       <h2>Peers <img src="assets/images/peers.svg" /></h2>
+      <div style={{ "margin-bottom": "20px" }} >
+        <textarea ref={ (input) => this.introductionInput = input }/>
+        <button onClick={ this.doIntroduction}>Introduce</button>
+      </div>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
-      
+
       <table>
         <thead><tr><th></th><th>Name</th><th>ID</th><th>Sent</th><th>Received</th></tr></thead>
         <tbody>{ peersPartial }</tbody>
