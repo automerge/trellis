@@ -86,30 +86,32 @@ export default class Inspector extends React.Component {
       let table   = tables[tableName]
       let columns = this.detectSchema(table)
       let columnsPartial = columns.map((column) => {
-        return <th>{ column }</th>
+        return <th key={ column }>{ column }</th>
       })
 
       let rowPartials = Object.keys(table).map((index) => {
         let row = table[index]
         let dataPartial = columns.map((column) => {
           let data = row[column]
-          return <td>{ JSON.stringify(data) }</td>
+          return <td key={ column }>{ JSON.stringify(data) }</td>
         })
 
         if(this.props.highlightOptions
           && this.props.highlightOptions.tableName === tableName
           && this.props.highlightOptions.row === parseInt(index)) {
-          return <tr className="highlight"> { dataPartial } </tr>
+          return <tr key={ index } className="highlight">{ dataPartial }</tr>
         } else {
-          return <tr> { dataPartial } </tr>
+          return <tr key={ index }>{ dataPartial }</tr>
         }
       })
 
-      return <div>
+      return <div key={ tableName }>
         <h3> { tableName } </h3>
         <table>
-          <tr> { columnsPartial } </tr>
-          { rowPartials }
+          <tbody>
+            <tr>{ columnsPartial }</tr>
+            { rowPartials }
+          </tbody>
         </table>
       </div>
     })
@@ -117,7 +119,7 @@ export default class Inspector extends React.Component {
     let objectsPartial = Object.keys(objects).map((objectName) => {
       let object = objects[objectName]
 
-      return <div>
+      return <div key={ objectName }>
         <h3> { objectName } </h3>
         <pre> <code> { JSON.stringify(object, null, 2) } </code> </pre>
       </div>
