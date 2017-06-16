@@ -129,10 +129,14 @@ export default class App extends React.Component {
           highlightCard = message.action.cardId
     }
 
+    let cardIndex
+    if(highlightCard)
+      cardIndex = this.store._findIndex(this.store.getState().cards, (c) => c.id === highlightCard )
+
     return (
       <div className="App">
-        <Board highlightOptions={ { cardId: highlightCard } } store={ this.store } />
-        <Inspector store={ this.store } highlightCard={ highlightCard } />
+        <Board highlightOptions={{ cardId: highlightCard }} store={ this.store } />
+        <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
         <div className="sidebar">
           <Peers network={ this.store.network } />
           <Clocks network={ this.store.network } />

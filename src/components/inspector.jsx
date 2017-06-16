@@ -7,18 +7,6 @@ export default class Inspector extends React.Component {
     this.store = this.props.store
   }
 
-  formatUUID(uuid) {
-    return uuid.toUpperCase().substring(0,4)
-  }
-
-  formatAssigned(map) {
-    if(!map) return ""
-
-    let formatted = {}
-    Object.keys(map).forEach((key) => formatted[key] = map[key])
-    return JSON.stringify(formatted)
-  }
-
   detectSchema(table) {
     let columns = []
 
@@ -38,16 +26,16 @@ export default class Inspector extends React.Component {
     let listCardsPartial = ""
     let listsPartial     = ""
     let state            = this.store.getState()
-    let tables           = {} 
+    let tables           = {}
     let objects          = {}
 
     let stateB, stateC
 
     stateB = {
       lists: [
-        { 
-          id: 1, 
-          title: "This Week", 
+        {
+          id: 1,
+          title: "This Week",
           cards: [
             { id: 1, title: "Card A" },
             { id: 2, title: "Card B" },
@@ -59,14 +47,14 @@ export default class Inspector extends React.Component {
           title: "Done",
           cards: [
             { id: 4, title: "Card D" },
-          ] 
+          ]
         },
         {
           id: 3,
           title: "Soon",
-          cards: [] 
+          cards: []
         }
-      ] 
+      ]
     }
 
     stateC = Object.assign({}, stateB)
@@ -84,8 +72,6 @@ export default class Inspector extends React.Component {
         }
       }
     }
-
-    state = stateC
 
     Object.keys(state).forEach((key) => {
       let value = state[key]
@@ -109,14 +95,21 @@ export default class Inspector extends React.Component {
           let data = row[column]
           return <td>{ JSON.stringify(data) }</td>
         })
-        return <tr> { dataPartial } </tr>
+
+        if(this.props.highlightOptions
+          && this.props.highlightOptions.tableName === tableName
+          && this.props.highlightOptions.row === parseInt(index)) {
+          return <tr className="highlight"> { dataPartial } </tr>
+        } else {
+          return <tr> { dataPartial } </tr>
+        }
       })
 
       return <div>
         <h3> { tableName } </h3>
-        <table> 
+        <table>
           <tr> { columnsPartial } </tr>
-          { rowPartials } 
+          { rowPartials }
         </table>
       </div>
     })
