@@ -84,12 +84,19 @@ export default class Store extends aMPL.Store {
   newDocument(state, action) {
     let newState = Tesseract.init()
 
-    return Tesseract.changeset(newState, (doc) => {
+    return Tesseract.changeset(newState, this.meta(action), (doc) => {
       let data = seedData()
 
       doc.cards = data.cards
       doc.lists = data.lists
       doc.docId = this.generateDocId()
+    })
+  }
+
+  // Overwriting aMPL.Store#newDocument to load our own seed data
+  forkDocument(state, action) {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
+      doc.docId = this.generateDocId() 
     })
   }
 

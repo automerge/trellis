@@ -52,6 +52,11 @@ export default class Changes extends React.Component {
       case "DELETE_LIST":
         var list = this.store.findListFromState(meta.action.listId, prevChange.snapshot)
         return <div><span className="author">{meta.author}</span> deleted list <span className="list">{list.title}</span></div>
+      case "FORK_DOCUMENT":
+        let lastDocId = prevChange.snapshot.docId
+        return <div><span className="author">{meta.author}</span> forked from { lastDocId } </div>
+      case "NEW_DOCUMENT":
+        return <div><span className="author">{meta.author}</span> created { change.snapshot.docId }</div>
       default:
         return <div><span className="author">{meta.author}</span> {meta.action.type}</div>
     }
