@@ -25,10 +25,37 @@ export default class Store extends aMPL.Store {
           return this.createList(state, action)
         case "DELETE_LIST":
           return this.deleteList(state, action)
+        case "TIME_TRAVEL":
+          this.localState.timeTravel = { index: action.index, change: action.change }
+          return state
+        case "STOP_TIME_TRAVEL":
+          this.localState.timeTravel = undefined
+          return state
         default:
           return state
       }
     })
+
+    this.localState = {} 
+  }
+
+  dispatch(action) {
+    if(action.type != "STOP_TIME_TRAVEL" 
+        && action.type != "TIME_TRAVEL" 
+        && action.type != "APPLY_DELTAS"
+        && this.localState.timeTravel) {
+      console.log("Ignoring action because we are time traveling.")
+    } else {
+      aMPL.Store.prototype.dispatch.call(this, action)
+    }
+  }
+
+  getState() {
+    if(this.localState.timeTravel && this.localState.timeTravel.change) {
+      return this.localState.timeTravel.change.snapshot
+    } else {
+      return aMPL.Store.prototype.getState.call(this)
+    }
   }
 
   meta(action) {
@@ -57,12 +84,19 @@ export default class Store extends aMPL.Store {
   newDocument(state, action) {
     let newState = Tesseract.init()
 
-    return Tesseract.changeset(newState, (doc) => {
+    return Tesseract.changeset(newState, this.meta(action), (doc) => {
       let data = seedData()
 
       doc.cards = data.cards
       doc.lists = data.lists
       doc.docId = this.generateDocId()
+    })
+  }
+
+  // Overwriting aMPL.Store#newDocument to load our own seed data
+  forkDocument(state, action) {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
+      doc.docId = this.generateDocId() 
     })
   }
 

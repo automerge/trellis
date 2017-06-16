@@ -111,11 +111,14 @@ export default class App extends React.Component {
   }
 
   autoSave() {
-    let exportFile = this.store.save()
-    let fileName   = this.store.getState().docId + ".trellis"
-    let savePath   = Path.join(SAVE_DIRECTORY, fileName)
+    if(!this.store.localState.timeTravel) {
+      let exportFile = this.store.save()
+      let fileName   = this.store.getState().docId + ".trellis"
+      let savePath   = Path.join(SAVE_DIRECTORY, fileName)
 
-    fs.writeFileSync(savePath, exportFile)
+      fs.writeFileSync(savePath, exportFile)
+      localStorage.setItem("lastDocOpened", this.getDocId())
+    }
   }
 
   render() {

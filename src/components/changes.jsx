@@ -9,6 +9,12 @@ export default class Changes extends React.Component {
     this.store.subscribe((x) => { this.setState(this.store.getState()) })
   }
 
+  timeTravelTo(index, change) {
+    this.store.dispatch({
+      type: "TIME_TRAVEL", index: index, change: change
+    })
+  }
+
   displayChange(change, prevChange) {
     let meta = change.changeset.message
     if (!meta || !meta.author || !meta.action) return ""
@@ -46,6 +52,11 @@ export default class Changes extends React.Component {
       case "DELETE_LIST":
         var list = this.store.findListFromState(meta.action.listId, prevChange.snapshot)
         return <div><span className="author">{meta.author}</span> deleted list <span className="list">{list.title}</span></div>
+      case "FORK_DOCUMENT":
+        let lastDocId = prevChange.snapshot.docId
+        return <div><span className="author">{meta.author}</span> forked from { lastDocId } </div>
+      case "NEW_DOCUMENT":
+        return <div><span className="author">{meta.author}</span> created { change.snapshot.docId }</div>
       default:
         return <div><span className="author">{meta.author}</span> {meta.action.type}</div>
     }
@@ -69,22 +80,31 @@ export default class Changes extends React.Component {
 
       let klass = ""
       let icon = "change-node"
-      if (index == changes.length-1) {
+      if (this.store.localState.timeTravel && index === this.store.localState.timeTravel.index) {
+        klass = "highlight"
+        icon = "change-highlight"
+      } else if(!this.store.localState.timeTravel && index == changes.length - 1) {
         klass = "highlight"
         icon = "change-highlight"
       }
 
       let iconPath = "assets/images/" + icon + ".svg"
 
-      return <li key={key} className={klass}>
+      return <li key={key} className={klass} onClick={ () => this.timeTravelTo(index, change) }>
         <img className="changeNode" src={iconPath} />
         {edgeImg}{changeMessage}
       </li>
     })
 
+    let timeTravelPartial = ""
+    if(this.store.localState.timeTravel) {
+      timeTravelPartial = <a onClick={ () => this.store.dispatch({ type: "STOP_TIME_TRAVEL"}) }>Stop Time Travel</a>
+    }
+
     return <div className="Changes">
       <h2>Changes <img src="assets/images/delta.svg" /></h2>
       <ul>{changesPartial}</ul>
+      { timeTravelPartial }
     </div>
   }
 }
