@@ -22,6 +22,12 @@ export default class App extends React.Component {
     this.autoSave = this.autoSave.bind(this)
     this.store    = new Store()
 
+    if(process.env.INTRODUCER) {
+      let [host, port] = process.env.INTRODUCER.split(':') 
+      console.log("Introducer detected: ", host, port)
+      this.store.network.signaler.manualHello(host, port)
+    }
+
     this.store.subscribe(() => {
       this.setState({}) // Force component to re-render
       this.autoSave()
