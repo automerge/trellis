@@ -42,6 +42,7 @@ export default class Store extends aMPL.Store {
   dispatch(action) {
     if(action.type != "STOP_TIME_TRAVEL" 
         && action.type != "TIME_TRAVEL" 
+        && action.type != "APPLY_DELTAS"
         && this.localState.timeTravel) {
       console.log("Ignoring action because we are time traveling.")
     } else {
