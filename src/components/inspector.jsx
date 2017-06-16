@@ -7,6 +7,21 @@ export default class Inspector extends React.Component {
     this.store = this.props.store
   }
 
+  componentDidUpdate() {
+    if(this.highlightActive)
+      return false
+
+    this.highlightActive = true
+    this.highlightTr.classList.add("highlight")
+
+    setTimeout(() => {
+      this.highlightTr.classList.remove("highlight")
+      this.highlightActive = false
+    }, 1000)
+
+    return true
+  }
+
   detectSchema(table) {
     let columns = []
 
@@ -99,7 +114,7 @@ export default class Inspector extends React.Component {
         if(this.props.highlightOptions
           && this.props.highlightOptions.tableName === tableName
           && this.props.highlightOptions.row === parseInt(index)) {
-          return <tr key={ index } className="highlight">{ dataPartial }</tr>
+          return <tr key={ index } ref={ (tr) => this.highlightTr = tr }>{ dataPartial }</tr>
         } else {
           return <tr key={ index }>{ dataPartial }</tr>
         }
