@@ -19,60 +19,122 @@ export default class Inspector extends React.Component {
     return JSON.stringify(formatted)
   }
 
+  detectSchema(table) {
+    let columns = []
+
+    Object.keys(table).forEach((index) => {
+      let row = table[index]
+      Object.keys(row).forEach((rowKey) => {
+        if(!columns.includes(rowKey)) {
+          columns.push(rowKey)
+        }
+      })
+    })
+
+    return columns
+  }
+
   render() {
     let listCardsPartial = ""
     let listsPartial     = ""
-    let cards = this.store.getState().cards
-    let lists = this.store.getState().lists
+    let state            = this.store.getState()
+    let tables           = {} 
+    let objects          = {}
 
-    if(cards) {
-      listCardsPartial = this.store._map(cards, (card, index) => {
-        let klass = ""
-        if (this.props.highlightCard == card.id)
-          klass = "highlight"
+    let stateB, stateC
 
-        return <tr key={index} className={klass}>
-          <td className="Inspector__cards__cardId">{this.formatUUID(card.id)}… </td>
-          <td className="Inspector__cards__listId">{this.formatUUID(card.listId)}… </td>
-          <td>{card.title}</td>
-          <td className="Inspector__cards__assigned">{this.formatAssigned(card.assigned)}</td>
-          <td>{card.order}</td>
-        </tr>
-      })
+    stateB = {
+      lists: [
+        { 
+          id: 1, 
+          title: "This Week", 
+          cards: [
+            { id: 1, title: "Card A" },
+            { id: 2, title: "Card B" },
+            { id: 3, title: "Card C" }
+          ]
+        },
+        {
+          id: 2,
+          title: "Done",
+          cards: [
+            { id: 4, title: "Card D" },
+          ] 
+        },
+        {
+          id: 3,
+          title: "Soon",
+          cards: [] 
+        }
+      ] 
     }
 
-    if(lists) {
-      listsPartial = this.store._map(lists, (list, index) => {
-        return <tr key={index}>
-          <td className="Inspector__lists__listId">{this.formatUUID(list.id)}… </td>
-          <td>{list.title}</td>
-        </tr>
-      })
+    stateC = Object.assign({}, stateB)
+    stateC.config = {
+      user: {
+        name: "Roshan",
+        preferences: {
+          background: "http://imgur.com/ajr7a",
+          autoSave: true,
+          connected: true,
+          recentFiles: 20,
+          network: {
+            showPeers: true
+          }
+        }
+      }
     }
+
+    state = stateC
+
+    Object.keys(state).forEach((key) => {
+      let value = state[key]
+      if(Array.isArray(value)) {
+        tables[key] = value
+      } else {
+        objects[key] = value
+      }
+    })
+
+    let tablesPartial = Object.keys(tables).map((tableName) => {
+      let table   = tables[tableName]
+      let columns = this.detectSchema(table)
+      let columnsPartial = columns.map((column) => {
+        return <th>{ column }</th>
+      })
+
+      let rowPartials = Object.keys(table).map((index) => {
+        let row = table[index]
+        let dataPartial = columns.map((column) => {
+          let data = row[column]
+          return <td>{ JSON.stringify(data) }</td>
+        })
+        return <tr> { dataPartial } </tr>
+      })
+
+      return <div>
+        <h3> { tableName } </h3>
+        <table> 
+          <tr> { columnsPartial } </tr>
+          { rowPartials } 
+        </table>
+      </div>
+    })
+
+    let objectsPartial = Object.keys(objects).map((objectName) => {
+      let object = objects[objectName]
+
+      return <div>
+        <h3> { objectName } </h3>
+        <pre> <code> { JSON.stringify(object, null, 2) } </code> </pre>
+      </div>
+    })
 
     return <div className="Inspector">
       <h2>DocInspector <img src="assets/images/microscope.svg" /></h2>
-
       <div className="Inspector__container">
-        <div className="Inspector__lists">
-          <h3>Lists</h3>
-          <table>
-            <thead>
-              <tr><th>id</th><th>title</th></tr>
-            </thead>
-            <tbody>{ listsPartial }</tbody>
-          </table>
-        </div>
-
-        <div className="Inspector__cards">
-          <h3>Cards</h3>
-          <table>
-            <thead>
-              <tr><th>id</th><th>listId</th><th>title</th><th>assignments</th><th>order</th></tr>
-            </thead>
-            <tbody>{ listCardsPartial }</tbody>
-          </table>
-        </div>
+        { tablesPartial }
+        { objectsPartial }
       </div>
     </div>
   }
