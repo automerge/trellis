@@ -15,7 +15,7 @@ export default class Clocks extends React.Component {
     this.props.network.removeListener('peer', this.peerHandler)
 
     this.setState({
-      peers: Object.assign({},nextProps.network.peers),
+      peers: Object.assign({},nextProps.network.peerStats),
       clocks: Object.assign({},nextProps.network.clocks)
     })
 
@@ -24,7 +24,7 @@ export default class Clocks extends React.Component {
 
   peerHandler() {
     this.setState({
-      peers: Object.assign({}, this.props.network.peers),
+      peers: Object.assign({}, this.props.network.peerStats),
       clocks: Object.assign({}, this.props.network.clocks)
     })
   }
