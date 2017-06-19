@@ -137,7 +137,7 @@ export default class App extends React.Component {
       <div className="App">
         <Board highlightOptions={{ cardId: highlightCard }} store={ this.store } />
         <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
-        <div className="sidebar">
+        <div className="Sidebar">
           <Peers network={ this.store.network } />
           <Changes store={ this.store } />
         </div>

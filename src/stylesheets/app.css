@@ -84,7 +84,7 @@ h2 {
 
 .Inspector {
   grid-row: 4;
-  grid-column: 1 / 5;
+  grid-column: 1 / 4;
   background-color: #f8f8f8;
   font-size: 8pt;
   padding: 10pt 14pt;
@@ -137,8 +137,8 @@ h2 {
   width: 140pt;
 }
 
-.sidebar {
-  grid-row: 1 / 4;
+.Sidebar {
+  grid-row: 1 / 5;
   grid-column: 4;
   background-color: #f8f8f8;
   border-top: 1px solid #aaa;
