@@ -1,10 +1,13 @@
 import React from 'react'
 import TesseractInfo from './tesseract_info'
+import InlineInput from './inline_input'
 
 export default class Inspector extends React.Component {
   constructor(props) {
     super(props)
     this.store = this.props.store
+    this.updateTd = this.updateTd.bind(this)
+    this.updateObject  = this.updateObject.bind(this)
   }
 
   componentDidUpdate() {
@@ -35,6 +38,24 @@ export default class Inspector extends React.Component {
     })
 
     return columns
+  }
+
+  updateTd(table, row, column, value) {
+    this.store.dispatch({
+      type: "INSPECTOR_UPDATE",
+      table: table,
+      row: row,
+      column: column,
+      value: value
+    })
+  }
+
+  updateObject(key, value) {
+    this.store.dispatch({
+      type: "INSPECTOR_UPDATE",
+      key: key,
+      value: value
+    })
   }
 
   render() {
@@ -108,7 +129,11 @@ export default class Inspector extends React.Component {
         let row = table[index]
         let dataPartial = columns.map((column) => {
           let data = row[column]
-          return <td key={ column }>{ JSON.stringify(data) }</td>
+          return <td key={ column }>
+            <InlineInput onSubmit={ (value) => this.updateTd(tableName, index, column, value) } defaultValue={ JSON.stringify(data) }>
+              { JSON.stringify(data) }
+            </InlineInput>
+          </td>
         })
 
         if(this.props.highlightOptions
@@ -136,7 +161,15 @@ export default class Inspector extends React.Component {
 
       return <div key={ objectName }>
         <h3> { objectName } </h3>
-        <pre> <code> { JSON.stringify(object, null, 2) } </code> </pre>
+        <pre>
+          <code>
+            <InlineInput
+              onSubmit={ (value) => this.updateObject(objectName, value) }
+              defaultValue={ JSON.stringify(object, null, 2) }>
+              { JSON.stringify(object, null, 2) }
+            </InlineInput>
+          </code>
+        </pre>
       </div>
     })
 

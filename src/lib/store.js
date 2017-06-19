@@ -31,6 +31,8 @@ export default class Store extends aMPL.Store {
         case "STOP_TIME_TRAVEL":
           this.localState.timeTravel = undefined
           return state
+        case "INSPECTOR_UPDATE":
+          return this.inspectorUpdate(state, action)
         default:
           return state
       }
@@ -78,6 +80,21 @@ export default class Store extends aMPL.Store {
     let number = Math.round(Math.random()*100)
 
     return color + "-" + city + "-" + number
+  }
+
+  inspectorUpdate(state, action) {
+    try {
+      return Tesseract.changeset(state, this.meta(action), (doc) => {
+        if(action.table && action.row && action.column && action.value)
+          doc[action.table][action.row][action.column] = JSON.parse(action.value)
+        else if(action.key && action.value) {
+          doc[action.key] = JSON.parse(action.value)
+        }
+      })
+    } catch(e) {
+      console.log(e)
+      return state
+    }
   }
 
   // Overwriting aMPL.Store#newDocument to load our own seed data

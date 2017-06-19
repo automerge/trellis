@@ -305,3 +305,14 @@ h2 {
 .DropTarget.drag-entered {
   border-bottom: 2px dashed rgba(255, 255, 255, 0.5);
 }
+
+.InlineInput div, .InlineInput textarea {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 0;
+  word-wrap: break-word;
+  display: block;
+  white-space: pre-wrap;
+  background: transparent;
+}

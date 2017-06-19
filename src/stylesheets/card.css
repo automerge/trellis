@@ -41,7 +41,7 @@
   margin-bottom: -10px;
 }
 
-.InlineInput div, .InlineInput textarea {
+.Card .InlineInput div, .Card .InlineInput textarea {
   cursor: pointer;
   border: none;
   outline: none;
@@ -58,8 +58,9 @@
   white-space: pre-wrap;
 }
 
-.InlineInput label {
+.Card .InlineInput label {
   text-transform: uppercase;
   font-size: 12px;
   font-family: "Open Sans";
 }
+

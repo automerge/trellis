@@ -112,6 +112,7 @@ export default class App extends React.Component {
 
       fs.writeFileSync(savePath, exportFile)
       localStorage.setItem("lastDocOpened", this.getDocId())
+      this.setWindowTitle()
     }
   }
 
