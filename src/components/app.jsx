@@ -2,7 +2,6 @@ import React from 'react'
 import Board from './board'
 import Inspector from './inspector'
 import Peers from './peers'
-import Clocks from './clocks'
 import Changes from './changes'
 import Store from '../lib/store'
 import { ipcRenderer, remote } from 'electron'
@@ -140,7 +139,6 @@ export default class App extends React.Component {
         <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
         <div className="sidebar">
           <Peers network={ this.store.network } />
-          <Clocks network={ this.store.network } />
           <Changes store={ this.store } />
         </div>
       </div>
