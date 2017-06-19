@@ -2,12 +2,14 @@ import React from 'react'
 import List from './list'
 import AddList from './add_list'
 import Card from './card'
+import InlineInput from './inline_input'
 
 export default class Board extends React.Component { constructor(props) {
     super(props)
 
     this.showModal  = this.showModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
+    this.updateBoardTitle = this.updateBoardTitle.bind(this)
 
     this.state = { showModal: false, card: null }
   }
@@ -18,6 +20,13 @@ export default class Board extends React.Component { constructor(props) {
 
   closeModal() {
     this.setState({ showModal: false, card: null })
+  }
+
+  updateBoardTitle(value) {
+    this.props.store.dispatch({
+      type: "UPDATE_BOARD_TITLE",
+      value: value
+    })
   }
 
   render() {
@@ -47,7 +56,11 @@ export default class Board extends React.Component { constructor(props) {
 
     return (
       <div className="Board">
-        <h1 className="Board__title">Trellis</h1>
+        <div className="Board__title">
+          <InlineInput onSubmit={ this.updateBoardTitle } defaultValue={ state.boardTitle || "Board Title" }>
+            { state.boardTitle || "Board Title" }
+          </InlineInput>
+        </div>
         <div className="Board__lists">
           { lists }
           <AddList store={ this.props.store } />

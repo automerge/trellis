@@ -11,7 +11,7 @@ export default class Inspector extends React.Component {
   }
 
   componentDidUpdate() {
-    if(this.highlightActive)
+    if(this.highlightActive || !this.highlightTr)
       return false
 
     this.highlightActive = true

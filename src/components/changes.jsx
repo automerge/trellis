@@ -31,6 +31,8 @@ export default class Changes extends React.Component {
           <span className="author">{meta.author}</span> moved <span className="card">{newCard.title}</span> from&nbsp;
           <span className="list">{prevList.title}</span> &rarr; <span className="list">{newList.title}</span>
         </div>
+      case "UPDATE_BOARD_TITLE":
+        return <div><span className="author">{meta.author}</span> updated board title to <span className="card">{meta.action.value}</span></div>
       case "UPDATE_CARD_TITLE":
         var newCard = this.store.findCardFromState(meta.action.cardId, change.snapshot)
         return <div><span className="author">{meta.author}</span> renamed card to <span className="card">{newCard.title}</span></div>

@@ -9,6 +9,8 @@ export default class Store extends aMPL.Store {
   constructor() {
     super((state, action) => {
       switch(action.type) {
+        case "UPDATE_BOARD_TITLE":
+          return this.updateBoardTitle(state, action)
         case "CREATE_CARD":
           return this.createCard(state, action)
         case "MOVE_CARD":
@@ -114,6 +116,12 @@ export default class Store extends aMPL.Store {
   forkDocument(state, action) {
     return Tesseract.changeset(state, this.meta(action), (doc) => {
       doc.docId = this.generateDocId() 
+    })
+  }
+
+  updateBoardTitle(state, action) {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
+      doc.boardTitle = action.value
     })
   }
 
