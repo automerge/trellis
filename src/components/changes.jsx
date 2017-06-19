@@ -77,7 +77,7 @@ export default class Changes extends React.Component {
     const changesToShow = 10
     let changes = this.store.getHistory().slice((changesToShow+1) * -1)
     let prevChange = changes[0]
-    changes = changes.slice(changesToShow * -1)
+    changes = changes.slice(changesToShow * -1).reverse()
 
     let changesPartial = changes.map((change, index) => {
       let key = "change-" + index
@@ -94,7 +94,7 @@ export default class Changes extends React.Component {
       if (this.store.localState.timeTravel && index === this.store.localState.timeTravel.index) {
         klass = "highlight"
         icon = "change-highlight"
-      } else if(!this.store.localState.timeTravel && index == changes.length - 1) {
+      } else if(!this.store.localState.timeTravel && index == 0) {
         klass = "highlight"
         icon = "change-highlight"
       }
