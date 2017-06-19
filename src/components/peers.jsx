@@ -16,6 +16,8 @@ export default class Peers extends React.Component {
 
     console.log("Introducer detected: ", host, port)
     this.props.network.signaler.manualHello(host, port)
+
+    this.introductionInput.value = ""
   }
 
   // The constructor is not necessarily called on
@@ -77,16 +79,15 @@ export default class Peers extends React.Component {
 
     return <div className="Peers">
       <h2>Peers <img src="assets/images/peers.svg" /></h2>
-      <div style={{ "margin-bottom": "20px" }} >
-        <textarea ref={ (input) => this.introductionInput = input }/>
-        <button onClick={ this.doIntroduction}>Introduce</button>
-      </div>
-      <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
-
       <table>
         <thead><tr><th></th><th>Name</th><th>ID</th><th>Sent</th><th>Received</th></tr></thead>
         <tbody>{ peersPartial }</tbody>
       </table>
+      <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
+      <div className="Peers__introduce">
+        <textarea placeholder="ip:port" ref={ (input) => this.introductionInput = input }/>
+        <button onClick={ this.doIntroduction}>Introduce</button>
+      </div>
     </div>
   }
 }

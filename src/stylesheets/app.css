@@ -151,6 +151,29 @@ h2 {
   padding: 16px 16px;
   padding-top: 20px;
 }
+
+.Peers__introduce {
+  margin: 10px 0;
+}
+
+.Peers__introduce textarea {
+  height: 1.2em;
+  outline: none;
+  padding: 0.2em;
+  width: 65%;
+  border-color: #CCC;
+  margin-right: 10px;
+  color: #666;
+}
+
+.Peers__introduce button {
+  vertical-align: top;
+  background: #BBB;
+  color: #333;
+  border: 1px solid #AAA;
+  border-radius: 2px;
+}
+
 .Peers .networkSwitch {
   position: absolute;
   top: 20px;
