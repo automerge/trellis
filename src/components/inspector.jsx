@@ -131,7 +131,7 @@ export default class Inspector extends React.Component {
           let data = row[column]
           return <td key={ column }>
             <InlineInput onSubmit={ (value) => this.updateTd(tableName, index, column, value) } defaultValue={ JSON.stringify(data) }>
-              { JSON.stringify(data) }
+              { JSON.stringify(data) || " " }
             </InlineInput>
           </td>
         })

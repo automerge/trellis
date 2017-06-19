@@ -1,4 +1,6 @@
 import React from 'react'
+import InlineInput from './inline_input'
+import aMPL from 'ampl'
 
 export default class Peers extends React.Component {
   constructor(props) {
@@ -7,7 +9,18 @@ export default class Peers extends React.Component {
     this.toggleNetwork = this.toggleNetwork.bind(this)
     this.peerHandler = this.peerHandler.bind(this)
     this.doIntroduction = this.doIntroduction.bind(this)
+    this.updatePeerName = this.updatePeerName.bind(this)
+  }
 
+  updatePeerName(value) {
+    aMPL.config.name = value
+    localStorage.setItem("peerName", value)
+
+    // Force network reconnect
+    this.props.store.dispatch({
+      type: "OPEN_DOCUMENT",
+      file: this.props.store.save()
+    })
   }
 
   doIntroduction() {
@@ -65,9 +78,16 @@ export default class Peers extends React.Component {
       let ledPath = "assets/images/LED-" + ledColor + ".svg"
       let key = "peer-" + id
 
+      let namePartial
+      if(peer.self) {
+        namePartial = <InlineInput onSubmit={ this.updatePeerName } defaultValue={ name }>{ name }</InlineInput>
+      }
+      else
+        namePartial = name
+
       return <tr key={key}>
             <td className="led"><img src={ledPath} /></td>
-            <td className="user">{name}</td>
+            <td className="user">{ namePartial }</td>
             <td className="id">{this.formatUUID(id)}</td>
             <td className="sent">{index > 0 ? peer.messagesSent : ""}</td>
             <td className="received">{index > 0 ? peer.messagesReceived : ""}</td>

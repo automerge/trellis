@@ -52,7 +52,3 @@ export default class InlineInput extends React.Component {
     </div>
   }
 }
-
-InlineInput.propTypes = {
-  children: PropTypes.string.isRequired
-}

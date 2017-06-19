@@ -152,6 +152,14 @@ h2 {
   padding-top: 20px;
 }
 
+.Peers td .InlineInput textarea {
+  height: 1.5em;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: inherit;
+}
+
 .Peers__introduce {
   margin: 10px 0;
 }
@@ -323,10 +331,10 @@ h2 {
   cursor: pointer;
   border: none;
   outline: none;
+  margin: 0;
   padding: 0;
   word-wrap: break-word;
   display: block;
   white-space: pre-wrap;
   background: transparent;
-  margin: 0;
 }

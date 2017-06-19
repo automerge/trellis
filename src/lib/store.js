@@ -7,6 +7,17 @@ const Tesseract = aMPL.Tesseract
 
 export default class Store extends aMPL.Store {
   constructor() {
+
+    let peerName = localStorage.getItem("peerName")
+    if(peerName)
+      aMPL.config.name = peerName
+    else {
+      let names = [ "Amelia", "Marco", "Isabella",
+                    "Meriweather", "Valentina", "Yuri" ]
+
+      aMPL.config.name = names[Math.floor(Math.random() * names.length)]
+    }
+
     super((state, action) => {
       switch(action.type) {
         case "UPDATE_BOARD_TITLE":
@@ -40,12 +51,12 @@ export default class Store extends aMPL.Store {
       }
     })
 
-    this.localState = {} 
+    this.localState = {}
   }
 
   dispatch(action) {
-    if(action.type != "STOP_TIME_TRAVEL" 
-        && action.type != "TIME_TRAVEL" 
+    if(action.type != "STOP_TIME_TRAVEL"
+        && action.type != "TIME_TRAVEL"
         && action.type != "APPLY_DELTAS"
         && this.localState.timeTravel) {
       console.log("Ignoring action because we are time traveling.")
@@ -64,7 +75,7 @@ export default class Store extends aMPL.Store {
 
   meta(action) {
     return {
-      author: process.env.NAME,
+      author: aMPL.config.name || "Unknown",
       action: action
     }
   }
@@ -115,7 +126,7 @@ export default class Store extends aMPL.Store {
   // Overwriting aMPL.Store#newDocument to load our own seed data
   forkDocument(state, action) {
     return Tesseract.changeset(state, this.meta(action), (doc) => {
-      doc.docId = this.generateDocId() 
+      doc.docId = this.generateDocId()
     })
   }
 

@@ -7,6 +7,7 @@ import Store from '../lib/store'
 import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
 import Path from 'path'
+import aMPL from 'ampl'
 
 const SAVE_DIRECTORY = Path.join(remote.app.getPath('documents'), "Trellis")
 if(!fs.existsSync(SAVE_DIRECTORY)) fs.mkdirSync(SAVE_DIRECTORY)
@@ -138,7 +139,7 @@ export default class App extends React.Component {
         <Board highlightOptions={{ cardId: highlightCard }} store={ this.store } />
         <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
         <div className="Sidebar">
-          <Peers network={ this.store.network } />
+          <Peers network={ this.store.network } store={ this.store } />
           <Changes store={ this.store } />
         </div>
       </div>
