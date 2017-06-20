@@ -30,7 +30,10 @@ export default class Assignments extends React.Component {
   }
 
   people() {
-    return [ 'adam', 'orion', 'pvh', 'roshan', 'martin' ]
+    if (process.env.AVENGERS)
+      return [ 'nick', 'natasha' ]
+    else
+      return [ 'adam', 'orion', 'pvh', 'roshan', 'martin' ]
   }
 
   render() {
