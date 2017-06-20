@@ -288,13 +288,17 @@ h2 {
 
 .Assignments {
   margin-top: 10pt;
-  float: left;
 }
+
 .Assignments img {
-  float: right;
   width: 15pt;
   margin-left: 4pt;
 }
+
+.Assignments img:first-child {
+  margin-left: 0;
+}
+
 .Assignments__active {
   opacity: 0.8;
 }
