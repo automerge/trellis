@@ -41,7 +41,7 @@ export default class Peers extends React.Component {
     this.props.network.removeListener('peer', this.peerHandler)
 
     this.setState({
-      peers: Object.assign({}, nextProps.network.peerStats)
+      peers: Object.assign({}, nextProps.network.peerStats.get())
     })
 
     nextProps.network.on('peer', this.peerHandler)
@@ -49,7 +49,7 @@ export default class Peers extends React.Component {
 
   peerHandler() {
     this.setState({
-      peers: Object.assign({}, this.props.network.peerStats)
+      peers: Object.assign({}, this.props.network.peerStats.get())
     })
   }
 
