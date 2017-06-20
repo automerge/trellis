@@ -40,8 +40,6 @@ export default class Card extends React.Component {
           defaultValue={ this.card().description }
           className="Card__description">{ this.card().description || "Add Description" }</InlineInput>
         <Assignments cardId={ this.props.cardId } store={ this.props.store } />
-        <div style={ { clear: "both" } } />
-        <div className="Card__shortcuts">Click any field to edit. Press Shift+Enter to Submit.</div>
       </div>
     )
   }
