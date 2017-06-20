@@ -16,12 +16,12 @@ export default class InlineInput extends React.Component {
   }
 
   handleKeyDown(event) {
-    let shiftEnter = event.shiftKey && event.key === "Enter"
-    if (shiftEnter && this.props.onSubmit)
+    let doSubmit = !event.shiftKey && event.key === "Enter"
+    if (doSubmit && this.props.onSubmit)
       this.props.onSubmit(event.target.value)
 
     // Exit edit mode if "Enter" or "Esc" are pressed
-    if (shiftEnter || event.keyCode === 27)
+    if (doSubmit || event.keyCode === 27)
       this.setState({ editMode: false })
   }
 
