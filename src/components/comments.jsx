@@ -23,15 +23,19 @@ export default class Comment extends React.Component {
   render() {
     let commentsPartial = this.comments().map((comment) => {
       return <div className="Comment" key={ comment.id }>
-        { comment.author }:
-        { comment.body }
+        <div className="Comment__author"> { comment.author } </div>
+        <div className="Comment__body"> { comment.body } </div>
+        <div className="Comment__timestamp"> { comment.createdAt } </div>
       </div>
     })
 
     return <div className="Comments">
+      <label>Comments</label>
+      <div className="clear">
+        <textarea ref={ (input) => this.newComment = input } />
+        <button onClick={ this.createComment }>Add comment</button>
+      </div>
       { commentsPartial }
-      <input type="text" ref={ (input) => this.newComment = input } />
-      <button onClick={ this.createComment }>Submit</button>
     </div>
   }
 }

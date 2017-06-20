@@ -43,7 +43,10 @@ export default class Assignments extends React.Component {
       return <img key={person} name={person} src={fname} className={klass} onClick={ this.toggle } />
     })
     return (
-      <div className="Assignments">{assignments}</div>
+      <div className="Assignments">
+        { assignments}
+        <div style={{ clear: "both" }} />
+      </div>
     )
   }
 }
