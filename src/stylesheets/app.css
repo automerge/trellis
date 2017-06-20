@@ -343,7 +343,7 @@ h2 {
   0% { top: -200px }
   5% { top: 20px }
   90% { top: 20px }
-  100% { top: 20px }
+  100% { top: -200px }
 }
 
 .Flash {
@@ -359,4 +359,5 @@ h2 {
   animation: slide-down 5s linear 0s 1 normal forwards;
   border-radius: 2px;
   color: #555;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1)
 }
