@@ -46,12 +46,29 @@ export default class Store extends aMPL.Store {
           return state
         case "INSPECTOR_UPDATE":
           return this.inspectorUpdate(state, action)
+        case "CREATE_COMMENT":
+          return this.createComment(state, action)
         default:
           return state
       }
     })
 
     this.localState = {}
+  }
+
+  createComment(state, action) {
+    return Tesseract.changeset(state, this.meta(action), (doc) => {
+      if(!Array.isArray(doc.comments))
+        doc.comments = []
+
+      doc.comments.push({
+        id: uuid(),
+        cardId: action.cardId,
+        body: action.body,
+        author: aMPL.config.name ,
+        createdAt: new Date().toJSON()
+      })
+    })
   }
 
   dispatch(action) {
@@ -302,7 +319,7 @@ export default class Store extends aMPL.Store {
       return card.listId === listId
     })
 
-    let sorted = this._sort(filtered, (a, b) => {
+    let sorted = this._sort(filtered, this.findCard.bind(this), (a, b) => {
       let orderA = a.order || 0
       let orderB = b.order || 0
 
@@ -312,10 +329,48 @@ export default class Store extends aMPL.Store {
     return sorted
   }
 
-  _sort(cards, compare) {
-    let array  = this._map(cards, (card) => { return { id: card.id, order: card.order } })
+  findCommentsByCard(cardId) {
+    if(!Array.isArray(this.getState().comments))
+      return []
+
+    let filtered = this._filter(this.getState().comments, (comment) => {
+      return comment.cardId === cardId
+    })
+
+    let sorted = this._sort(filtered, this.findComment.bind(this), (a, b) => {
+      let timestampA = Date.parse(a.createdAt || 0)
+      let timestampB = Date.parse(b.createdAt || 0)
+
+      return timestampA - timestampB
+    })
+
+    return sorted
+  }
+
+  findComment(commentId) {
+    return this.findCommentFromState(commentId, this.getState())
+  }
+
+  findCommentFromState(commentId, state) {
+    return this._find(state.comments, (comment) => {
+      return commentId === comment.id
+    })
+  }
+
+  _sort(collection, finder, compare) {
+    // Remove the proxy in front of Tesseract objects
+    let array = this._map(collection, (item) => {
+      let newItem = {}
+
+      Object.keys(item).forEach((key) => {
+        newItem[key] = item[key]
+      })
+
+      return newItem
+    })
+
     let sorted = array.sort(compare)
-    let output = sorted.map((card) => this.findCard(card.id))
+    let output = sorted.map((item) => finder(item.id))
 
     return output
   }

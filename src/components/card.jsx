@@ -1,6 +1,7 @@
 import React from 'react'
 import Assignments from './assignments'
 import InlineInput from './inline_input'
+import Comments from './comments'
 
 export default class Card extends React.Component {
   constructor(props) {
@@ -40,6 +41,7 @@ export default class Card extends React.Component {
           defaultValue={ this.card().description }
           className="Card__description">{ this.card().description || "Add Description" }</InlineInput>
         <Assignments cardId={ this.props.cardId } store={ this.props.store } />
+        <Comments cardId={ this.props.cardId } store={ this.props.store } />
       </div>
     )
   }
