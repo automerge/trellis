@@ -38,14 +38,14 @@ export default class Peers extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(!nextProps.network) return
 
-    this.props.network.removeListener('peer', this.peerHandler)
+    this.props.network.peerStats.removeListener('peer', this.peerHandler)
 
     console.log("NEXT PROPS",nextProps)
     this.setState({
       peers: Object.assign({}, nextProps.network.peerStats.getStats())
     })
 
-    nextProps.network.on('peer', this.peerHandler)
+    nextProps.network.peerStats.on('peer', this.peerHandler)
   }
 
   peerHandler() {
