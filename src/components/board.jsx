@@ -3,6 +3,7 @@ import List from './list'
 import AddList from './add_list'
 import Card from './card'
 import InlineInput from './inline_input'
+import Flash from './flash'
 
 export default class Board extends React.Component { constructor(props) {
     super(props)
@@ -56,6 +57,7 @@ export default class Board extends React.Component { constructor(props) {
 
     return (
       <div className="Board">
+        <Flash ref={ (node) => this.flash = node } message={ this.props.flashMessage } />
         <div className="Board__title">
           <InlineInput onSubmit={ this.updateBoardTitle } defaultValue={ state.boardTitle || "Board Title" }>
             { state.boardTitle || "Board Title" }

@@ -27,23 +27,29 @@ export default class App extends React.Component {
       this.autoSave()
     })
 
-    ipcRenderer.on("new", (event) => { this.open() })
+    ipcRenderer.on("new", (event) => {
+      this.open()
+      this.board.flash.show(`Opened new document (${ this.getDocUrl() })`)
+    })
 
     ipcRenderer.on("forkDocument", () => {
       this.store.dispatch({ type: "FORK_DOCUMENT" })
       this.setWindowTitle()
+      this.board.flash.show(`Forked document (${ this.getDocUrl() })`)
     })
 
     ipcRenderer.on("openFromClipboard", (event, docUrl) => {
       let m = docUrl.match(/trellis:\/\/([a-z0-9-]+)/)
-      if (m)
+      if (m) {
         this.open(m[1])
-      else
+        this.board.flash.show(`Opened document URL (${ m[1] }) from clipboard`)
+      } else
         dialog.showErrorBox("Invalid document URL", "Should be trellis:// but your clipboard contains:\n\n" + docUrl)
     })
 
     ipcRenderer.on("shareToClipboard", (event) => {
       ipcRenderer.send("shareToClipboardResult", this.getDocUrl())
+      this.board.flash.show(`Document URL (${ this.getDocUrl() }) copied to clipboard`)
     })
   }
 
@@ -136,7 +142,7 @@ export default class App extends React.Component {
 
     return (
       <div className="App">
-        <Board highlightOptions={{ cardId: highlightCard }} store={ this.store } />
+        <Board ref={ (node) => this.board = node } highlightOptions={{ cardId: highlightCard }} store={ this.store } />
         <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
         <div className="Sidebar">
           <Peers network={ this.store.network } store={ this.store } />
