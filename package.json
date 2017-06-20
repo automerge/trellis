@@ -62,7 +62,6 @@
     "lz4": "0.5.3",
     "react": "15.5.4",
     "react-dom": "15.5.4",
-    "react-hot-loader": "3.0.0-beta.6",
     "react-redux": "5.0.4",
     "redux": "3.6.0",
     "request": "^2.81.0"
