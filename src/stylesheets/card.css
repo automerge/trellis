@@ -18,6 +18,8 @@
   color: #555;
   width: 50%;
   min-height: 50%;
+  max-height: 80%;
+  overflow-y: scroll
 }
 
 .Card__close {
