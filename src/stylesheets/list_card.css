@@ -12,6 +12,7 @@
 .ListCard__title {
   float: left;
   width: 80%;
+  margin-bottom: 20px;
 }
 
 .ListCard__title:hover {
@@ -48,4 +49,21 @@
 .ListCard.highlighted {
   animation-duration: 3s;
   animation-name: highlight-card-fade-in-out
+}
+
+.ListCard__commentsCount {
+  float: left;
+  margin-top: 2px;
+}
+
+.ListCard__commentsCount__count {
+  display: inline-block;
+  margin-left: 3px;
+  font-size: 11px;
+  vertical-align: top;
+}
+
+.ListCard .Assignments {
+  float: right;
+  margin-top: 0;
 }

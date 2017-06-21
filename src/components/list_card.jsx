@@ -48,6 +48,14 @@ export default class ListCard extends React.Component {
   }
 
   render() {
+    let commentsPartial
+    let commentsCount = this.props.store.findCommentsByCard(this.props.cardId).length
+    if(commentsCount > 0)
+      commentsPartial = <div className="ListCard__commentsCount">
+        <img src="assets/images/comment.svg" />
+        <div className="ListCard__commentsCount__count"> { commentsCount } </div>
+      </div>
+
     return (
       <div
         className="ListCard clear"
@@ -57,6 +65,7 @@ export default class ListCard extends React.Component {
         <div className="ListCard__title"> { this.card().title } </div>
         <div style={{ clear: "both" }} />
 
+        { commentsPartial }
         <Assignments cardId={ this.props.cardId } store={ this.props.store } />
       </div>
     )
