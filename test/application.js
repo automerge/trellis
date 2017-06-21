@@ -99,7 +99,7 @@ describe('application', function () {
     .then(() => this.app.client.click(".ListCard__title"))
     .then(() => this.app.client.click(".Modal .InlineInput div"))
     .then(() => this.app.client.setValue(".InlineInput textarea", "New Title"))
-    .then(() => this.app.client.keys(["Shift", "Enter"]))
+    .then(() => this.app.client.keys(["Enter"]))
     .then(() => this.app.client.getText(".ListCard__title"))
     .then((title) => assert.equal(title, "New Title") )
   })
