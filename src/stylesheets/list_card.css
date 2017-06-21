@@ -18,12 +18,6 @@
   cursor: pointer;
 }
 
-.ListCard__delete {
-  float: right;
-  cursor: pointer;
-  color: #AAA;
-}
-
 .ListCard__delete:hover {
   color: #333;
 }

@@ -22,7 +22,7 @@
   overflow-y: scroll
 }
 
-.Card__close {
+.Card__close, .Card__delete {
   cursor: pointer;
   float: right;
 }

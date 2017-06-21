@@ -51,7 +51,7 @@ export default class Board extends React.Component { constructor(props) {
 
     if(this.state.showModal) {
       modal = <div className="Modal" onClick={ this.closeModal }>
-        <Card store={ this.props.store } cardId={ this.state.card.id } close={ this.closeModal } />
+        <Card close={ this.closeModal } store={ this.props.store } cardId={ this.state.card.id } close={ this.closeModal } />
       </div>
     }
 
