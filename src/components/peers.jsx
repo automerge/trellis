@@ -11,6 +11,10 @@ export default class Peers extends React.Component {
     this.doIntroduction = this.doIntroduction.bind(this)
     this.updatePeerName = this.updatePeerName.bind(this)
     this.handleInput = this.handleInput.bind(this)
+    this.introducer = localStorage.getItem("introducer")
+
+    if(this.introducer)
+      this.doIntroduction(this.introducer)
   }
 
   updatePeerName(value) {
@@ -24,14 +28,13 @@ export default class Peers extends React.Component {
     })
   }
 
-  doIntroduction() {
-    let introducer   = this.introductionInput.value
+  doIntroduction(value) {
+    let introducer   = value || this.introductionInput.value
     let [host, port] = introducer.split(':')
 
     console.log("Introducer detected: ", host, port)
     this.props.network.signaler.manualHello(host, port)
-
-    this.introductionInput.value = ""
+    localStorage.setItem("introducer", introducer)
   }
 
   // The constructor is not necessarily called on
@@ -73,7 +76,7 @@ export default class Peers extends React.Component {
 
   handleInput(event) {
     if(event.key === "Enter") {
-      event.stopPropagation()
+      event.preventDefault()
       this.doIntroduction()
     }
   }
@@ -114,8 +117,13 @@ export default class Peers extends React.Component {
       </table>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
       <div className="Peers__introduce">
-        <textarea placeholder="ip:port" onKeyDown={ this.handleInput } ref={ (input) => this.introductionInput = input }/>
-        <button onClick={ this.doIntroduction }>Introduce</button>
+        <textarea 
+          placeholder="ip:port" 
+          onKeyDown={ this.handleInput } 
+          ref={ (input) => this.introductionInput = input }
+          defaultValue={ this.introducer }
+        />
+        <button onClick={ () => this.doIntroduction() }>Introduce</button>
       </div>
     </div>
   }
