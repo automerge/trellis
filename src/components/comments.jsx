@@ -4,6 +4,12 @@ export default class Comment extends React.Component {
   constructor() {
     super()
     this.createComment = this.createComment.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+  }
+
+  handleKeyDown(event) {
+    if(!event.shiftKey && event.key === "Enter")
+      this.createComment()
   }
 
   comments() {
@@ -60,7 +66,7 @@ export default class Comment extends React.Component {
     return <div className="Comments">
       <label>Comments</label>
       <div className="clear">
-        <textarea ref={ (input) => this.newComment = input } />
+        <textarea onKeyDown={ this.handleKeyDown } ref={ (input) => this.newComment = input } />
         <button onClick={ this.createComment }>Add comment</button>
       </div>
       { commentsPartial }

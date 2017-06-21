@@ -10,6 +10,7 @@ export default class Peers extends React.Component {
     this.peerHandler = this.peerHandler.bind(this)
     this.doIntroduction = this.doIntroduction.bind(this)
     this.updatePeerName = this.updatePeerName.bind(this)
+    this.handleInput = this.handleInput.bind(this)
   }
 
   updatePeerName(value) {
@@ -70,6 +71,13 @@ export default class Peers extends React.Component {
     return uuid.toLowerCase().substring(0,4)
   }
 
+  handleInput(event) {
+    if(event.key === "Enter") {
+      event.stopPropagation()
+      this.doIntroduction()
+    }
+  }
+
   render() {
     let peers = this.state.peers
     let peersPartial = Object.keys(peers).map((id, index) => {
@@ -106,8 +114,8 @@ export default class Peers extends React.Component {
       </table>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
       <div className="Peers__introduce">
-        <textarea placeholder="ip:port" ref={ (input) => this.introductionInput = input }/>
-        <button onClick={ this.doIntroduction}>Introduce</button>
+        <textarea placeholder="ip:port" onKeyDown={ this.handleInput } ref={ (input) => this.introductionInput = input }/>
+        <button onClick={ this.doIntroduction }>Introduce</button>
       </div>
     </div>
   }
