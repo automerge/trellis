@@ -66,7 +66,7 @@ export default class ListCard extends React.Component {
         <div style={{ clear: "both" }} />
 
         { commentsPartial }
-        <Assignments cardId={ this.props.cardId } store={ this.props.store } />
+        <Assignments readonly={ true } cardId={ this.props.cardId } store={ this.props.store } />
       </div>
     )
   }
