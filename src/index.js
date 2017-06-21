@@ -7,6 +7,7 @@ const {clipboard} = require('electron')
 
 // Load environment variables from .env file
 require("dotenv").config()
+process.env.BLOCK_BONJOUR = !process.env.ENABLE_BONJOUR
 
 // Set app for use in browser process
 global.app = app
