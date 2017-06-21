@@ -341,7 +341,7 @@ export default class Store extends aMPL.Store {
       let timestampA = Date.parse(a.createdAt || 0)
       let timestampB = Date.parse(b.createdAt || 0)
 
-      return timestampA - timestampB
+      return timestampB - timestampA
     })
 
     return sorted
