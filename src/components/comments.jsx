@@ -20,12 +20,40 @@ export default class Comment extends React.Component {
     this.newComment.value = null
   }
 
+  formatTimestamp(timestamp) {
+    let duration = (new Date(timestamp) - new Date()) / 1000
+
+    let secondsInAMinute = 60
+    let secondsInAnHour  = 3600
+    let secondsInADay    = 86400
+
+    if(duration < secondsInAMinute) {
+      return "just now"
+    } else if(duration < secondsInAnHour) {
+      let minutes = Math.floor(duration / secondsInAMinute)
+      return this.pluralize(minutes, "minute ago", "minutes ago")
+    } else if(duration < secondsInADay) {
+      let hours = Math.floor(duration / secondsInAnHour)
+      return this.pluralize(hours, "hour ago", "hours ago")
+    } else {
+      let days = Math.floor(duration / secondsInADay)
+      return this.pluralize(days, "day ago", "days ago")
+    }
+  }
+
+  pluralize(number, singular, plural) {
+    if(number === 1)
+      return `${number} ${singular}`
+    else
+      return `${number} ${plural}`
+  }
+
   render() {
     let commentsPartial = this.comments().map((comment) => {
       return <div className="Comment" key={ comment.id }>
         <div className="Comment__author"> { comment.author } </div>
         <div className="Comment__body"> { comment.body } </div>
-        <div className="Comment__timestamp"> { comment.createdAt } </div>
+        <div className="Comment__timestamp"> { this.formatTimestamp(comment.createdAt) } </div>
       </div>
     })
 
