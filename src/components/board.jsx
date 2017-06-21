@@ -13,6 +13,11 @@ export default class Board extends React.Component { constructor(props) {
     this.updateBoardTitle = this.updateBoardTitle.bind(this)
 
     this.state = { showModal: false, card: null }
+
+    window.onkeydown = (event) => {
+      if(event.key === "Escape")
+        this.closeModal()
+    }
   }
 
   showModal(card) {

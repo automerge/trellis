@@ -21,8 +21,10 @@ export default class InlineInput extends React.Component {
       this.props.onSubmit(event.target.value)
 
     // Exit edit mode if "Enter" or "Esc" are pressed
-    if (doSubmit || event.keyCode === 27)
+    if (doSubmit || event.keyCode === 27) {
+      event.stopPropagation()
       this.setState({ editMode: false })
+    }
   }
 
   handleBlur() {
