@@ -55,10 +55,10 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    let lastDocOpened = localStorage.getItem("lastDocOpened")
+    let lastDocOpened = this.getRecentDocs().slice(-1)[0]
 
-    if(lastDocOpened)
-      this.open(lastDocOpened)
+    if(lastDocOpened && lastDocOpened.id)
+      this.open(lastDocOpened.id)
     else
       this.open()
   }
@@ -94,6 +94,16 @@ export default class App extends React.Component {
     }
   }
 
+  getRecentDocs() {
+    let raw = localStorage.getItem("recentDocs")
+    if (!raw) return []
+    return JSON.parse(raw)
+  }
+
+  saveRecentDocs(recentDocs) {
+    localStorage.setItem("recentDocs", JSON.stringify(recentDocs))
+  }
+
   open(docId) {
     let fileName = docId + ".trellis"
     let savePath = Path.join(SAVE_DIRECTORY, fileName)
@@ -107,7 +117,11 @@ export default class App extends React.Component {
       this.store.dispatch({ type: "OPEN_DOCUMENT", docId: docId })
     }
 
-    localStorage.setItem("lastDocOpened", this.getDocId())
+    let recentDocs = this.getRecentDocs()
+    recentDocs.push({ id: this.getDocId(), title: "Untitled" })
+    this.saveRecentDocs(recentDocs)
+    this.setState({}) // hack to force re-render
+
     this.setWindowTitle()
   }
 
@@ -118,7 +132,7 @@ export default class App extends React.Component {
       let savePath   = Path.join(SAVE_DIRECTORY, fileName)
 
       fs.writeFileSync(savePath, exportFile)
-      localStorage.setItem("lastDocOpened", this.getDocId())
+
       this.setWindowTitle()
     }
   }
@@ -147,7 +161,7 @@ export default class App extends React.Component {
         <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
         <div className="Sidebar">
           <Network network={ this.store.network } store={ this.store } />
-          <Documents />
+          <Documents recentDocs={ this.getRecentDocs() } />
           <Changes store={ this.store } />
         </div>
       </div>
