@@ -76,7 +76,7 @@ h2 {
   margin-bottom: 10px;
 }
 .Inspector img,
-.Peers img,
+.Network img,
 .Changes img,
 .Documents img {
   height: 20px;
@@ -148,12 +148,12 @@ h2 {
   overflow: hidden;
 }
 
-.Peers {
+.Network {
   padding: 16px 16px;
   padding-top: 20px;
 }
 
-.Peers td .InlineInput textarea {
+.Network td .InlineInput textarea {
   height: 1.5em;
   width: 100%;
   box-sizing: border-box;
@@ -161,11 +161,11 @@ h2 {
   font-size: inherit;
 }
 
-.Peers__introduce {
+.Network__introduce {
   margin: 10px 0;
 }
 
-.Peers__introduce textarea {
+.Network__introduce textarea {
   height: 1.2em;
   outline: none;
   padding: 0.2em;
@@ -175,7 +175,7 @@ h2 {
   color: #666;
 }
 
-.Peers__introduce button {
+.Network__introduce button {
   vertical-align: top;
   background: #BBB;
   color: #333;
@@ -183,25 +183,25 @@ h2 {
   border-radius: 2px;
 }
 
-.Peers .networkSwitch {
+.Network .networkSwitch {
   position: absolute;
   top: 20px;
   right: 16px;
   width: 32px;
 }
-.Peers th {
+.Network th {
   font-weight: normal;
   font-size: 9px;
   text-align: left;
   color: #aaa;
   padding-bottom: 4px;
 }
-.Peers td {
+.Network td {
   padding: 0;
   padding-bottom: 8px;
   padding-right: 6px;
 }
-.Peers td.led img {
+.Network td.led img {
   width: 10px;
   height: 10px;
   margin-left: -7px;

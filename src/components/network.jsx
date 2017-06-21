@@ -2,7 +2,7 @@ import React from 'react'
 import InlineInput from './inline_input'
 import aMPL from 'ampl'
 
-export default class Peers extends React.Component {
+export default class Network extends React.Component {
   constructor(props) {
     super(props)
     this.state = { 'peers': {}, 'connected': true }
@@ -109,14 +109,14 @@ export default class Peers extends React.Component {
     let connected = this.state.connected ? "on" : "off"
     let switchPath = "assets/images/switch-" + connected + ".svg"
 
-    return <div className="Peers">
-      <h2>Peers <img src="assets/images/peers.svg" /></h2>
+    return <div className="Network">
+      <h2>Network <img src="assets/images/peers.svg" /></h2>
       <table>
         <thead><tr><th></th><th>Name</th><th>ID</th><th>Sent</th><th>Received</th></tr></thead>
         <tbody>{ peersPartial }</tbody>
       </table>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
-      <div className="Peers__introduce">
+      <div className="Network__introduce">
         <textarea 
           placeholder="ip:port" 
           onKeyDown={ this.handleInput } 

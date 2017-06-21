@@ -1,7 +1,7 @@
 import React from 'react'
 import Board from './board'
 import Inspector from './inspector'
-import Peers from './peers'
+import Network from './network'
 import Documents from './documents'
 import Changes from './changes'
 import Store from '../lib/store'
@@ -146,7 +146,7 @@ export default class App extends React.Component {
         <Board ref={ (node) => this.board = node } highlightOptions={{ cardId: highlightCard }} store={ this.store } />
         <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
         <div className="Sidebar">
-          <Peers network={ this.store.network } store={ this.store } />
+          <Network network={ this.store.network } store={ this.store } />
           <Documents />
           <Changes store={ this.store } />
         </div>
