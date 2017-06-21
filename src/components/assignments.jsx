@@ -40,7 +40,11 @@ export default class Assignments extends React.Component {
   }
 
   render() {
-    let assignments = this.people().map((person) => {
+    let people = this.people()
+    if (this.props.readonly)
+      people = people.filter((person) => this.assigned()[person])
+
+    let assignments = people.map((person) => {
       let fname = "assets/images/avatars/" + person + ".png"
       let klass = this.assigned()[person] ? "Assignments__active" : "Assignments__inactive"
       return <img key={person} name={person} src={fname} className={klass} onClick={ this.toggle } />
