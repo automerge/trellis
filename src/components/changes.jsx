@@ -75,11 +75,11 @@ export default class Changes extends React.Component {
 
   render() {
     const changesToShow = 10
-    let changes = this.store.getHistory().slice((changesToShow+1) * -1)
-    let prevChange = changes[0]
-    changes = changes.slice(changesToShow * -1).reverse()
+    let changesPlusOne = this.store.getHistory().slice((changesToShow+1) * -1).reverse()
+    let changes = changesPlusOne.slice(0, changesToShow)
 
     let changesPartial = changes.map((change, index) => {
+      let prevChange = changesPlusOne[index + 1]
       let key = "change-" + index
 
       let edgeImg = ""
@@ -87,7 +87,6 @@ export default class Changes extends React.Component {
         edgeImg = <div className="changeEdge" />
 
       let changeMessage = this.displayChange(change, prevChange)
-      prevChange = change
 
       let klass = ""
       let icon = "change-node"
