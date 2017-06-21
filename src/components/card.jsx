@@ -8,6 +8,16 @@ export default class Card extends React.Component {
     super(props)
     this.submitTitle        = this.submitTitle.bind(this)
     this.submitDescription  = this.submitDescription.bind(this)
+    this.delete             = this.delete.bind(this)
+  }
+
+  delete(event) {
+    event.stopPropagation()
+
+    this.props.close()
+    this.props.store.dispatch({
+      type: "DELETE_CARD", cardId: this.props.cardId
+    })
   }
 
   card() {
@@ -42,6 +52,7 @@ export default class Card extends React.Component {
           className="Card__description">{ this.card().description || "Add Description" }</InlineInput>
         <Assignments cardId={ this.props.cardId } store={ this.props.store } />
         <Comments cardId={ this.props.cardId } store={ this.props.store } />
+        <img className="Card__delete" onClick={ this.delete } src="assets/images/trash.svg" />
       </div>
     )
   }
