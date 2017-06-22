@@ -15,7 +15,7 @@ export default class Network extends React.Component {
     else
       this.props.network.signaler.disableBonjour()
 
-    this.state = { 'peers': {}, 'connected': true, bonjourEnabled: bonjourEnabled, introducerConnected: false }
+    this.state = { 'peers': {}, 'connected': true, bonjourEnabled: bonjourEnabled, introducerStatus: "disconnected" }
     this.toggleNetwork = this.toggleNetwork.bind(this)
     this.toggleBonjour = this.toggleBonjour.bind(this)
     this.peerHandler = this.peerHandler.bind(this)
@@ -23,7 +23,9 @@ export default class Network extends React.Component {
     this.updatePeerName = this.updatePeerName.bind(this)
     this.handleInput = this.handleInput.bind(this)
     this.introducer = localStorage.getItem("introducer")
+  }
 
+  componentDidMount() {
     if(this.introducer)
       this.doIntroduction(this.introducer)
   }
@@ -43,15 +45,16 @@ export default class Network extends React.Component {
     let introducer   = value || this.introductionInput.value
     let [host, port] = introducer.split(':')
 
-    console.log("Introducer detected: ", host, port)
-    this.props.network.signaler.manualHello(host, port, (error) => {
-      if(error) {
-        console.log(error)
-        this.setState({ introducerConnected: false })
-      } else {
-        localStorage.setItem("introducer", introducer)
-        this.setState({ introducerConnected: true })
-      }
+    this.setState({ introducerStatus: "connecting" }, () => {
+      this.props.network.signaler.manualHello(host, port, (error) => {
+        if(error) {
+          console.log(error)
+          this.setState({ introducerStatus: "error" })
+        } else {
+          localStorage.setItem("introducer", introducer)
+          this.setState({ introducerStatus: "connected" })
+        }
+      })
     })
   }
 
@@ -111,8 +114,30 @@ export default class Network extends React.Component {
     }
   }
 
-  ledPath(boolean) {
-    let ledColor = boolean ? "green" : "yellow"
+  ledPath(status) {
+    let ledColor
+
+    if(typeof status === "string") {
+      switch(status) {
+        case "connected":
+          ledColor = "green"
+          break;
+        case "disconnected":
+          ledColor = "gray"
+          break;
+        case "connecting":
+          ledColor = "yellow"
+          break;
+        case "error":
+          ledColor = "red"
+          break;
+        default:
+          ledColor = "gray"
+      }
+    } else {
+      ledColor = status ? "green" : "yellow"
+    }
+
     return "assets/images/LED-" + ledColor + ".svg"
   }
 
@@ -155,7 +180,7 @@ export default class Network extends React.Component {
       </table>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
       <div className="Network__introduce">
-        <img className="Network__introduce__led" src={ this.ledPath(this.state.introducerConnected) } />
+        <img className="Network__introduce__led" src={ this.ledPath(this.state.introducerStatus) } />
         <h4>Introducer</h4>
         <textarea 
           placeholder="ip:port" 
