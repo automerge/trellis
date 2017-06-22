@@ -159,6 +159,9 @@ export default class App extends React.Component {
 
       fs.writeFileSync(savePath, exportFile)
 
+      // save on every change so that we get lastActive and title updates
+      this.saveCurrentDocToRecentDocs()
+
       this.setWindowTitle()
     }
   }
