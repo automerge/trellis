@@ -114,33 +114,6 @@ export default class Network extends React.Component {
     }
   }
 
-  ledPath(status) {
-    let ledColor
-
-    if(typeof status === "string") {
-      switch(status) {
-        case "connected":
-          ledColor = "green"
-          break;
-        case "disconnected":
-          ledColor = "gray"
-          break;
-        case "connecting":
-          ledColor = "yellow"
-          break;
-        case "error":
-          ledColor = "red"
-          break;
-        default:
-          ledColor = "gray"
-      }
-    } else {
-      ledColor = status ? "green" : "yellow"
-    }
-
-    return "assets/images/LED-" + ledColor + ".svg"
-  }
-
   render() {
     let peers = this.state.peers
     let peersPartial = Object.keys(peers).map((id, index) => {
@@ -172,6 +145,8 @@ export default class Network extends React.Component {
     let bonjourEnabled = this.state.bonjourEnabled ? "on" : "off"
     let bonjourSwitchPath = "assets/images/switch-" + bonjourEnabled + ".svg"
 
+    let bonjourLed = this.state.bonjourEnabled ? "connected" : "disconnected"
+
     return <div className="Network">
       <h2>Network <img src="assets/images/peers.svg" /></h2>
       <table>
@@ -180,7 +155,7 @@ export default class Network extends React.Component {
       </table>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
       <div className="Network__introduce">
-        <img className="Network__introduce__led" src={ this.ledPath(this.state.introducerStatus) } />
+        <div className={ "led-" + this.state.introducerStatus } />
         <h4>Introducer</h4>
         <textarea 
           placeholder="ip:port" 
@@ -191,7 +166,7 @@ export default class Network extends React.Component {
         <button onClick={ () => this.doIntroduction() }>Connect</button>
       </div>
       <div className="Network__bonjour">
-        <img className="Network__bonjour__led" src={ this.ledPath(this.state.bonjourEnabled ) } />
+        <div className={ "led-" + bonjourLed  } />
         <h4> Bonjour </h4>
         <img className="bonjourSwitch" src={bonjourSwitchPath} onClick={ this.toggleBonjour } />
       </div>

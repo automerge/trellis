@@ -429,3 +429,38 @@ h2 {
   color: #555;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1)
 }
+
+.led-connected, .led-error, .led-connecting, .led-disconnected {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.led-disconnected {
+  background: url("../assets/images/LED-gray.svg");
+  background-size: 10px 10px;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.led-connecting {
+  background: url("../assets/images/LED-yellow.svg");
+  background-size: 10px 10px;
+  animation: blink normal 2s infinite ease-in-out;
+}
+
+.led-error {
+  background: url("../assets/images/LED-red.svg");
+  background-size: 10px 10px;
+}
+
+.led-connected {
+  background: url("../assets/images/LED-green.svg");
+  background-size: 10px 10px;
+}
