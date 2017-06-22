@@ -77,7 +77,7 @@ export default class Changes extends React.Component {
   }
 
   render() {
-    const changesToShow = 10
+    const changesToShow = 100
     let changesPlusOne = this.store.getHistory().slice((changesToShow+1) * -1).reverse()
     let changes = changesPlusOne.slice(0, changesToShow)
 
