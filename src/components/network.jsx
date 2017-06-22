@@ -6,8 +6,16 @@ export default class Network extends React.Component {
   constructor(props) {
     super(props)
 
-    this.props.network.signaler.disableBonjour()
-    this.state = { 'peers': {}, 'connected': true, bonjourConnected: false }
+    let bonjourEnabled= localStorage.getItem("bonjourEnabled")
+    if(bonjourEnabled)
+      bonjourEnabled= JSON.parse(bonjourEnabled)
+
+    if(bonjourEnabled)
+      this.props.network.signaler.enableBonjour()
+    else
+      this.props.network.signaler.disableBonjour()
+
+    this.state = { 'peers': {}, 'connected': true, bonjourEnabled: bonjourEnabled }
     this.toggleNetwork = this.toggleNetwork.bind(this)
     this.toggleBonjour = this.toggleBonjour.bind(this)
     this.peerHandler = this.peerHandler.bind(this)
@@ -74,14 +82,15 @@ export default class Network extends React.Component {
   }
 
   toggleBonjour() {
-    let newConnected = !this.state.bonjourConnected
+    let newEnabled = !this.state.bonjourEnabled
 
-    if(newConnected)
+    if(newEnabled)
       this.props.network.signaler.enableBonjour()
     else
       this.props.network.signaler.disableBonjour()
 
-    this.setState({ bonjourConnected: newConnected })
+    localStorage.setItem("bonjourEnabled", JSON.stringify(newEnabled))
+    this.setState({ bonjourEnabled: newEnabled })
   }
 
   formatUUID(uuid) {
@@ -123,8 +132,8 @@ export default class Network extends React.Component {
     let connected = this.state.connected ? "on" : "off"
     let switchPath = "assets/images/switch-" + connected + ".svg"
 
-    let bonjourConnected = this.state.bonjourConnected ? "on" : "off"
-    let bonjourSwitchPath = "assets/images/switch-" + bonjourConnected + ".svg"
+    let bonjourEnabled = this.state.bonjourEnabled ? "on" : "off"
+    let bonjourSwitchPath = "assets/images/switch-" + bonjourEnabled + ".svg"
 
     return <div className="Network">
       <h2>Network <img src="assets/images/peers.svg" /></h2>
