@@ -5,8 +5,11 @@ import aMPL from 'ampl'
 export default class Network extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { 'peers': {}, 'connected': true }
+
+    this.props.network.signaler.disableBonjour()
+    this.state = { 'peers': {}, 'connected': true, bonjourConnected: false }
     this.toggleNetwork = this.toggleNetwork.bind(this)
+    this.toggleBonjour = this.toggleBonjour.bind(this)
     this.peerHandler = this.peerHandler.bind(this)
     this.doIntroduction = this.doIntroduction.bind(this)
     this.updatePeerName = this.updatePeerName.bind(this)
@@ -70,6 +73,17 @@ export default class Network extends React.Component {
         this.props.network.disconnect()
   }
 
+  toggleBonjour() {
+    let newConnected = !this.state.bonjourConnected
+
+    if(newConnected)
+      this.props.network.signaler.enableBonjour()
+    else
+      this.props.network.signaler.disableBonjour()
+
+    this.setState({ bonjourConnected: newConnected })
+  }
+
   formatUUID(uuid) {
     return uuid.toLowerCase().substring(0,4)
   }
@@ -109,6 +123,9 @@ export default class Network extends React.Component {
     let connected = this.state.connected ? "on" : "off"
     let switchPath = "assets/images/switch-" + connected + ".svg"
 
+    let bonjourConnected = this.state.bonjourConnected ? "on" : "off"
+    let bonjourSwitchPath = "assets/images/switch-" + bonjourConnected + ".svg"
+
     return <div className="Network">
       <h2>Network <img src="assets/images/peers.svg" /></h2>
       <table>
@@ -117,13 +134,18 @@ export default class Network extends React.Component {
       </table>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
       <div className="Network__introduce">
+        <h4>Introducer</h4>
         <textarea 
           placeholder="ip:port" 
           onKeyDown={ this.handleInput } 
           ref={ (input) => this.introductionInput = input }
           defaultValue={ this.introducer }
         />
-        <button onClick={ () => this.doIntroduction() }>Introduce</button>
+        <button onClick={ () => this.doIntroduction() }>Connect</button>
+      </div>
+      <div className="Network__bonjour">
+        <h4> Bonjour </h4>
+        <img className="bonjourSwitch" src={bonjourSwitchPath} onClick={ this.toggleBonjour } />
       </div>
     </div>
   }

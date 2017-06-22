@@ -170,18 +170,38 @@ h2 {
   height: 1.2em;
   outline: none;
   padding: 0.2em;
-  width: 65%;
+  width: 45%;
   border-color: #CCC;
   margin-right: 10px;
   color: #666;
 }
 
 .Network__introduce button {
-  vertical-align: top;
   background: #BBB;
   color: #333;
   border: 1px solid #AAA;
   border-radius: 2px;
+}
+
+.Network__introduce h4, .Network__introduce button, .Network__introduce textarea {
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.Network__bonjour h4 {
+  display: inline-block;
+  margin-top: 3px;
+}
+
+.Network__bonjour {
+  margin-top: -15px;
+}
+
+.Network__bonjour .bonjourSwitch {
+  height: 20px;
+  vertical-align: top;
+  margin-left: 172px;
 }
 
 .Network .networkSwitch {
