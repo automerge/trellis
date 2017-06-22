@@ -24,6 +24,10 @@ export default class Card extends React.Component {
     return this.props.store.findCard(this.props.cardId)
   }
 
+  list() {
+    return this.props.store.findList(this.card().listId)
+  }
+
   submitTitle(value) {
     this.props.store.dispatch({
       type: "UPDATE_CARD_TITLE", cardId: this.props.cardId, newTitle: value
@@ -44,11 +48,7 @@ export default class Card extends React.Component {
           onSubmit={ this.submitTitle }
           defaultValue={ this.card().title }
           className="Card__title">{ this.card().title }</InlineInput>
-        <InlineInput
-          label="Description"
-          onSubmit={ this.submitDescription }
-          defaultValue={ this.card().description }
-          className="Card__description">{ this.card().description || "Add Description" }</InlineInput>
+        <div className="Card__list">{ this.list().title }</div>
         <Assignments cardId={ this.props.cardId } store={ this.props.store } />
         <Comments cardId={ this.props.cardId } store={ this.props.store } />
         <img className="Card__delete" onClick={ this.delete } src="assets/images/trash.svg" />
