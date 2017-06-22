@@ -31,6 +31,12 @@
   cursor: pointer;
 }
 
+.Card__title div,
+.Card__title textarea {
+  font-size: 24px;
+  font-weight: bold;
+}
+
 .Card .Assignments img {
   width: 30px;
 }
@@ -48,10 +54,7 @@
   border: none;
   outline: none;
   padding: 0;
-  font-size: 14px;
   color: #555;
-  font-family: "Nunito";
-  font-weight: normal;
   min-height: 60px;
   width: 90%;
   word-wrap: break-word;

@@ -48,7 +48,11 @@ export default class InlineInput extends React.Component {
     if(this.props.label)
       label = <label>{ this.props.label }</label>
 
-    return <div className="InlineInput" >
+    let klass = "InlineInput"
+    if(this.props.className)
+        klass += " " + this.props.className
+
+    return <div className={klass} >
       { label }
       { children }
     </div>
