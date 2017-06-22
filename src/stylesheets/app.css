@@ -173,6 +173,14 @@ h2 {
   margin: 10px 0;
 }
 
+.Network__introduce .Network__introduce__led, .Network__bonjour .Network__bonjour__led {
+  height: 10px;
+  margin-right: 8px;
+  margin-left: 0;
+  padding-left: 0;
+  vertical-align: middle;
+}
+
 .Network__introduce textarea {
   height: 1.2em;
   outline: none;

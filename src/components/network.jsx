@@ -15,7 +15,7 @@ export default class Network extends React.Component {
     else
       this.props.network.signaler.disableBonjour()
 
-    this.state = { 'peers': {}, 'connected': true, bonjourEnabled: bonjourEnabled }
+    this.state = { 'peers': {}, 'connected': true, bonjourEnabled: bonjourEnabled, introducerConnected: false }
     this.toggleNetwork = this.toggleNetwork.bind(this)
     this.toggleBonjour = this.toggleBonjour.bind(this)
     this.peerHandler = this.peerHandler.bind(this)
@@ -44,8 +44,15 @@ export default class Network extends React.Component {
     let [host, port] = introducer.split(':')
 
     console.log("Introducer detected: ", host, port)
-    this.props.network.signaler.manualHello(host, port)
-    localStorage.setItem("introducer", introducer)
+    this.props.network.signaler.manualHello(host, port, (error) => {
+      if(error) {
+        console.log(error)
+        this.setState({ introducerConnected: false })
+      } else {
+        localStorage.setItem("introducer", introducer)
+        this.setState({ introducerConnected: true })
+      }
+    })
   }
 
   // The constructor is not necessarily called on
@@ -104,6 +111,11 @@ export default class Network extends React.Component {
     }
   }
 
+  ledPath(boolean) {
+    let ledColor = boolean ? "green" : "yellow"
+    return "assets/images/LED-" + ledColor + ".svg"
+  }
+
   render() {
     let peers = this.state.peers
     let peersPartial = Object.keys(peers).map((id, index) => {
@@ -143,6 +155,7 @@ export default class Network extends React.Component {
       </table>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
       <div className="Network__introduce">
+        <img className="Network__introduce__led" src={ this.ledPath(this.state.introducerConnected) } />
         <h4>Introducer</h4>
         <textarea 
           placeholder="ip:port" 
@@ -153,6 +166,7 @@ export default class Network extends React.Component {
         <button onClick={ () => this.doIntroduction() }>Connect</button>
       </div>
       <div className="Network__bonjour">
+        <img className="Network__bonjour__led" src={ this.ledPath(this.state.bonjourEnabled ) } />
         <h4> Bonjour </h4>
         <img className="bonjourSwitch" src={bonjourSwitchPath} onClick={ this.toggleBonjour } />
       </div>
