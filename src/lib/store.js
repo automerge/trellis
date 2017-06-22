@@ -112,6 +112,15 @@ export default class Store extends aMPL.Store {
     return color + "-" + city + "-" + number
   }
 
+  capitalize(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1)
+  }
+
+  humanize(docId) {
+    let m = docId.match(/^([a-z]+)-([a-z]+)-([0-9])/)
+    return this.capitalize(m[1]) + " " + this.capitalize(m[2])
+  }
+
   inspectorUpdate(state, action) {
     try {
       return Tesseract.changeset(state, this.meta(action), (doc) => {
@@ -137,6 +146,7 @@ export default class Store extends aMPL.Store {
       doc.cards = data.cards
       doc.lists = data.lists
       doc.docId = this.generateDocId()
+      doc.boardTitle = this.humanize(doc.docId)
     })
   }
 
