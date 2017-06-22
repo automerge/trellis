@@ -54,7 +54,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    let lastDocOpened = this.getRecentDocs().slice(-1)[0]
+    let lastDocOpened = this.getRecentDocsAsList().slice(-1)[0]
 
     if(lastDocOpened && lastDocOpened.id)
       this.open(lastDocOpened.id)
@@ -99,22 +99,29 @@ export default class App extends React.Component {
 
   getRecentDocs() {
     let raw = localStorage.getItem("recentDocs")
-    if (!raw) return []
-    return JSON.parse(raw)
+    if (!raw) return {}
+
+    let recentDocs = JSON.parse(raw)
+
+    if (recentDocs.constructor == Array) // handle data migration, used to be an array
+      return {}
+
+    return recentDocs
+  }
+
+  getRecentDocsAsList() {
+    let unsorted = this.getRecentDocs()
+    let sortedKeys = Object.keys(unsorted).sort((a, b) => unsorted[a].lastActive > unsorted[b].lastActive)
+    return sortedKeys.map((key) => unsorted[key])
   }
 
   saveRecentDocs(recentDocs) {
-    // remove duplicates
-    let docMap = {}
-    recentDocs.forEach((doc) => docMap[doc.id] = doc)
-    let deduped = Object.values(docMap)
-
-    localStorage.setItem("recentDocs", JSON.stringify(deduped))
+    localStorage.setItem("recentDocs", JSON.stringify(recentDocs))
   }
 
   saveCurrentDocToRecentDocs() {
     let recentDocs = this.getRecentDocs()
-    recentDocs.push({ id: this.getDocId(), title: this.getDocTitle() })
+    recentDocs[this.getDocId()] = { id: this.getDocId(), title: this.getDocTitle(), lastActive: Date.now() }
     this.saveRecentDocs(recentDocs)
   }
 
@@ -180,7 +187,7 @@ export default class App extends React.Component {
         <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
         <div className="Sidebar">
           <Network network={ this.store.network } store={ this.store } />
-          <Documents recentDocs={ this.getRecentDocs() } />
+          <Documents recentDocs={ this.getRecentDocsAsList() } />
           <Changes store={ this.store } />
         </div>
       </div>
