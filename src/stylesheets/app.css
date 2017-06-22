@@ -206,7 +206,7 @@ h2 {
 }
 
 .Network__bonjour .bonjourSwitch {
-  height: 20px;
+  width: 32px;
   vertical-align: top;
   margin-left: 172px;
 }
