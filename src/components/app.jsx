@@ -34,8 +34,7 @@ export default class App extends React.Component {
     })
 
     ipcRenderer.on("forkDocument", () => {
-      this.store.dispatch({ type: "FORK_DOCUMENT" })
-      this.setWindowTitle()
+      this.fork()
       this.board.flash.show(`Forked document (${ this.getDocUrl() })`)
     })
 
@@ -109,6 +108,12 @@ export default class App extends React.Component {
     localStorage.setItem("recentDocs", JSON.stringify(deduped))
   }
 
+  saveCurrentDocToRecentDocs() {
+    let recentDocs = this.getRecentDocs()
+    recentDocs.push({ id: this.getDocId(), title: "Untitled" })
+    this.saveRecentDocs(recentDocs)
+  }
+
   open(docId) {
     let fileName = docId + ".trellis"
     let savePath = Path.join(SAVE_DIRECTORY, fileName)
@@ -122,11 +127,16 @@ export default class App extends React.Component {
       this.store.dispatch({ type: "OPEN_DOCUMENT", docId: docId })
     }
 
-    let recentDocs = this.getRecentDocs()
-    recentDocs.push({ id: this.getDocId(), title: "Untitled" })
-    this.saveRecentDocs(recentDocs)
+    this.saveCurrentDocToRecentDocs()
     this.setState({}) // hack to force re-render
 
+    this.setWindowTitle()
+  }
+
+  fork() {
+    this.store.dispatch({ type: "FORK_DOCUMENT" })
+    this.saveCurrentDocToRecentDocs()
+    this.setState({}) // hack to force re-render
     this.setWindowTitle()
   }
 
