@@ -101,7 +101,12 @@ export default class App extends React.Component {
   }
 
   saveRecentDocs(recentDocs) {
-    localStorage.setItem("recentDocs", JSON.stringify(recentDocs))
+    // remove duplicates
+    let docMap = {}
+    recentDocs.forEach((doc) => docMap[doc.id] = doc)
+    let deduped = Object.values(docMap)
+
+    localStorage.setItem("recentDocs", JSON.stringify(deduped))
   }
 
   open(docId) {

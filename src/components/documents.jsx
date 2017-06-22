@@ -9,7 +9,8 @@ export default class Documents extends React.Component {
     let documents = this.props.recentDocs.slice(-4).reverse()
 
     let documentsPartial = documents.map((doc) => {
-      return <div key={doc.id} className="document">
+      let key = "recentDocs[" + doc.id + "]"
+      return <div key={key} className="document">
         <div className="docid">{doc.id}</div>
         <div className="title">{doc.title}</div>
         <div className="users">Alice · Bob</div>
