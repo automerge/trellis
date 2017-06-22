@@ -19,12 +19,21 @@
   width: 50%;
   min-height: 50%;
   max-height: 80%;
-  overflow-y: scroll
+  overflow-y: scroll;
+  position: relative;
 }
 
-.Card__close, .Card__delete {
+.Card__close {
   cursor: pointer;
-  float: right;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.Card__delete {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
 }
 
 .Card__title {
