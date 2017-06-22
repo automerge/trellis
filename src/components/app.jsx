@@ -21,6 +21,7 @@ export default class App extends React.Component {
 
     window.app    = this
     this.autoSave = this.autoSave.bind(this)
+    this.open     = this.open.bind(this)
     this.store    = new Store()
 
     this.store.subscribe(() => {
@@ -190,7 +191,7 @@ export default class App extends React.Component {
         <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
         <div className="Sidebar">
           <Network network={ this.store.network } store={ this.store } />
-          <Documents recentDocs={ this.getRecentDocsAsList() } />
+          <Documents recentDocs={ this.getRecentDocsAsList() } openDocument={ this.open } />
           <Changes store={ this.store } />
         </div>
       </div>

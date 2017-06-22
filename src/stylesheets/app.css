@@ -220,6 +220,7 @@ h2 {
   position: relative;
   font-size: 12px;
   margin-bottom: 6px;
+  cursor: pointer;
 }
 .Documents .document .docid {
   color: #777;
