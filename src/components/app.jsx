@@ -70,6 +70,10 @@ export default class App extends React.Component {
     return "trellis://" + this.getDocId()
   }
 
+  getDocTitle() {
+    return this.store.getState().boardTitle
+  }
+
   setWindowTitle() {
     remote.getCurrentWindow().setTitle(this.getDocUrl())
   }
@@ -110,7 +114,7 @@ export default class App extends React.Component {
 
   saveCurrentDocToRecentDocs() {
     let recentDocs = this.getRecentDocs()
-    recentDocs.push({ id: this.getDocId(), title: "Untitled" })
+    recentDocs.push({ id: this.getDocId(), title: this.getDocTitle() })
     this.saveRecentDocs(recentDocs)
   }
 
