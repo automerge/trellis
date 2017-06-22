@@ -118,13 +118,6 @@ export default class App extends React.Component {
     }
 
     let recentDocs = this.getRecentDocs()
-    let currentDocIndex = recentDocs.findIndex((doc) => doc.id === this.getDocId())
-
-    while(currentDocIndex !== -1) {
-      recentDocs      = recentDocs.slice(currentDocIndex, 1)
-      currentDocIndex = recentDocs.findIndex((doc) => doc.id === this.getDocId())
-    }
-
     recentDocs.push({ id: this.getDocId(), title: "Untitled" })
     this.saveRecentDocs(recentDocs)
     this.setState({}) // hack to force re-render
