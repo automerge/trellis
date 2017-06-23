@@ -27,26 +27,26 @@ html, body, #App {
 }
 
 :root {
-  /* https://coolors.co/1f2421-216869-49a078-e6ff44-dce1de */
-  --color-app: rgb(33, 104, 105);
-  --color-change-highlight: rgb(230, 255, 68);
+  /* https://coolors.co/d00000-ffba08-a2aebb-3e363f-3f88c5 */
+  --color-app: #3F88C5;
+  --color-change-highlight: #FFBA08;
 
-  --color-dark: rgb(31, 36, 33);
-  --color-dim: #4C544F;
-  --color-medium: rgb(220, 225, 222);
+  --color-dark: #3E363F;
+  --color-dim: #777;
+  --color-medium: #A2AEBB;
   --color-light: white;
 
   /* yellow LED */
-  --color-led-connecting: #E6FF44;
-  --color-led-connecting-border: #B1C435;
+  --color-led-connecting: #FFBA08;
+  --color-led-connecting-border: #AA7B05;
 
   /* green LED */
-  --color-led-connected: #00DB74;
-  --color-led-connected-border: #009B52;
+  --color-led-connected: #3F88C5;
+  --color-led-connected-border: #27547A;
 
   /* gray LED */
-  --color-led-disconnected: #CCCCCC;
-  --color-led-disconnected-border: #4A4A4A;
+  --color-led-disconnected: #A2AEBB;
+  --color-led-disconnected-border: #6A727A;
 
   /* red LED */
   --color-led-error: #FF001F;
@@ -275,8 +275,8 @@ h2 {
   padding-top: 0;
 }
 .Documents .document {
-  background: #f5f5f5;
-  border: 1px solid #ccc;
+  background: #FAFAFA;
+  border: 1px solid #DDDDDD;
   border-radius: 8px;
   padding: 6px 8px;
   position: relative;
@@ -325,17 +325,16 @@ h2 {
   height: 100%;
   min-height: 11px;
   width: 1px;
-  background: #979797;
+  background: var(--color-medium);
   position: absolute;
   left: 9px;
   top: 12px;
 }
 .Changes li.highlight {
-  color: #333;
+  color: var(--color-dark);
 }
 .Changes span.card,
 .Changes span.list {
-  color: var(--color-dark);
   color: var(--color-dark);
   font-weight: 500;
 }
