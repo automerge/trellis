@@ -42,8 +42,8 @@ html, body, #App {
   --color-led-connecting-border: #AA7B05;
 
   /* green LED */
-  --color-led-connected: #3F88C5;
-  --color-led-connected-border: #27547A;
+  --color-led-connected: #3BD100;
+  --color-led-connected-border: #227A00;
 
   /* gray LED */
   --color-led-disconnected: #A2AEBB;
