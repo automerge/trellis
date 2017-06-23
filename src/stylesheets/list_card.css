@@ -37,7 +37,7 @@
     background: #fff;
   }
   10% {
-    border: 1px solid #ffa500;
+    border: 1px solid var(--color-highlight);
     background: #fffcd5;
   }
   from {

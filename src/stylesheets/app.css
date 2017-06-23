@@ -26,13 +26,20 @@ html, body, #App {
   padding: 0;
 }
 
+:root {
+  --color-app: #5BCFFF;
+  --color-change-highlight: yellow;
+  --color-dark: #333333;
+  --color-light: #F9F9F9;
+}
+
 a {
   cursor: pointer;
 }
 
 .App {
   font-family: Helvetica Neue, Helvetica, Arial;
-  color: #333;
+  color: var(--color-dark);
   height: 100%;
   display: grid;
   grid-template-rows: 25% 25% 25% 25%;
@@ -45,7 +52,7 @@ a {
   padding-left: 15pt;
   display: flex;
   flex-direction: column;
-  background-color: #5BCFFF;
+  background-color: var(--color-app);
   font-family: "Nunito";
   position: relative;
 }
@@ -93,7 +100,7 @@ h2 {
 .Inspector {
   grid-row: 4;
   grid-column: 1 / 4;
-  background-color: #f8f8f8;
+  background-color: var(--color-light);
   font-size: 8pt;
   padding: 10pt 14pt;
   border-top: 1px solid #aaa;
@@ -121,7 +128,7 @@ h2 {
 
 @keyframes highlight-fade-in-out {
   from { background: #fff; }
-  10% { background: #F4EE98; }
+  10% { background: var(--color-highlight); }
   to { background: #fff; }
 }
 
@@ -148,7 +155,7 @@ h2 {
 .Sidebar {
   grid-row: 1 / 5;
   grid-column: 4;
-  background-color: #f8f8f8;
+  background-color: var(--color-light);
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
   font-size: 12px;
