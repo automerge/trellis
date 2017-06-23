@@ -169,7 +169,8 @@ export default class App extends React.Component {
 
   render() {
     let highlightCard = undefined
-    let recentChanges = this.store.getHistory().slice(-2)
+    let history = this.store.getHistory()
+    let recentChanges = history.slice(-2)
     let prevChange = recentChanges[0]
     let currentChange = recentChanges[1]
     if (currentChange && currentChange.changeset) {
@@ -192,7 +193,7 @@ export default class App extends React.Component {
         <div className="Sidebar">
           <Network network={ this.store.network } store={ this.store } />
           <Documents recentDocs={ this.getRecentDocsAsList() } openDocument={ this.open } />
-          <Changes store={ this.store } />
+          <Changes store={ this.store } history={ history } />
         </div>
       </div>
     )
