@@ -4,22 +4,22 @@ import DropTarget from './drop_target'
 import ReactDOM from 'react-dom'
 
 export default class ListCard extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.onDragStart   = this.onDragStart.bind(this)
     this.show          = this.show.bind(this)
   }
 
   onDragStart(event) {
-    event.dataTransfer.setData("text", this.props.cardId)
-  }
-
-  card() {
-    return this.props.store.findCard(this.props.cardId)
+    event.dataTransfer.setData("text", this.props.card.id)
   }
 
   show() {
-    this.props.showModal(this.card())
+    this.props.showModal(this.props.card)
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.card !== this.props.card
   }
 
   componentDidMount() {
@@ -34,7 +34,7 @@ export default class ListCard extends React.Component {
     if(this.highlightActive)
       return false
 
-    if(this.props.highlightOptions && this.props.highlightOptions.cardId === this.props.cardId) {
+    if(this.props.highlightOptions && this.props.highlightOptions.cardId === this.props.card.id) {
       let node = ReactDOM.findDOMNode(this)
       this.highlightActive = true
       node.classList.add("highlighted")
@@ -49,7 +49,7 @@ export default class ListCard extends React.Component {
 
   render() {
     let commentsPartial
-    let commentsCount = this.props.store.findCommentsByCard(this.props.cardId).length
+    let commentsCount = this.props.store.findCommentsByCard(this.props.card.id).length
     if(commentsCount > 0)
       commentsPartial = <div className="ListCard__commentsCount">
         <img src="assets/images/comment.svg" />
@@ -62,11 +62,11 @@ export default class ListCard extends React.Component {
         draggable="true"
         onDragStart={ this.onDragStart }
         onClick={ this.show } >
-        <div className="ListCard__title"> { this.card().title } </div>
+        <div className="ListCard__title"> { this.props.card.title } </div>
         <div style={{ clear: "both" }} />
 
         { commentsPartial }
-        <Assignments readonly={ true } cardId={ this.props.cardId } store={ this.props.store } />
+        <Assignments readonly={ true } cardId={ this.props.card.id } store={ this.props.store } />
       </div>
     )
   }

@@ -28,7 +28,7 @@ export default class List extends React.Component {
           highlightOptions={ this.props.highlightOptions }
           showModal={ this.props.showModal }
           store={ this.props.store }
-          cardId={ card.id }
+          card={ card }
           key={ card.id } />
       </DropTarget>
     })
