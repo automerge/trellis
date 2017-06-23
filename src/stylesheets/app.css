@@ -27,9 +27,11 @@ html, body, #App {
 }
 
 :root {
-  --color-app: #aaa;
+  --color-app: #AAAAAA;
   --color-change-highlight: yellow;
   --color-dark: #333333;
+  --color-dim: #777777;
+  --color-medium: #CCCCCC;
   --color-light: #F9F9F9;
 }
 
@@ -265,7 +267,7 @@ h2 {
   cursor: pointer;
 }
 .Documents .document .docid {
-  color: #777;
+  color: var(--color-dim);
 }
 .Documents .document .title {
   font-size: 16px;
@@ -291,7 +293,7 @@ h2 {
   min-height: 14px;
   padding-left: 24px;
   padding-bottom: 8px;
-  color: #777;
+  color: var(--color-dim);
 }
 .Changes img.changeNode {
   position: absolute;
@@ -313,21 +315,11 @@ h2 {
 .Changes li.highlight {
   color: #333;
 }
-.Changes span.card {
-  color: #353;
-}
+.Changes span.card,
 .Changes span.list {
-  color: #425;
-}
-
-.Tesseract__info {
-  margin-top: 30pt;
-  font-size: 8pt;
-  color: #777;
-}
-.Tesseract__info ul {
-  list-style-type: none;
-  padding: 0;
+  color: var(--color-dark);
+  color: var(--color-dark);
+  font-weight: 500;
 }
 
 .Assignments {
