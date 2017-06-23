@@ -10,7 +10,7 @@ import fs from 'fs'
 import Path from 'path'
 import aMPL from 'ampl'
 
-const SAVE_DIRECTORY = Path.join(remote.app.getPath('documents'), "Trellis")
+const SAVE_DIRECTORY = process.env.SAVE_DIR || Path.join(remote.app.getPath('documents'), "Trellis")
 if(!fs.existsSync(SAVE_DIRECTORY)) fs.mkdirSync(SAVE_DIRECTORY)
 
 const {dialog} = require('electron').remote
