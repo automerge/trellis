@@ -149,27 +149,39 @@ export default class Network extends React.Component {
 
     return <div className="Network">
       <h2>Network <img src="assets/images/peers.svg" /></h2>
-      <table>
+      <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
+
+      <div className="Signalers">
+        <div className="Signaler__introduce__title">
+          <div className={ "led-" + this.state.introducerStatus } />
+          Introducer
+        </div>
+        <div className="Signaler__introduce__detail">
+          <textarea 
+            placeholder="ip:port" 
+            onKeyDown={ this.handleInput } 
+            ref={ (input) => this.introductionInput = input }
+            defaultValue={ this.introducer }
+          />
+        </div>
+        <div className="Signaler__introduce__action">
+          <button onClick={ () => this.doIntroduction() }>Connect</button>
+        </div>
+
+        <div className="Signaler__bonjour__title">
+          <div className={ "led-" + bonjourLed  } />
+          Bonjour
+        </div>
+        <div className="Signaler__bonjour__detail" />
+        <div className="Signaler__bonjour__action">
+          <img className="bonjourSwitch" src={bonjourSwitchPath} onClick={ this.toggleBonjour } />
+        </div>
+      </div>
+
+      <table className="Peers">
         <thead><tr><th></th><th>Name</th><th>ID</th><th>Sent</th><th>Received</th></tr></thead>
         <tbody>{ peersPartial }</tbody>
       </table>
-      <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
-      <div className="Network__introduce">
-        <div className={ "led-" + this.state.introducerStatus } />
-        <h4>Introducer</h4>
-        <textarea 
-          placeholder="ip:port" 
-          onKeyDown={ this.handleInput } 
-          ref={ (input) => this.introductionInput = input }
-          defaultValue={ this.introducer }
-        />
-        <button onClick={ () => this.doIntroduction() }>Connect</button>
-      </div>
-      <div className="Network__bonjour">
-        <div className={ "led-" + bonjourLed  } />
-        <h4> Bonjour </h4>
-        <img className="bonjourSwitch" src={bonjourSwitchPath} onClick={ this.toggleBonjour } />
-      </div>
     </div>
   }
 }
