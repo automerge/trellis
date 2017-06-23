@@ -4,7 +4,7 @@
   width: 240px;
   overflow-y: scroll;
   flex-shrink: 0;
-  color: #E0F6FF;
+  color: var(--color-light);
 }
 
 .List__title {

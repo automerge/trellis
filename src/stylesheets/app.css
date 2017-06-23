@@ -27,7 +27,7 @@ html, body, #App {
 }
 
 :root {
-  --color-app: #5BCFFF;
+  --color-app: #aaa;
   --color-change-highlight: yellow;
   --color-dark: #333333;
   --color-light: #F9F9F9;
@@ -75,7 +75,7 @@ a {
   margin: 0;
   flex-grow: 0;
   flex-shrink: 0;
-  color: rgb(29,119,156);
+  color: var(--color-light);
   padding: 20px 0 40px 0;
   font-size: 28px;
   width: 100%;

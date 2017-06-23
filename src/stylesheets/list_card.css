@@ -5,7 +5,7 @@
   margin-bottom: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
-  box-shadow: 0 2px 10px 0px #59ADD0;
+  box-shadow: 0 2px 10px 0px rgba(0,0,0,0.2);
   color: #777;
 }
 
@@ -31,24 +31,8 @@
   margin-left: -2px;
 }
 
-@keyframes highlight-card-fade-in-out {
-  from {
-    border: 1px solid #ccc;
-    background: #fff;
-  }
-  10% {
-    border: 1px solid var(--color-highlight);
-    background: #fffcd5;
-  }
-  from {
-    border: 1px solid #ccc;
-    background: #fff;
-  }
-}
-
 .ListCard.highlighted {
-  animation-duration: 3s;
-  animation-name: highlight-card-fade-in-out
+  border: 1px solid var(--color-change-highlight);
 }
 
 .ListCard__commentsCount {
