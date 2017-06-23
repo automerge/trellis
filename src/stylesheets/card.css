@@ -17,7 +17,7 @@
   box-shadow: 0 2px 6px 0px rgba(0,0,0,0.2);
   color: var(--color-dim);
   width: 50%;
-  min-height: 50%;
+  min-height: 240px;
   max-height: 80%;
   overflow-y: scroll;
   position: relative;
