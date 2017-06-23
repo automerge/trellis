@@ -32,8 +32,8 @@
 }
 
 .ListCard.highlighted {
+  color: var(--color-change-highlight);
   border: 1px solid var(--color-change-highlight);
-  background: var(--color-change-highlight-bg);
 }
 
 .ListCard__commentsCount {

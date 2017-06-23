@@ -27,31 +27,31 @@ html, body, #App {
 }
 
 :root {
-  /* https://coolors.co/d00000-ffba08-a2aebb-3e363f-3f88c5 */
-  --color-app: #3F88C5;
-  --color-change-highlight: #AA7B05;
-  --color-change-highlight-bg: #FFBA08;
+  /* http://paletton.com/#uid=22D050kmno42OK+d2vltShKPC9f */
+  --color-app: #61A933;
+  --color-change-highlight: #810927;
+  --color-change-highlight-bg: #E4879E;
 
-  --color-dark: #3E363F;
+  --color-dark: #333;
   --color-dim: #777;
-  --color-medium: #A2AEBB;
+  --color-medium: #ccc;
   --color-light: white;
 
   /* yellow LED */
-  --color-led-connecting: #FFBA08;
-  --color-led-connecting-border: #AA7B05;
+  --color-led-connecting: #FFFF00;
+  --color-led-connecting-border: #AAAA00;
 
   /* green LED */
-  --color-led-connected: #3BD100;
-  --color-led-connected-border: #227A00;
+  --color-led-connected: #61A933;
+  --color-led-connected-border: #194100;
 
   /* gray LED */
-  --color-led-disconnected: #A2AEBB;
-  --color-led-disconnected-border: #6A727A;
+  --color-led-disconnected: #ccc;
+  --color-led-disconnected-border: #777;
 
   /* red LED */
-  --color-led-error: #FF001F;
-  --color-led-errorborder: #B10015;
+  --color-led-error: #810927;
+  --color-led-errorborder: #430011;
 }
 
 a {
