@@ -29,10 +29,27 @@ html, body, #App {
 :root {
   --color-app: #AAAAAA;
   --color-change-highlight: yellow;
+
   --color-dark: #333333;
   --color-dim: #777777;
   --color-medium: #CCCCCC;
   --color-light: #F9F9F9;
+
+  /* yellow LED */
+  --color-led-connecting: #F8E81C;
+  --color-led-connecting-border: #F6A623;
+
+  /* green LED */
+  --color-led-connected: #7ED321;
+  --color-led-connected-border: #417505;
+
+  /* gray LED */
+  --color-led-disconnected: #CCCCCC;
+  --color-led-disconnected-border: #4A4A4A;
+
+  /* red LED */
+  --color-led-error: #FF001F;
+  --color-led-errorborder: #B10015;
 }
 
 a {
@@ -430,16 +447,17 @@ h2 {
 }
 
 .led-connected, .led-error, .led-connecting, .led-disconnected {
-  width: 10px;
-  height: 10px;
   display: inline-block;
   vertical-align: middle;
   margin-right: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
 }
 
 .led-disconnected {
-  background: url("../assets/images/LED-gray.svg");
-  background-size: 10px 10px;
+  border: 1px solid var(--color-led-disconnected-border);
+  background: var(--color-led-disconnected);
 }
 
 @keyframes blink {
@@ -449,17 +467,39 @@ h2 {
 }
 
 .led-connecting {
-  background: url("../assets/images/LED-yellow.svg");
-  background-size: 10px 10px;
+  border: 1px solid var(--color-led-connecting-border);
+  background: var(--color-led-connecting);
   animation: blink normal 2s infinite ease-in-out;
 }
 
 .led-error {
-  background: url("../assets/images/LED-red.svg");
-  background-size: 10px 10px;
+  border: 1px solid var(--color-led-error-border);
+  background: var(--color-led-error);
 }
 
 .led-connected {
-  background: url("../assets/images/LED-green.svg");
-  background-size: 10px 10px;
+  border: 1px solid var(--color-led-connected-border);
+  background: var(--color-led-connected);
+}
+
+.led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.led.active {
+  border: 1px solid var(--color-led-connected-border);
+  background: var(--color-led-connected);
+}
+.led.waiting {
+  border: 1px solid var(--color-led-waiting-border);
+  background: var(--color-led-waiting);
+}
+.led.problem {
+  border: 1px solid var(--color-led-problem-border);
+  background: var(--color-led-problem);
+}
+.led.inactive {
+  border: 1px solid var(--color-led-inactive-border);
+  background: var(--color-led-inactive);
 }

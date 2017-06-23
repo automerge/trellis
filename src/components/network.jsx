@@ -119,8 +119,8 @@ export default class Network extends React.Component {
     let peersPartial = Object.keys(peers).map((id, index) => {
       let peer = peers[id]
       let name = peer.name
-      let ledColor = peer.connected ? "green" : "yellow"
-      let ledPath = "assets/images/LED-" + ledColor + ".svg"
+      let ledStatus = peer.connected ? "active" : "waiting"
+      let ledKlass = "led " + ledStatus
       let key = "peer-" + id
 
       let namePartial
@@ -131,7 +131,7 @@ export default class Network extends React.Component {
         namePartial = name
 
       return <tr key={key}>
-            <td className="led"><img src={ledPath} /></td>
+            <td><div className={ledKlass}></div></td>
             <td className="user">{ namePartial }</td>
             <td className="id">{this.formatUUID(id)}</td>
             <td className="sent">{index > 0 ? peer.messagesSent : ""}</td>
