@@ -15,7 +15,7 @@
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 6px 0px rgba(0,0,0,0.2);
-  color: #555;
+  color: var(--color-dim);
   width: 50%;
   min-height: 50%;
   max-height: 80%;
@@ -64,7 +64,6 @@
   border: none;
   outline: none;
   padding: 0;
-  color: #555;
   width: 90%;
   word-wrap: break-word;
   display: block;
@@ -84,7 +83,7 @@
   text-transform: uppercase;
   font-size: 14px;
   text-transform: uppercase;
-  color: #888;
+  color: var(--color-dim);
 }
 
 .Card .Assignments {
@@ -105,10 +104,10 @@
 .Card .Comments button {
   float: right;
   margin-bottom: 20px;
-  background-color: #abd67c;
+  background-color: var(--color-medium);
   color: rgba(0,0,0,0.5);
   padding: 0.3em 0.8em;
-  border: 1px solid #558222;
+  border: 1px solid var(--color-dim);
   border-radius: 4px;
   font-size: 12px;
   font-family: "Open Sans";
@@ -126,7 +125,7 @@
 
 .Comment__timestamp {
   font-size: 10px;
-  color: #BBB;
+  color: var(--color-medium);
   margin-top: 5px;
 }
 
