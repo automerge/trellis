@@ -29,7 +29,8 @@ html, body, #App {
 :root {
   /* https://coolors.co/d00000-ffba08-a2aebb-3e363f-3f88c5 */
   --color-app: #3F88C5;
-  --color-change-highlight: #FFBA08;
+  --color-change-highlight: #AA7B05;
+  --color-change-highlight-bg: #FFBA08;
 
   --color-dark: #3E363F;
   --color-dim: #777;
@@ -313,22 +314,29 @@ h2 {
   padding-bottom: 8px;
   color: var(--color-dim);
 }
-.Changes img.changeNode {
+.Changes div.changeNode {
   position: absolute;
-  width: 11px;
-  height: 11px;
   left: 0;
   top: 1px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid var(--color-dim);
+  background: var(--color-medium);
   cursor: pointer;
+}
+.Changes .highlight div.changeNode {
+  border: 1px solid var(--color-change-highlight);
+  background: var(--color-change-highlight-bg);
 }
 .Changes div.changeEdge {
   height: 100%;
   min-height: 11px;
   width: 1px;
-  background: var(--color-medium);
+  background: var(--color-dim);
   position: absolute;
-  left: 9px;
-  top: 12px;
+  left: 6px;
+  top: 13px;
 }
 .Changes li.highlight {
   color: var(--color-dark);

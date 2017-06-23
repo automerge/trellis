@@ -92,19 +92,14 @@ export default class Changes extends React.Component {
       let changeMessage = this.displayChange(change, prevChange)
 
       let klass = ""
-      let icon = "change-node"
       if (this.store.localState.timeTravel && index === this.store.localState.timeTravel.index) {
         klass = "highlight"
-        icon = "change-highlight"
       } else if(!this.store.localState.timeTravel && index == 0) {
         klass = "highlight"
-        icon = "change-highlight"
       }
 
-      let iconPath = "assets/images/" + icon + ".svg"
-
       return <li key={key} className={klass} onClick={ () => this.timeTravelTo(index, change) }>
-        <img className="changeNode" src={iconPath} />
+        <div className="changeNode" />
         {edgeImg}{changeMessage}
       </li>
     })
