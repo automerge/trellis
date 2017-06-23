@@ -281,18 +281,6 @@ export default class Store extends aMPL.Store {
     return state.cards.find(card => cardId === card.id)
   }
 
-  _filter(array, callback) {
-    let indices  = Object.keys(array)
-    let filtered = []
-
-    for(let index in indices) {
-      let object = array[index]
-      if(callback(object)) filtered.push(object)
-    }
-
-    return filtered
-  }
-
   _map(array, callback) {
     let indices = Object.keys(array)
     let output  = []
@@ -305,9 +293,7 @@ export default class Store extends aMPL.Store {
   }
 
   findCardsByList(listId) {
-    let filtered = this._filter(this.getState().cards, (card) => {
-      return card.listId === listId
-    })
+    let filtered = this.getState().cards.filter(card => card.listId === listId)
 
     let sorted = this._sort(filtered, this.findCard.bind(this), (a, b) => {
       let orderA = a.order || 0
@@ -323,9 +309,7 @@ export default class Store extends aMPL.Store {
     if(!Array.isArray(this.getState().comments))
       return []
 
-    let filtered = this._filter(this.getState().comments, (comment) => {
-      return comment.cardId === cardId
-    })
+    let filtered = this.getState().comments.filter(comment => comment.cardId === cardId)
 
     let sorted = this._sort(filtered, this.findComment.bind(this), (a, b) => {
       let timestampA = Date.parse(a.createdAt || 0)
