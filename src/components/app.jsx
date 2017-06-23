@@ -183,7 +183,7 @@ export default class App extends React.Component {
 
     let cardIndex
     if(highlightCard)
-      cardIndex = this.store._findIndex(this.store.getState().cards, (c) => c.id === highlightCard )
+      cardIndex = this.store.getState().cards.findIndex(c => c.id === highlightCard)
 
     return (
       <div className="App">

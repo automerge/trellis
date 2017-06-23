@@ -172,12 +172,12 @@ export default class Store extends aMPL.Store {
 
   deleteList(state, action) {
     return Tesseract.changeset(state, this.meta(action), (doc) => {
-      let listIndex = this._findIndex(state.lists, (l) => l.id === action.listId)
+      let listIndex = state.lists.findIndex(l => l.id === action.listId)
       let listCards = this.findCardsByList(action.listId)
 
       Object.keys(listCards).forEach((key) => {
         let card = listCards[key]
-        let index = this._findIndex(doc.cards, (c) => c.id === card.id)
+        let index = doc.cards.findIndex(c => c.id === card.id)
         delete doc.cards[index]
       })
 
@@ -187,21 +187,21 @@ export default class Store extends aMPL.Store {
 
   updateCardTitle(state, action) {
     return Tesseract.changeset(state, this.meta(action), (doc) => {
-      let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
+      let cardIndex = state.cards.findIndex(c => c.id === action.cardId)
       doc.cards[cardIndex].title = action.newTitle
     })
   }
 
   updateCardDescription(state, action) {
     return Tesseract.changeset(state, this.meta(action), (doc) => {
-      let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
+      let cardIndex = state.cards.findIndex(c => c.id === action.cardId)
       doc.cards[cardIndex].description = action.newDescription
     })
   }
 
   updateAssignments(state, action) {
     return Tesseract.changeset(state, this.meta(action), (doc) => {
-      let cardIndex = this._findIndex(state.cards, (c) => c.id === action.cardId)
+      let cardIndex = state.cards.findIndex(c => c.id === action.cardId)
       doc.cards[cardIndex].assigned[action.person] = action.isAssigned
     })
   }
@@ -209,7 +209,7 @@ export default class Store extends aMPL.Store {
   deleteCard(state, action) {
     return Tesseract.changeset(state, this.meta(action), (doc) => {
       let cards     = state.cards
-      let cardIndex = this._findIndex(cards, (c) => c.id === action.cardId)
+      let cardIndex = cards.findIndex(c => c.id === action.cardId)
 
       delete doc.cards[cardIndex]
     })
@@ -220,20 +220,20 @@ export default class Store extends aMPL.Store {
       // Move card to next list
       let cards     = state.cards
       let cardId    = action.cardId
-      let cardIndex = this._findIndex(cards, (card) => card.id === cardId)
+      let cardIndex = cards.findIndex(card => card.id === cardId)
 
       doc.cards[cardIndex].listId = action.listId
 
       // Update order of every following card
       if(action.afterCardId) {
         let listCards   = this.findCardsByList(action.listId)
-        let insertIndex = this._findIndex(listCards, (card) => card.id === action.afterCardId)
+        let insertIndex = listCards.findIndex(card => card.id === action.afterCardId)
         let order       = (listCards[insertIndex].order || 0) + 1
 
         doc.cards[cardIndex].order = order
 
         for(let index = insertIndex + 1; index <= listCards.length - 1; index++) {
-          let globalIndex = this._findIndex(state.cards, (card) => card.id === listCards[index].id)
+          let globalIndex = state.cards.findIndex(card => card.id === listCards[index].id)
 
           if(globalIndex != cardIndex) {
             order = order + 1
@@ -247,7 +247,7 @@ export default class Store extends aMPL.Store {
         doc.cards[cardIndex].order = order
 
         for(let index = 0; index < listCards.length; index++) {
-          let globalIndex = this._findIndex(state.cards, (card) => card.id === listCards[index].id)
+          let globalIndex = state.cards.findIndex(card => card.id === listCards[index].id)
 
           if(globalIndex != cardIndex) {
             order = order + 1
@@ -291,15 +291,6 @@ export default class Store extends aMPL.Store {
     }
 
     return filtered
-  }
-
-  _findIndex(array, callback) {
-    let indices = Object.keys(array)
-
-    for(let index in indices) {
-      let object = array[index]
-      if(callback(object)) return parseInt(index)
-    }
   }
 
   _map(array, callback) {
