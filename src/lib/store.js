@@ -278,9 +278,7 @@ export default class Store extends aMPL.Store {
   }
 
   findCardFromState(cardId, state) {
-    return this._find(state.cards, (card) => {
-      return cardId === card.id
-    })
+    return state.cards.find(card => cardId === card.id)
   }
 
   _filter(array, callback) {
@@ -293,15 +291,6 @@ export default class Store extends aMPL.Store {
     }
 
     return filtered
-  }
-
-  _find(array, callback) {
-    let indices = Object.keys(array)
-
-    for(let index in indices) {
-      let object = array[index]
-      if(callback(object)) return object
-    }
   }
 
   _findIndex(array, callback) {
@@ -362,9 +351,7 @@ export default class Store extends aMPL.Store {
   }
 
   findCommentFromState(commentId, state) {
-    return this._find(state.comments, (comment) => {
-      return commentId === comment.id
-    })
+    return state.comments.find(comment => commentId === comment.id )
   }
 
   _sort(collection, finder, compare) {
@@ -390,8 +377,6 @@ export default class Store extends aMPL.Store {
   }
 
   findListFromState(listId, state) {
-    return this._find(state.lists, (list) => {
-      return listId === list.id
-    })
+    return state.lists.find(list => listId === list.id)
   }
 }
