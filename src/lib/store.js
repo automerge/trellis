@@ -281,21 +281,10 @@ export default class Store extends aMPL.Store {
     return state.cards.find(card => cardId === card.id)
   }
 
-  _map(array, callback) {
-    let indices = Object.keys(array)
-    let output  = []
-
-    for(let index in indices) {
-      output[index] = callback(array[index], index)
-    }
-
-    return output
-  }
-
   findCardsByList(listId) {
     let filtered = this.getState().cards.filter(card => card.listId === listId)
 
-    let sorted = this._sort(filtered, this.findCard.bind(this), (a, b) => {
+    let sorted = filtered.sort((a, b) => {
       let orderA = a.order || 0
       let orderB = b.order || 0
 
@@ -311,7 +300,7 @@ export default class Store extends aMPL.Store {
 
     let filtered = this.getState().comments.filter(comment => comment.cardId === cardId)
 
-    let sorted = this._sort(filtered, this.findComment.bind(this), (a, b) => {
+    let sorted = filtered.sort((a, b) => {
       let timestampA = Date.parse(a.createdAt || 0)
       let timestampB = Date.parse(b.createdAt || 0)
 
@@ -327,24 +316,6 @@ export default class Store extends aMPL.Store {
 
   findCommentFromState(commentId, state) {
     return state.comments.find(comment => commentId === comment.id )
-  }
-
-  _sort(collection, finder, compare) {
-    // Remove the proxy in front of Tesseract objects
-    let array = this._map(collection, (item) => {
-      let newItem = {}
-
-      Object.keys(item).forEach((key) => {
-        newItem[key] = item[key]
-      })
-
-      return newItem
-    })
-
-    let sorted = array.sort(compare)
-    let output = sorted.map((item) => finder(item.id))
-
-    return output
   }
 
   findList(listId) {

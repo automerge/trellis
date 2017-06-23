@@ -41,7 +41,7 @@ export default class Board extends React.Component { constructor(props) {
     let state = this.props.store.getState()
 
     if(state.lists) {
-      lists = this.props.store._map(state.lists, (list) => {
+      lists = state.lists.map((list) => {
         return <List
           listId={ list.id }
           key={ list.id }
