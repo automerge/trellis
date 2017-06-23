@@ -119,7 +119,7 @@ export default class Network extends React.Component {
     let peersPartial = Object.keys(peers).map((id, index) => {
       let peer = peers[id]
       let name = peer.name
-      let ledStatus = peer.connected ? "active" : "waiting"
+      let ledStatus = peer.connected ? "connected" : "connecting"
       let ledKlass = "led " + ledStatus
       let key = "peer-" + id
 
@@ -131,7 +131,7 @@ export default class Network extends React.Component {
         namePartial = name
 
       return <tr key={key}>
-            <td><div className={ledKlass}></div></td>
+            <td><div className={"led-" + ledStatus} /></td>
             <td className="user">{ namePartial }</td>
             <td className="id">{this.formatUUID(id)}</td>
             <td className="sent">{index > 0 ? peer.messagesSent : ""}</td>

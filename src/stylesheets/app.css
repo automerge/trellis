@@ -481,25 +481,3 @@ h2 {
   border: 1px solid var(--color-led-connected-border);
   background: var(--color-led-connected);
 }
-
-.led {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.led.active {
-  border: 1px solid var(--color-led-connected-border);
-  background: var(--color-led-connected);
-}
-.led.waiting {
-  border: 1px solid var(--color-led-waiting-border);
-  background: var(--color-led-waiting);
-}
-.led.problem {
-  border: 1px solid var(--color-led-problem-border);
-  background: var(--color-led-problem);
-}
-.led.inactive {
-  border: 1px solid var(--color-led-inactive-border);
-  background: var(--color-led-inactive);
-}
