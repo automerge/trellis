@@ -42,7 +42,6 @@ export default class ListCard extends React.Component {
         node.classList.remove("highlighted")
         this.highlightActive = false
       }, 1000)
-
       return true
     }
   }
