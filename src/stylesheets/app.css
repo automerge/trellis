@@ -27,21 +27,22 @@ html, body, #App {
 }
 
 :root {
-  --color-app: #AAAAAA;
-  --color-change-highlight: yellow;
+  /* https://coolors.co/1f2421-216869-49a078-e6ff44-dce1de */
+  --color-app: rgb(33, 104, 105);
+  --color-change-highlight: rgb(230, 255, 68);
 
-  --color-dark: #333333;
-  --color-dim: #777777;
-  --color-medium: #CCCCCC;
-  --color-light: #F9F9F9;
+  --color-dark: rgb(31, 36, 33);
+  --color-dim: #4C544F;
+  --color-medium: rgb(220, 225, 222);
+  --color-light: white;
 
   /* yellow LED */
-  --color-led-connecting: #F8E81C;
-  --color-led-connecting-border: #F6A623;
+  --color-led-connecting: #E6FF44;
+  --color-led-connecting-border: #B1C435;
 
   /* green LED */
-  --color-led-connected: #7ED321;
-  --color-led-connected-border: #417505;
+  --color-led-connected: #00DB74;
+  --color-led-connected-border: #009B52;
 
   /* gray LED */
   --color-led-disconnected: #CCCCCC;
