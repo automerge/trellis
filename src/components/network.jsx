@@ -1,6 +1,7 @@
 import React from 'react'
 import InlineInput from './inline_input'
 import aMPL from 'ampl'
+const wifiName = require('wifi-name')
 
 export default class Network extends React.Component {
   constructor(props) {
@@ -15,7 +16,14 @@ export default class Network extends React.Component {
     else
       this.props.network.signaler.disableBonjour()
 
-    this.state = { 'peers': {}, 'connected': true, bonjourEnabled: bonjourEnabled, introducerStatus: "disconnected" }
+    this.state = { 'peers': {}, 'connected': true, bonjourEnabled: bonjourEnabled, introducerStatus: "disconnected", wifi: undefined }
+
+    wifiName().then(name => {
+      let state = this.state
+      state['wifi'] = name
+      this.setState(state)
+    });
+
     this.toggleNetwork = this.toggleNetwork.bind(this)
     this.toggleBonjour = this.toggleBonjour.bind(this)
     this.peerHandler = this.peerHandler.bind(this)
@@ -172,7 +180,7 @@ export default class Network extends React.Component {
           <div className={ "led-" + bonjourLed  } />
           Bonjour
         </div>
-        <div className="Signaler__bonjour__detail" />
+        <div className="Signaler__bonjour__detail">{this.state.wifi}</div>
         <div className="Signaler__bonjour__action">
           <img className="bonjourSwitch" src={bonjourSwitchPath} onClick={ this.toggleBonjour } />
         </div>
