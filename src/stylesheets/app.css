@@ -439,7 +439,8 @@ h2 {
 }
 
 .Flash {
-  background: #f8e71c;
+  background: var(--color-change-highlight-bg);
+  color: var(--color-dark);
   position: absolute;
   top: -200px;
   left: 50%;
@@ -448,9 +449,8 @@ h2 {
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
-  animation: slide-down 5s linear 0s 1 normal forwards;
+  animation: slide-down 2s linear 0s 1 normal forwards;
   border-radius: 2px;
-  color: #555;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1)
 }
 
