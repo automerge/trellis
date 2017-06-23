@@ -148,15 +148,9 @@ h2 {
   text-align: left;
 }
 
-@keyframes highlight-fade-in-out {
-  from { background: #fff; }
-  10% { background: var(--color-highlight); }
-  to { background: #fff; }
-}
-
-.Inspector table tr.highlight {
-  animation-duration: 3s;
-  animation-name: highlight-fade-in-out
+.Inspector table tr.highlight > td {
+  background: #FFF659;
+  transition: background 1s;
 }
 
 .Inspector__cards__cardId, .Inspector__cards__listId,
