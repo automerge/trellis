@@ -52,7 +52,7 @@ html, body, #App {
 
   /* red LED */
   --color-led-error: #FF001F;
-  --color-led-errorborder: #B10015;
+  --color-led-error-border: #B10015;
 }
 
 a {
