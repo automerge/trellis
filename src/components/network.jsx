@@ -94,7 +94,10 @@ export default class Network extends React.Component {
 
     if (this.props.network)
       if (newConnected)
+      {
         this.props.network.connect()
+        if (this.state.bonjourEnabled) this.props.network.signaler.enableBonjour()
+      }
       else
         this.props.network.disconnect()
   }
