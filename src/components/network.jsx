@@ -179,7 +179,7 @@ export default class Network extends React.Component {
       </div>
 
       <table className="Peers">
-        <thead><tr><th></th><th>Name</th><th>ID</th><th>Sent</th><th>Received</th></tr></thead>
+        <thead><tr><th></th><th>Peer</th><th>ID</th><th>Sent</th><th>Received</th></tr></thead>
         <tbody>{ peersPartial }</tbody>
       </table>
     </div>

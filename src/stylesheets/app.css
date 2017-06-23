@@ -205,6 +205,7 @@ h2 {
 }
 
 .Signaler__introduce__title {
+  font-size: 12px;
   grid-row: 1;
   grid-column: 1;
 }
@@ -218,6 +219,7 @@ h2 {
   justify-self: end;
 }
 .Signaler__bonjour__title {
+  font-size: 12px;
   grid-row: 2;
   grid-column: 1;
 }
@@ -270,6 +272,9 @@ h2 {
   top: 20px;
   right: 16px;
   width: 32px;
+}
+.Network table {
+  border-collapse: collapse;
 }
 .Network th {
   font-weight: normal;
@@ -475,7 +480,7 @@ h2 {
 .led-connected, .led-error, .led-connecting, .led-disconnected {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 5px;
+  margin-right: 6px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
