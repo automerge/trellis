@@ -149,8 +149,11 @@ h2 {
 }
 
 .Inspector table tr.highlight > td {
-  background: #FFF659;
-  transition: background 1s;
+  background: #FFBA08;
+  transition: background 0.5s;
+}
+.Inspector table tr > td {
+  transition: background 1.5s;
 }
 
 .Inspector__cards__cardId, .Inspector__cards__listId,
