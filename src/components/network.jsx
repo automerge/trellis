@@ -41,12 +41,7 @@ export default class Network extends React.Component {
   updatePeerName(value) {
     aMPL.config.name = value
     localStorage.setItem("peerName", value)
-
-    // Force network reconnect
-    this.props.store.dispatch({
-      type: "OPEN_DOCUMENT",
-      file: this.props.store.save()
-    })
+    this.props.store.peergroup.setName(value)
   }
 
   doIntroduction(value) {
