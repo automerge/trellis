@@ -8,7 +8,7 @@ const Tesseract = aMPL.Tesseract
 export default class Store extends aMPL.Store {
   constructor() {
 
-    let peerName = localStorage.getItem("peerName")
+    let peerName = process.env.NAME || localStorage.getItem("peerName")
     if(peerName)
       aMPL.config.name = peerName
     else {
