@@ -39,7 +39,11 @@ export default class Store extends aMPL.Store {
         case "DELETE_LIST":
           return this.deleteList(state, action)
         case "TIME_TRAVEL":
-          this.localState.timeTravel = { index: action.index, change: action.change }
+          this.localState.timeTravel = {
+            index: action.index,
+            change: action.change,
+            prevChange: action.prevChange
+          }
           return state
         case "STOP_TIME_TRAVEL":
           this.localState.timeTravel = undefined

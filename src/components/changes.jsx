@@ -9,9 +9,9 @@ export default class Changes extends React.Component {
     this.store.subscribe((x) => { this.setState(this.store.getState()) })
   }
 
-  timeTravelTo(index, change) {
+  timeTravelTo(index, change, prevChange) {
     this.store.dispatch({
-      type: "TIME_TRAVEL", index: index, change: change
+      type: "TIME_TRAVEL", index: index, change: change, prevChange: prevChange
     })
   }
 
@@ -98,7 +98,7 @@ export default class Changes extends React.Component {
         klass = "highlight"
       }
 
-      return <li key={key} className={klass} onClick={ () => this.timeTravelTo(index, change) }>
+      return <li key={key} className={klass} onClick={ () => this.timeTravelTo(index, change, prevChange) }>
         <div className="changeNode" />
         {edgeImg}{changeMessage}
       </li>

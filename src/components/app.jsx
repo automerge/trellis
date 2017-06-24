@@ -168,11 +168,18 @@ export default class App extends React.Component {
   }
 
   render() {
-    let highlightCard = undefined
+    let prevChange, currentChange, highlightCard
     let history = this.store.getHistory()
-    let recentChanges = history.slice(-2)
-    let prevChange = recentChanges[0]
-    let currentChange = recentChanges[1]
+
+    if(this.store.localState.timeTravel) {
+      currentChange = this.store.localState.timeTravel.change
+      prevChange    = this.store.localState.timeTravel.prevChange
+    } else {
+      let recentChanges = history.slice(-2)
+      prevChange    = recentChanges[0]
+      currentChange = recentChanges[1]
+    }
+
     if (currentChange && currentChange.changeset) {
       let message = currentChange.changeset.message
       if (message && message.action)
