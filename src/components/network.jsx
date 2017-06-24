@@ -34,7 +34,7 @@ export default class Network extends React.Component {
   }
 
   componentDidMount() {
-    if(this.introducer)
+    if(!process.env.PORT && this.introducer)
       this.doIntroduction(this.introducer)
   }
 
