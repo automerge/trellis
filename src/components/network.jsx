@@ -45,16 +45,16 @@ export default class Network extends React.Component {
   }
 
   doIntroduction(value) {
-    let introducer   = value || this.introductionInput.value
-    let [host, port] = introducer.split(':')
+    let introducer = value || this.introductionInput.value
+    localStorage.setItem("introducer", introducer)
 
+    let [host, port] = introducer.split(':')
     this.setState({ introducerStatus: "connecting" }, () => {
       this.props.network.signaler.manualHello(host, port, (error) => {
         if(error) {
           console.log(error)
           this.setState({ introducerStatus: "error" })
         } else {
-          localStorage.setItem("introducer", introducer)
           this.setState({ introducerStatus: "connected" })
         }
       })
