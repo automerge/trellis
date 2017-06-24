@@ -41,7 +41,7 @@ export default class Network extends React.Component {
   updatePeerName(value) {
     aMPL.config.name = value
     localStorage.setItem("peerName", value)
-    this.props.store.peergroup.setName(value)
+    this.props.store.network.peergroup.setName(value)
   }
 
   doIntroduction(value) {
