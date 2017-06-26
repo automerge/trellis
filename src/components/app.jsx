@@ -100,7 +100,7 @@ export default class App extends React.Component {
 
   getRecentDocs() {
     let raw = localStorage.getItem("recentDocs")
-    if (!raw) return {}
+    if (!raw || raw == "" || raw == "undefined") return {}
 
     let recentDocs = JSON.parse(raw)
 
