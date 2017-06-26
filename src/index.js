@@ -9,6 +9,8 @@ const {clipboard} = require('electron')
 require("dotenv").config()
 process.env.BLOCK_BONJOUR = !process.env.ENABLE_BONJOUR
 
+process.env.PORT = process.env.PORT || 4242
+
 // Set app for use in browser process
 global.app = app
 

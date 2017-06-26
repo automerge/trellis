@@ -30,12 +30,10 @@ export default class Network extends React.Component {
     this.doIntroduction = this.doIntroduction.bind(this)
     this.updatePeerName = this.updatePeerName.bind(this)
     this.handleInput = this.handleInput.bind(this)
-    this.introducer = localStorage.getItem("introducer")
   }
 
   componentDidMount() {
-    if(!process.env.PORT && this.introducer)
-      this.doIntroduction(this.introducer)
+    this.doIntroduction()
   }
 
   updatePeerName(value) {
@@ -44,8 +42,8 @@ export default class Network extends React.Component {
     this.props.store.network.peergroup.setName(value)
   }
 
-  doIntroduction(value) {
-    let introducer = value || this.introductionInput.value
+  doIntroduction() {
+    let introducer = this.introductionInput.value
     localStorage.setItem("introducer", introducer)
 
     let [host, port] = introducer.split(':')
@@ -92,7 +90,7 @@ export default class Network extends React.Component {
       {
         this.props.network.connect()
         if (this.state.bonjourEnabled) this.props.network.signaler.enableBonjour()
-        if(!process.env.PORT && this.introducer) this.doIntroduction(this.introducer)
+        this.doIntroduction()
       }
       else
         this.props.network.disconnect()
@@ -127,6 +125,7 @@ export default class Network extends React.Component {
       let peer = peers[id]
       let name = peer.name
       let ledStatus = peer.connected ? "connected" : "connecting"
+
       let ledKlass = "led " + ledStatus
       let key = "peer-" + id
 
@@ -154,6 +153,14 @@ export default class Network extends React.Component {
 
     let bonjourLed = this.state.bonjourEnabled ? "connected" : "disconnected"
 
+    let introducerDefault
+    if(process.env.INTRODUCER !== undefined)
+      introducerDefault = process.env.INTRODUCER
+    else if(localStorage.introducer !== "" && localStorage.introducer !== undefined)
+      introducerDefault = localStorage.introducer
+    else
+      introducerDefault = "localhost:4242"
+
     return <div className="Network">
       <h2>Network <img src="assets/images/peers.svg" /></h2>
       <img className="networkSwitch" src={switchPath} onClick={ this.toggleNetwork } />
@@ -168,11 +175,11 @@ export default class Network extends React.Component {
             placeholder="ip:port" 
             onKeyDown={ this.handleInput } 
             ref={ (input) => this.introductionInput = input }
-            defaultValue={ this.introducer }
+            defaultValue={ introducerDefault }
           />
         </div>
         <div className="Signaler__introduce__action">
-          <button onClick={ () => this.doIntroduction() }>Connect</button>
+          <button onClick={ this.doIntroduction }>Connect</button>
         </div>
 
         <div className="Signaler__bonjour__title">
