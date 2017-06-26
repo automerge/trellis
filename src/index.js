@@ -54,16 +54,6 @@ const createWindow = async () => {
         }},
         {
           type: "separator"
-        },
-        {
-          label: "Refresh", accelerator: 'CmdOrCtrl+R', click: (item, focusedWindow) => {
-            focusedWindow.webContents.reload()
-          }
-        },
-        {
-          label: "Open Inspector", accelerator: 'CmdOrCtrl+Option+I', click: (item, focusedWindow) => {
-            mainWindow.webContents.toggleDevTools()
-          }
         }
       ]
     },
@@ -74,6 +64,21 @@ const createWindow = async () => {
           { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
           { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
           { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+      ]
+    },
+    {
+      label: "Dev",
+      submenu: [
+        {
+          label: "Refresh", accelerator: 'CmdOrCtrl+R', click: (item, focusedWindow) => {
+            focusedWindow.webContents.reload()
+          }
+        },
+        {
+          label: "Open Inspector", accelerator: 'CmdOrCtrl+Option+I', click: (item, focusedWindow) => {
+            mainWindow.webContents.toggleDevTools()
+          }
+        }
       ]
     }
   ]
