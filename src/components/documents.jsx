@@ -18,7 +18,7 @@ export default class Documents extends React.Component {
       return <div key={key} className="document" onClick={() => this.openDocument(doc.id)}>
         <div className="docid">{doc.id}</div>
         <div className="title">{doc.title}</div>
-        <div className="users">Alice · Bob</div>
+        <div className="users"></div>
       </div>
     })
 
