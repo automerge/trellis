@@ -199,7 +199,7 @@ export default class App extends React.Component {
         <Inspector store={ this.store } highlightOptions={{ tableName: "cards", row: cardIndex }} />
         <div className="Sidebar">
           <Network network={ this.store.network } store={ this.store } />
-          <Documents recentDocs={ this.getRecentDocsAsList() } openDocument={ this.open } />
+          <Documents recentDocs={ this.getRecentDocsAsList() } network={ this.store.network } openDocument={ this.open } />
           <Changes store={ this.store } history={ history } />
         </div>
       </div>
