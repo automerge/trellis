@@ -487,16 +487,9 @@ h2 {
   background: var(--color-led-disconnected);
 }
 
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
 .led-connecting {
   border: 1px solid var(--color-led-connecting-border);
   background: var(--color-led-connecting);
-  animation: blink normal 2s infinite ease-in-out;
 }
 
 .led-error {
