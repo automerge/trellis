@@ -50,7 +50,7 @@
     }
   },
   "dependencies": {
-    "aMPL": "git+ssh://git@github.com/inkandswitch/ampl.git#v0.2.21",
+    "aMPL": "git+ssh://git@github.com/inkandswitch/ampl.git#v0.2.22",
     "assert": "1.4.1",
     "body-parser": "^1.17.2",
     "bonjour": "^3.5.0",
