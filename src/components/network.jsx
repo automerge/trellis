@@ -130,9 +130,8 @@ export default class Network extends React.Component {
       let key = "peer-" + id
 
       let namePartial
-      if(peer.self) {
+      if(peer.self)
         namePartial = <InlineInput onSubmit={ this.updatePeerName } defaultValue={ name }>{ name }</InlineInput>
-      }
       else
         namePartial = name
 
