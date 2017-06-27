@@ -19,7 +19,7 @@ export default class ListCard extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.card !== this.props.card
+    return (nextProps.card !== this.props.card) || (nextProps.commentsCount !== this.props.commentsCount)
   }
 
   componentDidMount() {
@@ -48,11 +48,10 @@ export default class ListCard extends React.Component {
 
   render() {
     let commentsPartial
-    let commentsCount = this.props.store.findCommentsByCard(this.props.card.id).length
-    if(commentsCount > 0)
+    if(this.props.commentsCount > 0)
       commentsPartial = <div className="ListCard__commentsCount">
         <img src="assets/images/comment.svg" />
-        <div className="ListCard__commentsCount__count"> { commentsCount } </div>
+        <div className="ListCard__commentsCount__count"> { this.props.commentsCount } </div>
       </div>
 
     return (

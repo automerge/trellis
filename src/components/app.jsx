@@ -100,7 +100,7 @@ export default class App extends React.Component {
 
   getRecentDocs() {
     let raw = localStorage.getItem("recentDocs")
-    if (!raw) return {}
+    if (!raw || raw == "" || raw == "undefined") return {}
 
     let recentDocs = JSON.parse(raw)
 
@@ -185,6 +185,10 @@ export default class App extends React.Component {
       if (message && message.action)
         if (message.action.type == "CREATE_CARD")
           highlightCard = this.findCreatedCard(prevChange, currentChange)
+        else if(message.action.type == "INSPECTOR_UPDATE") {
+          if(message.action.table === "cards")
+            highlightCard = this.store.getState().cards[message.action.row].id
+        }
         else
           highlightCard = message.action.cardId
     }

@@ -23,12 +23,15 @@ export default class List extends React.Component {
   render() {
     let listCards    = this.props.store.findCardsByList(this.props.listId)
     let listCardsPartial = listCards.map((card) => {
+      let commentsCount = this.props.store.findCommentsByCard(card.id).length
+
       return <DropTarget key={ card.id } listId={ this.props.listId } store={ this.props.store } afterCardId={ card.id }>
         <ListCard
           highlightOptions={ this.props.highlightOptions }
           showModal={ this.props.showModal }
           store={ this.props.store }
           card={ card }
+          commentsCount= { commentsCount }
           key={ card.id } />
       </DropTarget>
     })
