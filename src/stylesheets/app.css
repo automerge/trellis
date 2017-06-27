@@ -316,6 +316,7 @@ h2 {
   position: absolute;
   bottom: 6px;
   right: 8px;
+  max-width: 35%;
 }
 
 .Changes {
