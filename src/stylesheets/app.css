@@ -312,9 +312,7 @@ h2 {
   font-weight: 500;
 }
 .Documents .document .users {
-  position: absolute;
-  bottom: 6px;
-  right: 8px;
+  margin-top: 2px;
 }
 
 .Changes {

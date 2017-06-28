@@ -75,7 +75,7 @@ export default class Documents extends React.Component {
 
     let documentsPartial = documents.map((doc) => {
       let key = "recentDocs[" + doc.id + "]"
-      let users = (userDocs[doc.id]) ? userDocs[doc.id].join(" ・ ") : ''
+      let users = (userDocs[doc.id]) ? userDocs[doc.id].join("・") : ''
       return <div key={key} className="document" onClick={() => this.openDocument(doc.id)}>
         <div className="docid">{doc.id}</div>
         <div className="title">{doc.title}</div>
