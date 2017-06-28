@@ -67,6 +67,11 @@ export default class Documents extends React.Component {
       }
     })
 
+    // show myself in the list
+    if (!userDocs[this.props.myDocId]) { userDocs[this.props.myDocId] = []}
+    if (!userDocs[this.props.myDocId].includes(this.props.myName)) {
+      userDocs[this.props.myDocId].push(this.props.myName)
+    }
 
     let documentsPartial = documents.map((doc) => {
       let key = "recentDocs[" + doc.id + "]"
