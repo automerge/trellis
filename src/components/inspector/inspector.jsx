@@ -1,5 +1,5 @@
 import React          from 'react'
-import AutomergeInfo  from '../Automerge_info'
+import AutomergeInfo  from '../automerge_info'
 import InlineInput    from '../inline_input'
 
 export default class Inspector extends React.Component {
