@@ -1,22 +1,22 @@
 import fs from 'fs'
 import uuid from './uuid'
 import seedData from './seed_data'
-import aMPL from 'ampl'
+import MPL from 'mpl'
 
-const Tesseract = aMPL.Tesseract
+const Automerge = MPL.Automerge
 
-export default class Store extends aMPL.Store {
+export default class Store extends MPL.Store {
   constructor() {
     // Peer name needs to be set before we initialize the
-    // aMPL Store where the network is also initialized
+    // MPL Store where the network is also initialized
     let peerName = process.env.NAME || localStorage.getItem("peerName")
     if(peerName)
-      aMPL.config.name = peerName
+      MPL.config.name = peerName
     else {
       let names = [ "Amelia", "Marco", "Isabella",
                     "Meriweather", "Valentina", "Yuri" ]
 
-      aMPL.config.name = names[Math.floor(Math.random() * names.length)]
+      MPL.config.name = names[Math.floor(Math.random() * names.length)]
     }
 
     super((state, action) => {
@@ -39,7 +39,7 @@ export default class Store extends aMPL.Store {
           return this.createList(state, action)
         case "DELETE_LIST":
           return this.deleteList(state, action)
-        // To make time travel work, we set our state outside of aMPL
+        // To make time travel work, we set our state outside of MPL
         // and override .dispatch and .getState to ignore actions
         // and return our time travel state.
         case "TIME_TRAVEL":
@@ -65,7 +65,7 @@ export default class Store extends aMPL.Store {
   }
 
   createComment(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       if(!Array.isArray(doc.comments))
         doc.comments = []
 
@@ -73,7 +73,7 @@ export default class Store extends aMPL.Store {
         id: uuid(),
         cardId: action.cardId,
         body: action.body,
-        author: aMPL.config.name ,
+        author: MPL.config.name ,
         createdAt: new Date().toJSON()
       })
     })
@@ -88,7 +88,7 @@ export default class Store extends aMPL.Store {
         && this.localState.timeTravel) {
       console.log("Ignoring action because we are time traveling.")
     } else {
-      aMPL.Store.prototype.dispatch.call(this, action)
+      MPL.Store.prototype.dispatch.call(this, action)
     }
   }
 
@@ -98,13 +98,13 @@ export default class Store extends aMPL.Store {
     if(this.localState.timeTravel && this.localState.timeTravel.change) {
       return this.localState.timeTravel.change.snapshot
     } else {
-      return aMPL.Store.prototype.getState.call(this)
+      return MPL.Store.prototype.getState.call(this)
     }
   }
 
   meta(action) {
     return {
-      author: aMPL.config.name || "Unknown",
+      author: MPL.config.name || "Unknown",
       action: action
     }
   }
@@ -135,7 +135,7 @@ export default class Store extends aMPL.Store {
 
   inspectorUpdate(state, action) {
     try {
-      return Tesseract.changeset(state, this.meta(action), (doc) => {
+      return Automerge.changeset(state, this.meta(action), (doc) => {
         if(action.table && action.row && action.column && action.value)
           doc[action.table][action.row][action.column] = JSON.parse(action.value)
         else if(action.key && action.value) {
@@ -148,11 +148,11 @@ export default class Store extends aMPL.Store {
     }
   }
 
-  // Overwriting aMPL.Store#newDocument to load our own seed data
+  // Overwriting MPL.Store#newDocument to load our own seed data
   newDocument(state, action) {
-    let newState = Tesseract.init()
+    let newState = Automerge.init()
 
-    return Tesseract.changeset(newState, this.meta(action), (doc) => {
+    return Automerge.changeset(newState, this.meta(action), (doc) => {
       let data = seedData()
 
       doc.cards = data.cards
@@ -162,28 +162,28 @@ export default class Store extends aMPL.Store {
     })
   }
 
-  // Overwriting aMPL.Store#forkDocument to load our own seed data
+  // Overwriting MPL.Store#forkDocument to load our own seed data
   forkDocument(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       doc.docId = this.generateDocId()
     })
   }
 
   updateBoardTitle(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       doc.boardTitle = action.value
     })
   }
 
   createList(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       let attributes = Object.assign({}, action.attributes, { id: uuid() })
       doc.lists.push(attributes)
     })
   }
 
   deleteList(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       let listIndex = state.lists.findIndex(l => l.id === action.listId)
       let listCards = this.findCardsByList(action.listId)
 
@@ -198,28 +198,28 @@ export default class Store extends aMPL.Store {
   }
 
   updateCardTitle(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       let cardIndex = state.cards.findIndex(c => c.id === action.cardId)
       doc.cards[cardIndex].title = action.newTitle
     })
   }
 
   updateCardDescription(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       let cardIndex = state.cards.findIndex(c => c.id === action.cardId)
       doc.cards[cardIndex].description = action.newDescription
     })
   }
 
   updateAssignments(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       let cardIndex = state.cards.findIndex(c => c.id === action.cardId)
       doc.cards[cardIndex].assigned[action.person] = action.isAssigned
     })
   }
 
   deleteCard(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       let cards     = state.cards
       let cardIndex = cards.findIndex(c => c.id === action.cardId)
 
@@ -228,7 +228,7 @@ export default class Store extends aMPL.Store {
   }
 
   moveCard(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       // Move card to next list
       let cards     = state.cards
       let cardId    = action.cardId
@@ -271,7 +271,7 @@ export default class Store extends aMPL.Store {
   }
 
   createCard(state, action) {
-    return Tesseract.changeset(state, this.meta(action), (doc) => {
+    return Automerge.changeset(state, this.meta(action), (doc) => {
       let listCards = this.findCardsByList(action.attributes.listId)
       let order
 

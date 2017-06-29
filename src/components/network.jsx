@@ -1,6 +1,6 @@
 import React from 'react'
 import InlineInput from './inline_input'
-import aMPL from 'ampl'
+import MPL from 'mpl'
 import wifiName from 'wifi-name'
 
 export default class Network extends React.Component {
@@ -43,7 +43,7 @@ export default class Network extends React.Component {
   }
 
   updatePeerName(value) {
-    aMPL.config.name = value
+    MPL.config.name = value
     localStorage.setItem("peerName", value)
     this.props.store.network.peergroup.setName(value)
   }
