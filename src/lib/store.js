@@ -7,7 +7,8 @@ const Tesseract = aMPL.Tesseract
 
 export default class Store extends aMPL.Store {
   constructor() {
-
+    // Peer name needs to be set before we initialize the
+    // aMPL Store where the network is also initialized
     let peerName = process.env.NAME || localStorage.getItem("peerName")
     if(peerName)
       aMPL.config.name = peerName
@@ -38,6 +39,9 @@ export default class Store extends aMPL.Store {
           return this.createList(state, action)
         case "DELETE_LIST":
           return this.deleteList(state, action)
+        // To make time travel work, we set our state outside of aMPL
+        // and override .dispatch and .getState to ignore actions
+        // and return our time travel state.
         case "TIME_TRAVEL":
           this.localState.timeTravel = {
             index: action.index,
@@ -75,6 +79,8 @@ export default class Store extends aMPL.Store {
     })
   }
 
+  // Ignore all actions if we are time traveling, unless we are
+  // stopping time travel or receiving inbound deltas from the network
   dispatch(action) {
     if(action.type != "STOP_TIME_TRAVEL"
         && action.type != "TIME_TRAVEL"
@@ -86,6 +92,8 @@ export default class Store extends aMPL.Store {
     }
   }
 
+  // If we are time traveling, return our snapshot of the
+  // time travel state instead of the current state.
   getState() {
     if(this.localState.timeTravel && this.localState.timeTravel.change) {
       return this.localState.timeTravel.change.snapshot
@@ -154,7 +162,7 @@ export default class Store extends aMPL.Store {
     })
   }
 
-  // Overwriting aMPL.Store#newDocument to load our own seed data
+  // Overwriting aMPL.Store#forkDocument to load our own seed data
   forkDocument(state, action) {
     return Tesseract.changeset(state, this.meta(action), (doc) => {
       doc.docId = this.generateDocId()
