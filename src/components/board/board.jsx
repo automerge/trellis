@@ -1,9 +1,10 @@
-import React from 'react'
-import List from './list/list'
-import AddList from './add_list'
-import Card from './card/card'
-import InlineInput from './inline_input'
-import Flash from './flash'
+import React        from 'react'
+
+import List         from '../list/list'
+import AddList      from '../add_list'
+import Card         from '../card/card'
+import InlineInput  from '../inline_input'
+import Flash        from '../flash'
 
 export default class Board extends React.Component { constructor(props) {
     super(props)

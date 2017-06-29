@@ -1,6 +1,6 @@
-import React from 'react'
-import TesseractInfo from './tesseract_info'
-import InlineInput from './inline_input'
+import React          from 'react'
+import TesseractInfo  from '../tesseract_info'
+import InlineInput    from '../inline_input'
 
 export default class Inspector extends React.Component {
   constructor(props) {

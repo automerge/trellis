@@ -1,0 +1,37 @@
+.Inspector table {
+  border-collapse: collapse;
+  margin-right: 40px;
+}
+
+.Inspector table th {
+  background: #CCC;
+}
+
+.Inspector table th, .Inspector table td {
+  padding: 5px 10px;
+  border: 1px solid #AAA;
+  text-align: left;
+}
+
+.Inspector table tr.highlight > td {
+  background: #FFBA08;
+  transition: background 0.5s;
+}
+.Inspector table tr > td {
+  transition: background 1.5s;
+}
+
+.Inspector__cards__cardId, .Inspector__cards__listId,
+.Inspector__cards__assigned, .Inspector__lists__listId {
+  font-family: Monaco, monospace;
+}
+
+.Inspector input[type="text"] {
+  border: 1px solid #aaa;
+}
+.Inspector input[type="text"].number {
+  width: 12pt;
+}
+.Inspector input[type="text"].string {
+  width: 140pt;
+}

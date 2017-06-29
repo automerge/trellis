@@ -3,6 +3,8 @@
 @import "./components/list_card/list_card.css";
 @import "./components/members/members.css";
 @import "./components/card/card.css";
+@import "./components/board/board.css";
+@import "./components/inspector/inspector.css";
 
 @font-face {
   font-family: Pacifico;
@@ -73,42 +75,6 @@ a {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-.Board {
-  grid-row: 1 / 4;
-  grid-column: 1 / 4;
-  padding-left: 15pt;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--color-app);
-  font-family: "Nunito";
-  position: relative;
-}
-
-.Board textarea, .Board input[type="text"] {
-  font-family: "Nunito";
-}
-
-.Board__lists {
-  display: flex;
-  justify-content: flex-start;
-  overflow: auto;
-  flex-grow: 1;
-  margin-bottom: 20px;
-}
-
-.Board__title .InlineInput div, .Board__title .InlineInput textarea {
-  text-align: center;
-  font-family: "Open Sans";
-  margin: 0;
-  flex-grow: 0;
-  flex-shrink: 0;
-  color: var(--color-light);
-  padding: 20px 0 40px 0;
-  font-size: 28px;
-  width: 100%;
-  height: 28px;
-}
-
 h2 {
   font-size: 20px;
   font-weight: 500;
@@ -136,44 +102,6 @@ h2 {
 
 .Inspector__container {
   display: flex;
-}
-
-.Inspector table {
-  border-collapse: collapse;
-  margin-right: 40px;
-}
-
-.Inspector table th {
-  background: #CCC;
-}
-
-.Inspector table th, .Inspector table td {
-  padding: 5px 10px;
-  border: 1px solid #AAA;
-  text-align: left;
-}
-
-.Inspector table tr.highlight > td {
-  background: #FFBA08;
-  transition: background 0.5s;
-}
-.Inspector table tr > td {
-  transition: background 1.5s;
-}
-
-.Inspector__cards__cardId, .Inspector__cards__listId,
-.Inspector__cards__assigned, .Inspector__lists__listId {
-  font-family: Monaco, monospace;
-}
-
-.Inspector input[type="text"] {
-  border: 1px solid #aaa;
-}
-.Inspector input[type="text"].number {
-  width: 12pt;
-}
-.Inspector input[type="text"].string {
-  width: 140pt;
 }
 
 .Sidebar {

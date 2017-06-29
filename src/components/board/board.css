@@ -1,0 +1,35 @@
+.Board {
+  grid-row: 1 / 4;
+  grid-column: 1 / 4;
+  padding-left: 15pt;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-app);
+  font-family: "Nunito";
+  position: relative;
+}
+
+.Board textarea, .Board input[type="text"] {
+  font-family: "Nunito";
+}
+
+.Board__lists {
+  display: flex;
+  justify-content: flex-start;
+  overflow: auto;
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+.Board__title .InlineInput div, .Board__title .InlineInput textarea {
+  text-align: center;
+  font-family: "Open Sans";
+  margin: 0;
+  flex-grow: 0;
+  flex-shrink: 0;
+  color: var(--color-light);
+  padding: 20px 0 40px 0;
+  font-size: 28px;
+  width: 100%;
+  height: 28px;
+}
