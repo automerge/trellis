@@ -1,6 +1,6 @@
 # Trellis
 
-Trellis is a [Trello](https://trello.com/) clone built as an Electron desktop application. We built Trellis to demo [MPL](https://github.com/inkandswitch/mpl), a distributed persistence library that allows developers to build collaborative applications that are realtime, offline, and network partition tolerant. 
+Trellis is a [Trello](https://trello.com/) clone built as an Electron desktop application. We built Trellis to demo [MPL](https://github.com/automerge/mpl), a distributed persistence library that allows developers to build collaborative applications that are realtime, offline, and network partition tolerant. 
 
 ![screenshot](https://i.imgur.com/pSGtn3m.png)
 
@@ -27,7 +27,7 @@ To our surprise, MPL was reasonably performant at our scale and we were able to 
 
 ## Setup 
 
-You can download the latest version of Trellis for Mac OSX here: https://github.com/inkandswitch/trellis/releases
+You can download the latest version of Trellis for Mac OSX here: https://github.com/automerge/trellis/releases
 
 To test peer synchronization, make a copy of your Trellis.app and start both clients. You should see both peers in the Network panel of both clients. If you now open the same document in both clients, you'll be able to see the edits from one synchronize to the other in realtime.
 
