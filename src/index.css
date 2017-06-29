@@ -1,12 +1,12 @@
-@import "./components/add_card/add_card.css";
-@import "./components/list/list.css";
-@import "./components/list_card/list_card.css";
-@import "./components/card/card.css";
-@import "./components/board/board.css";
-@import "./components/inspector/inspector.css";
-@import "./components/add_list/add_list.css";
-@import "./components/assignments/assignments.css";
-@import "./components/flash/flash.css";
+@import url("components/add_card/add_card.css");
+@import url("components/list/list.css");
+@import url("components/list_card/list_card.css");
+@import url("components/card/card.css");
+@import url("components/board/board.css");
+@import url("components/inspector/inspector.css");
+@import url("components/add_list/add_list.css");
+@import url("components/assignments/assignments.css");
+@import url("components/flash/flash.css");
 
 @font-face {
   font-family: Pacifico;
