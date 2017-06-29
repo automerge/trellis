@@ -1,0 +1,21 @@
+.Assignments {
+  margin-top: 10pt;
+}
+
+.Assignments img {
+  width: 15pt;
+  margin-left: 4pt;
+}
+
+.Assignments img:first-child {
+  margin-left: 0;
+}
+
+.Assignments__active {
+  opacity: 0.8;
+}
+.Assignments__inactive {
+  opacity: 0.2;
+  filter: grayscale(100%)
+}
+

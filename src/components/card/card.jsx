@@ -1,5 +1,5 @@
 import React from 'react'
-import Assignments from '../assignments'
+import Assignments from '../assignments/assignments'
 import InlineInput from '../inline_input'
 import Comments from '../comments'
 

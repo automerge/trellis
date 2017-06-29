@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Assignments from '../assignments'
+import Assignments from '../assignments/assignments'
 import DropTarget from '../drop_target'
 
 export default class ListCard extends React.Component {

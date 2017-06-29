@@ -1,7 +1,6 @@
 import React        from 'react'
-
 import List         from '../list/list'
-import AddList      from '../add_list'
+import AddList      from '../add_list/add_list'
 import Card         from '../card/card'
 import InlineInput  from '../inline_input'
 import Flash        from '../flash'
