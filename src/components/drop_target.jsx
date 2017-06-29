@@ -28,6 +28,9 @@ export default class DropTarget extends React.Component {
     })
   }
 
+  // Every child of our DropTarget also triggers 'onDragEnter' 
+  // and 'onDragLeave' events, so we need to keep a counter to
+  // track when we've entered or left the top-level element
   onDragEnter(event) {
     if(this.counter === 0)
       event.currentTarget.classList.add("drag-entered")

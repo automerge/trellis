@@ -1,22 +1,28 @@
 import React from 'react'
 import InlineInput from './inline_input'
 import aMPL from 'ampl'
-const wifiName = require('wifi-name')
+import wifiName from 'wifi-name'
 
 export default class Network extends React.Component {
   constructor(props) {
     super(props)
 
-    let bonjourEnabled= localStorage.getItem("bonjourEnabled")
+    let bonjourEnabled = localStorage.getItem("bonjourEnabled")
     if(bonjourEnabled)
-      bonjourEnabled= JSON.parse(bonjourEnabled)
+      bonjourEnabled = JSON.parse(bonjourEnabled)
 
     if(bonjourEnabled)
       this.props.network.signaler.enableBonjour()
     else
       this.props.network.signaler.disableBonjour()
 
-    this.state = { 'peers': {}, 'connected': true, bonjourEnabled: bonjourEnabled, introducerStatus: "disconnected", wifi: undefined }
+    this.state = { 
+      peers: {}, 
+      connected: true, 
+      bonjourEnabled: bonjourEnabled, 
+      introducerStatus: "disconnected", 
+      wifi: undefined 
+    }
 
     wifiName().then(name => {
       let state = this.state

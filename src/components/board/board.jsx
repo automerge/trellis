@@ -3,7 +3,7 @@ import List         from '../list/list'
 import AddList      from '../add_list/add_list'
 import Card         from '../card/card'
 import InlineInput  from '../inline_input'
-import Flash        from '../flash'
+import Flash        from '../flash/flash'
 
 export default class Board extends React.Component { constructor(props) {
     super(props)

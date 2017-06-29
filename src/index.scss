@@ -1,12 +1,12 @@
 @import "./components/add_card/add_card.css";
 @import "./components/list/list.css";
 @import "./components/list_card/list_card.css";
-@import "./components/members/members.css";
 @import "./components/card/card.css";
 @import "./components/board/board.css";
 @import "./components/inspector/inspector.css";
 @import "./components/add_list/add_list.css";
 @import "./components/assignments/assignments.css";
+@import "./components/flash/flash.css";
 
 @font-face {
   font-family: Pacifico;
@@ -320,29 +320,6 @@ h2 {
   display: block;
   white-space: pre-wrap;
   background: transparent;
-}
-
-@keyframes slide-down {
-  0% { top: -200px }
-  5% { top: 20px }
-  90% { top: 20px }
-  100% { top: -200px }
-}
-
-.Flash {
-  background: var(--color-change-highlight-bg);
-  color: var(--color-dark);
-  position: absolute;
-  top: -200px;
-  left: 50%;
-  margin-left: -40%;
-  width: 80%;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  animation: slide-down 2s linear 0s 1 normal forwards;
-  border-radius: 2px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1)
 }
 
 .led-connected, .led-error, .led-connecting, .led-disconnected {

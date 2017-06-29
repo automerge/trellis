@@ -6,10 +6,10 @@ export default class Changes extends React.Component {
 
     this.store = this.props.store
     this.state = this.store.getState()
-    this.store.subscribe((x) => { this.setState(this.store.getState()) })
   }
 
   timeTravelTo(index, change, prevChange) {
+    // send prevChange for changes highlighting
     this.store.dispatch({
       type: "TIME_TRAVEL", index: index, change: change, prevChange: prevChange
     })

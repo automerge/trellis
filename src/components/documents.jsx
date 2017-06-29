@@ -6,8 +6,7 @@ export default class Documents extends React.Component {
     this.openDocument = this.openDocument.bind(this)
     
     this.peerHandler = this.peerHandler.bind(this)
-    this.state = { 'peers': {}  }
-
+    this.state = { peers: {}  }
   }
   
   // The constructor is not necessarily called on
@@ -15,9 +14,9 @@ export default class Documents extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(!nextProps.network) return
 
+    // Make sure to remove previous listener first
     this.props.network.peerStats.removeListener('peer', this.peerHandler)
 
-    console.log("NEXT PROPS",nextProps)
     this.setState({
       peers: Object.assign({}, nextProps.network.peerStats.getStats())
     })

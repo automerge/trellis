@@ -63,4 +63,3 @@ export default class AddList extends React.Component {
     )
   }
 }
-

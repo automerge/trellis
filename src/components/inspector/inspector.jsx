@@ -65,50 +65,7 @@ export default class Inspector extends React.Component {
     let tables           = {}
     let objects          = {}
 
-    let stateB, stateC
-
-    stateB = {
-      lists: [
-        {
-          id: 1,
-          title: "This Week",
-          cards: [
-            { id: 1, title: "Card A" },
-            { id: 2, title: "Card B" },
-            { id: 3, title: "Card C" }
-          ]
-        },
-        {
-          id: 2,
-          title: "Done",
-          cards: [
-            { id: 4, title: "Card D" },
-          ]
-        },
-        {
-          id: 3,
-          title: "Soon",
-          cards: []
-        }
-      ]
-    }
-
-    stateC = Object.assign({}, stateB)
-    stateC.config = {
-      user: {
-        name: "Roshan",
-        preferences: {
-          background: "http://imgur.com/ajr7a",
-          autoSave: true,
-          connected: true,
-          recentFiles: 20,
-          network: {
-            showPeers: true
-          }
-        }
-      }
-    }
-
+    // Break down state into objects and tables
     Object.keys(state).forEach((key) => {
       let value = state[key]
       if(Array.isArray(value)) {
@@ -130,7 +87,10 @@ export default class Inspector extends React.Component {
         let dataPartial = columns.map((column) => {
           let data = row[column]
           return <td key={ column }>
-            <InlineInput onSubmit={ (value) => this.updateTd(tableName, index, column, value) } defaultValue={ JSON.stringify(data) }>
+            <InlineInput
+              onSubmit={ (value) => this.updateTd(tableName, index, column, value) }
+              defaultValue={ JSON.stringify(data) }
+            >
               { JSON.stringify(data) || " " }
             </InlineInput>
           </td>

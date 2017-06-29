@@ -32,6 +32,7 @@ export default class Assignments extends React.Component {
     })
   }
 
+  // Hardcoded names used for demo and prototyping
   people() {
     if (process.env.AVENGERS)
       return [ 'nick', 'natasha' ]
@@ -50,9 +51,8 @@ export default class Assignments extends React.Component {
       return <img key={person} name={person} src={fname} className={klass} onClick={ this.toggle } />
     })
     return (
-      <div className="Assignments">
+      <div className="Assignments clear">
         { assignments}
-        <div style={{ clear: "both" }} />
       </div>
     )
   }

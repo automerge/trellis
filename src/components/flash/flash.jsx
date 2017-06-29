@@ -7,9 +7,12 @@ export default class Flash extends React.Component {
   }
 
   show(message) {
+    // First clear out previous flash if it exists
     this.setState({ message: undefined })
     this.setState({ message: message })
 
+    // The timing here must match up with whatever 
+    // CSS animations are applied to .Flash
     setTimeout(() => {
       this.setState({ message: undefined })
     }, 6000)

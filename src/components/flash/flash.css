@@ -1,0 +1,23 @@
+@keyframes slide-down {
+  0% { top: -200px }
+  5% { top: 20px }
+  90% { top: 20px }
+  100% { top: -200px }
+}
+
+.Flash {
+  background: var(--color-change-highlight-bg);
+  color: var(--color-dark);
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  margin-left: -40%;
+  width: 80%;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  animation: slide-down 2s linear 0s 1 normal forwards;
+  border-radius: 2px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1)
+}
+
