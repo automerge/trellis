@@ -1,7 +1,7 @@
 import React from 'react'
-import ListCard from './list_card'
-import AddCard from './add_card'
-import DropTarget from './drop_target'
+import ListCard from '../list_card/list_card'
+import AddCard from '../add_card/add_card'
+import DropTarget from '../drop_target'
 
 export default class List extends React.Component {
   constructor(props) {

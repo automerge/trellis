@@ -1,7 +1,7 @@
 import React from 'react'
-import Assignments from './assignments'
-import InlineInput from './inline_input'
-import Comments from './comments'
+import Assignments from '../assignments'
+import InlineInput from '../inline_input'
+import Comments from '../comments'
 
 export default class Card extends React.Component {
   constructor(props) {
