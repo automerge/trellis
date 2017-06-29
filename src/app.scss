@@ -1,22 +1,28 @@
+@import "./components/add_card/add_card.css";
+@import "./components/list/list.css";
+@import "./components/list_card/list_card.css";
+@import "./components/members/members.css";
+@import "./components/card/card.css";
+
 @font-face {
   font-family: Pacifico;
-  src: url("../assets/fonts/Pacifico.ttf");
+  src: url("./assets/fonts/Pacifico.ttf");
 }
 
 @font-face {
   font-family: Nunito;
-  src: url("../assets/fonts/Nunito-Regular.ttf");
+  src: url("./assets/fonts/Nunito-Regular.ttf");
 }
 
 @font-face {
   font-family: Nunito;
-  src: url("../assets/fonts/Nunito-Bold.ttf");
+  src: url("./assets/fonts/Nunito-Bold.ttf");
   font-weight: bold;
 }
 
 @font-face {
   font-family: Open Sans;
-  src: url("../assets/fonts/OpenSans-ExtraBold.ttf");
+  src: url("./assets/fonts/OpenSans-ExtraBold.ttf");
 }
 
 html, body, #App {
