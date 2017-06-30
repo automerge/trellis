@@ -2,7 +2,7 @@
 
 Trellis is a [Trello](https://trello.com/) clone built as an Electron desktop application. We built Trellis to demo [MPL](https://github.com/automerge/mpl), a distributed persistence library that allows developers to build collaborative applications that are realtime, offline, and network partition tolerant. 
 
-![screenshot](https://i.imgur.com/pSGtn3m.png)
+![screenshot](https://raw.githubusercontent.com/automerge/trellis/master/screenshot.png)
 
 ## Motivation
 
