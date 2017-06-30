@@ -16,7 +16,7 @@ In addition to the basic features of Trello, Trellis includes:
 
 - **Offline Mode**: Trellis is a desktop application and works offline with no network connection. Your changes will be saved locally and sync automatically when you re-establish an Internet connection.
 - **Realtime Collaboration**: When online, Trellis will sync changes between peers in realtime.
-- **Automatically Merging Synchronization**: Trello uses MPL for data persistence, which uses automatically merging data structures for synchronization.
+- **Automatically Merging Synchronization**: Trellis uses MPL for data persistence, which uses automatically merging data structures for synchronization.
 - **Network Partitions**: If you are disconnected from the Internet but share a local network with a peer, you can continue to collaborate in realtime with peers on the same network.
 
 ## Conclusions
