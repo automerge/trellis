@@ -16,7 +16,7 @@ export default class Changes extends React.Component {
   }
 
   displayChange(change, prevChange) {
-    let meta = change.changeset.message
+    let meta = change.change.message
     if (!meta || !meta.author || !meta.action) return ""
 
     switch(meta.action.type) {

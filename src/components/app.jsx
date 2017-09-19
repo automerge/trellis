@@ -180,8 +180,8 @@ export default class App extends React.Component {
       currentChange = recentChanges[1]
     }
 
-    if (currentChange && currentChange.changeset) {
-      let message = currentChange.changeset.message
+    if (currentChange && currentChange.change) {
+      let message = currentChange.change.message
       if (message && message.action)
         if (message.action.type == "CREATE_CARD")
           highlightCard = this.findCreatedCard(prevChange, currentChange)

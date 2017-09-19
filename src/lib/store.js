@@ -65,7 +65,7 @@ export default class Store extends MPL.Store {
   }
 
   createComment(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       if(!Array.isArray(doc.comments))
         doc.comments = []
 
@@ -135,7 +135,7 @@ export default class Store extends MPL.Store {
 
   inspectorUpdate(state, action) {
     try {
-      return Automerge.changeset(state, this.meta(action), (doc) => {
+      return Automerge.change(state, this.meta(action), (doc) => {
         if(action.table && action.row && action.column && action.value)
           doc[action.table][action.row][action.column] = JSON.parse(action.value)
         else if(action.key && action.value) {
@@ -152,7 +152,7 @@ export default class Store extends MPL.Store {
   newDocument(state, action) {
     let newState = Automerge.init()
 
-    return Automerge.changeset(newState, this.meta(action), (doc) => {
+    return Automerge.change(newState, this.meta(action), (doc) => {
       let data = seedData()
 
       doc.cards = data.cards
@@ -164,26 +164,26 @@ export default class Store extends MPL.Store {
 
   // Overwriting MPL.Store#forkDocument to load our own seed data
   forkDocument(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       doc.docId = this.generateDocId()
     })
   }
 
   updateBoardTitle(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       doc.boardTitle = action.value
     })
   }
 
   createList(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       let attributes = Object.assign({}, action.attributes, { id: uuid() })
       doc.lists.push(attributes)
     })
   }
 
   deleteList(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       let listIndex = state.lists.findIndex(l => l.id === action.listId)
       let listCards = this.findCardsByList(action.listId)
 
@@ -198,28 +198,28 @@ export default class Store extends MPL.Store {
   }
 
   updateCardTitle(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       let cardIndex = state.cards.findIndex(c => c.id === action.cardId)
       doc.cards[cardIndex].title = action.newTitle
     })
   }
 
   updateCardDescription(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       let cardIndex = state.cards.findIndex(c => c.id === action.cardId)
       doc.cards[cardIndex].description = action.newDescription
     })
   }
 
   updateAssignments(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       let cardIndex = state.cards.findIndex(c => c.id === action.cardId)
       doc.cards[cardIndex].assigned[action.person] = action.isAssigned
     })
   }
 
   deleteCard(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       let cards     = state.cards
       let cardIndex = cards.findIndex(c => c.id === action.cardId)
 
@@ -228,7 +228,7 @@ export default class Store extends MPL.Store {
   }
 
   moveCard(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       // Move card to next list
       let cards     = state.cards
       let cardId    = action.cardId
@@ -271,7 +271,7 @@ export default class Store extends MPL.Store {
   }
 
   createCard(state, action) {
-    return Automerge.changeset(state, this.meta(action), (doc) => {
+    return Automerge.change(state, this.meta(action), (doc) => {
       let listCards = this.findCardsByList(action.attributes.listId)
       let order
 

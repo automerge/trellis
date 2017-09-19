@@ -50,7 +50,6 @@
     }
   },
   "dependencies": {
-    "mpl": "^0.2.26",
     "assert": "1.4.1",
     "body-parser": "^1.17.2",
     "bonjour": "^3.5.0",
@@ -60,6 +59,7 @@
     "electron-log": "2.2.6",
     "express": "^4.15.3",
     "lz4": "0.5.3",
+    "mpl": "^0.3.0",
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "react-redux": "5.0.4",
