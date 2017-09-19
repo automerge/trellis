@@ -19,6 +19,9 @@ export default class Store extends MPL.Store {
       MPL.config.name = names[Math.floor(Math.random() * names.length)]
     }
 
+    if (process.env.ENCRYPTION_KEY) localStorage.setItem("encryptionKey", process.env.ENCRYPTION_KEY)
+    MPL.config.encryptionKey = localStorage.getItem("encryptionKey")
+
     super((state, action) => {
       switch(action.type) {
         case "UPDATE_BOARD_TITLE":
