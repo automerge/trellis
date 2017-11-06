@@ -50,7 +50,9 @@
     }
   },
   "dependencies": {
+    "ampl": "^1.0.6",
     "assert": "1.4.1",
+    "async": "^2.5.0",
     "body-parser": "^1.17.2",
     "bonjour": "^3.5.0",
     "dotenv": "4.0.0",
@@ -58,8 +60,10 @@
     "electron-devtools-installer": "2.2.0",
     "electron-log": "2.2.6",
     "express": "^4.15.3",
+    "leveldown": "^2.0.0",
+    "levelup": "^2.0.0",
     "lz4": "0.5.3",
-    "mpl": "^0.3.0",
+    "mpl": "git+file:///home/pvh/Dev/ampl#ipfs-hack",
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "react-redux": "5.0.4",
