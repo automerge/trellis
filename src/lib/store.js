@@ -7,18 +7,6 @@ const Automerge = MPL.Automerge
 
 export default class Store extends MPL.Store {
   constructor() {
-    // Peer name needs to be set before we initialize the
-    // MPL Store where the network is also initialized
-    let peerName = process.env.NAME || localStorage.getItem("peerName")
-    if(peerName)
-      MPL.config.name = peerName
-    else {
-      let names = [ "Amelia", "Marco", "Isabella",
-                    "Meriweather", "Valentina", "Yuri" ]
-
-      MPL.config.name = names[Math.floor(Math.random() * names.length)]
-    }
-
     super((state, action) => {
       switch(action.type) {
         case "UPDATE_BOARD_TITLE":
@@ -61,6 +49,18 @@ export default class Store extends MPL.Store {
       }
     })
 
+    // Peer name needs to be set before we initialize the
+    // MPL Store where the network is also initialized
+    let peerName = process.env.NAME || localStorage.getItem("peerName")
+    if(peerName)
+      this.network.setName(peerName)
+    else {
+      let names = [ "Amelia", "Marco", "Isabella",
+                    "Meriweather", "Valentina", "Yuri" ]
+
+      this.network.setName(names[Math.floor(Math.random() * names.length)])
+    }
+
     this.localState = {}
   }
 
@@ -73,7 +73,7 @@ export default class Store extends MPL.Store {
         id: uuid(),
         cardId: action.cardId,
         body: action.body,
-        author: MPL.config.name ,
+        author: this.network.name ,
         createdAt: new Date().toJSON()
       })
     })
@@ -104,7 +104,7 @@ export default class Store extends MPL.Store {
 
   meta(action) {
     return {
-      author: MPL.config.name || "Unknown",
+      author: /*this.network.name ||*/ "Unknown",
       action: action
     }
   }

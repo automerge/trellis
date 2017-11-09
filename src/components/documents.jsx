@@ -30,7 +30,6 @@ export default class Documents extends React.Component {
   }
 
   render() {
-    console.log("no render")
     return <div className="Documents">
       <h2>Documents <img src="assets/images/documents.svg" /></h2>
       

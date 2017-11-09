@@ -23,7 +23,7 @@ export default class Network extends React.Component {
   }
 
   updatePeerName(value) {
-    MPL.config.name = value
+    this.props.network.setName(value)
     localStorage.setItem("peerName", value)
   }
 
@@ -36,7 +36,7 @@ export default class Network extends React.Component {
 
   peerHandler() {
     this.setState({
-      peers: Object.assign({}, {})
+      peers: Object.assign({}, this.props.network.peerMetadata)
     })
   }
 
