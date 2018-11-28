@@ -19,7 +19,6 @@ Trellis includes many of the basic features of Trello:
 - Drag cards from one list to another
 - Comment on cards
 - Assign cards to individuals
--
 
 In addition, Trellis includes:
 
