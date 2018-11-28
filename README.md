@@ -34,34 +34,55 @@ We designed Trellis as an experiment to test and demonstrate the functionality o
 
 To our surprise, MPL was reasonably performant at our scale and we were able to design a developer interface that is intuitive, familiar to developers using modern frontend libraries, and does not require developers to understand or interface with CRDTs. The end-user experience was also impressively free of data corruption: as long as data updates are done with as small of a "granularity" as possible there are very few instance of data merging in unexpected ways and users always converged to the same application state. The remaining challenges at the conclusion of this project were mostly in building a robust and decentralized networking layer for CRDT synchronization.
 
-## Setup 
+## Setup
 
-You can download the latest version of Trellis for Mac OSX here: https://github.com/automerge/trellis/releases
+You can download the latest version of Trellis [from the releases page](https://github.com/automerge/trellis/releases).
 
-To test peer synchronization, make a copy of your Trellis.app and start both clients. You should see both peers in the Network panel of both clients. If you now open the same document in both clients, you'll be able to see the edits from one synchronize to the other in realtime.
+To test peer synchronization:
+
+- **Mac OSX**: Make a copy of your `Trellis.app` and start both clients.
+- **Windows**: Start `Trellis.exe` twice.
+
+You should see both peers in the Network panel of both clients. If you now open the same document in both clients, you'll be able to see the edits from one synchronize to the other in realtime.
 
 ## Development
 
-To install all of the app dependencies, run:
+### Prerequisites
 
-    $ npm install -g electron-forge
-    $ npm install
+You will need the [Electron Forge](https://electronforge.io/) CLI installed globally:
+
+    $ npm install --global electron-forge
+
+**Windows only:** You also need to have the C++ compiler toolchain installed. The easiest way to do this is to install Microsoft's [windows-build-tools](https://github.com/felixrieseberg/windows-build-tools) from an elevated prompt (run as Administrator).
+
+    $ npm install --global --production windows-build-tools
+
+Alternatively, you can install Visual Studio Build Tools, following the steps [described here](https://github.com/nodejs/node-gyp#on-windows).
+
+### Running and testing the app
 
 To start the app:
 
+    $ npm install
     $ npm start
 
 To run tests:
 
-    $ npm run test
+    $ npm test
 
-## Distribution
+### Distribution
 
-To create a packaged ".app" on Mac OSX:
+To generate a packaged application:
 
     $ npm run package
 
-The command will create a `trellis.app` package located in the `out/trellis-darwin-x64` directory:
+- In **Mac OSX**, this generates a `trellis.app` package located in the `out/trellis-darwin-x64` directory. To run it:
 
-    $ open out/trellis-darwin-x64/trellis.app
+  ```
+  $ open out/trellis-darwin-x64/trellis.app
+  ```
 
+- In **Windows**, this generates a `Trellis.exe` application, with associated resources, in the `out/trellis-win32-x64` directory. To run it:
+  ```
+  $ ./out/trellis-win32-x64/Trellis.exe
+  ```
