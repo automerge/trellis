@@ -1,18 +1,27 @@
 # Trellis
 
-Trellis is a [Trello](https://trello.com/) clone built as an Electron desktop application. We built Trellis to demo [MPL](https://github.com/automerge/mpl), a distributed persistence library that allows developers to build collaborative applications that are realtime, offline, and network partition tolerant. 
+Trellis is a [Trello](https://trello.com/) clone built as an Electron desktop application. We built Trellis to demo [MPL](https://github.com/automerge/mpl), a distributed persistence library that allows developers to build collaborative applications that are realtime, offline, and network partition tolerant.
 
 ![screenshot](https://raw.githubusercontent.com/automerge/trellis/master/screenshot.png)
 
 ## Motivation
 
-Our motivation to build Trellis was to create an application that would demonstrate the unique features of MPL. We chose to build a Trello clone as our demo application due to Trello's popularity as a web-based project management tool, its highly collaboritive design, and its "dogfooding" usefulness so that we could use Trellis as we're building it.
+Our motivation to build Trellis was to create an application that would demonstrate the unique features of MPL. We chose to build a Trello clone as our demo application due to Trello's popularity as a web-based project management tool, its highly collaborative design, and its "dogfooding" usefulness so that we could use Trellis as we're building it.
 
-Like most modern web applications, the original Trello relies on a stable Internet connection in order to function. With MPL, we can extend Trello's functionality to work offline, collaboritively with peers over a local network, and with synchronization so that peers coming back online can merge their changes with other peers using automatically merging data structures.
+Like most modern web applications, the original Trello relies on a stable Internet connection in order to function. With MPL, we can extend Trello's functionality to work offline, collaboratively with peers over a local network, and with synchronization so that peers coming back online can merge their changes with other peers using automatically merging data structures.
 
 ## Features
 
-In addition to the basic features of Trello, Trellis includes:
+Trellis includes many of the basic features of Trello:
+
+- Create cards
+- Create lists
+- Drag cards from one list to another
+- Comment on cards
+- Assign cards to individuals
+-
+
+In addition, Trellis includes:
 
 - **Offline Mode**: Trellis is a desktop application and works offline with no network connection. Your changes will be saved locally and sync automatically when you re-establish an Internet connection.
 - **Realtime Collaboration**: When online, Trellis will sync changes between peers in realtime.
