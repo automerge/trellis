@@ -31,10 +31,11 @@
       },
       "electronPackagerConfig": {
         "osxSign": true,
-        "icon": "./src/assets/Logo.icns"
+        "icon": "./src/assets/Logo"
       },
       "electronWinstallerConfig": {
-        "name": "trellis"
+        "name": "trellis",
+        "appDirectory": "."
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
