@@ -58,6 +58,10 @@ You will need the [Electron Forge](https://electronforge.io/) CLI installed glob
 
 Alternatively, you can install Visual Studio Build Tools, following the steps [described here](https://github.com/nodejs/node-gyp#on-windows).
 
+**Linux only:** You also need to have the required GTK development headers and libraries installed:
+
+    $ sudo apt install libgtk2.0-dev  # example for Ubuntu 19.04
+
 ### Running and testing the app
 
 To start the app:
@@ -84,4 +88,10 @@ To generate a packaged application:
 - In **Windows**, this generates a `Trellis.exe` application, with associated resources, in the `out/trellis-win32-x64` directory. To run it:
   ```
   $ ./out/trellis-win32-x64/Trellis.exe
+  ```
+  
+- In **Linux**, this generates a `Trellis` ELF executable (dynamically linked). To run it:
+
+  ```
+  $ ./out/Trellis-linux-x64/Trellis
   ```
