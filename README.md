@@ -1,5 +1,7 @@
 # Trellis
 
+*This is a largely defunct research project left online for posterity. If you're discovering this now, you should take a look at [PushPin](https://github.com/inkandswitch/pushpin), a much more complete & robust implementation of this approach to software development.*
+
 Trellis is a [Trello](https://trello.com/) clone built as an Electron desktop application. We built Trellis to demo [MPL](https://github.com/automerge/mpl), a distributed persistence library that allows developers to build collaborative applications that are realtime, offline, and network partition tolerant.
 
 ![screenshot](https://raw.githubusercontent.com/automerge/trellis/master/screenshot.png)
